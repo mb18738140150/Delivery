@@ -1,0 +1,19 @@
+//
+//  AllHeader.pch
+//  Delivery
+//
+//  Created by 仙林 on 15/10/24.
+//  Copyright © 2015年 仙林. All rights reserved.
+//
+
+#ifndef AllHeader_pch
+#define AllHeader_pch
+
+#import "UIViewAdditions.h"
+
+#define MAIN_COLORE [UIColor colorWithRed:249 / 255.0 green:72 / 255.0 blue:47 / 255.0 alpha:1]
+
+// Include any system framework and library headers here that should be included in all compilation units.
+// You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.
+
+#endif /* AllHeader_pch */

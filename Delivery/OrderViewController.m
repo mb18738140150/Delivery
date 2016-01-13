@@ -32,7 +32,7 @@
     
     self.view.backgroundColor = [UIColor redColor];
     
-    self.navigationController.navigationBar.barTintColor = [UIColor orangeColor];
+    self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:251 / 255.0 green:84 / 255.0 blue:8 / 255.0 alpha:1];
     
     self.tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, self.view.width, self.view.height )];
     _tableView.dataSource = self;
@@ -46,10 +46,11 @@
 //    _label.font = [UIFont systemFontOfSize:30];
 //    _label.text = @"你好啊才";
 //    _label.textAlignment = NSTextAlignmentCenter;
-//    [self.view addSubview:_label];
+//    [self.view addSubview:_label];setupAction
     
+//    self.navigationItem.leftBarButtonItem = nil;
     
-//    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemCamera target:self action:@selector(setupAction:)];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithImage:[[UIImage imageNamed:@"setting_normal.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:self action:@selector(setupAction:)];
     
 }
 
@@ -81,10 +82,14 @@
 
 - (void)setupAction:(UIBarButtonItem *)sender
 {
-    AppDelegate * appDelegate = [UIApplication sharedApplication].delegate;
-    
-    [appDelegate.centerVC presentUserView];
-   
+    /*
+     抽屉效果
+     AppDelegate * appDelegate = [UIApplication sharedApplication].delegate;
+     
+     [appDelegate.centerVC presentUserView];
+     */
+    UserCenterViewController * userVC = [[UserCenterViewController alloc]init];
+    [self.navigationController pushViewController:userVC animated:YES];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -120,41 +125,47 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
-    AppDelegate * delegate = [UIApplication sharedApplication].delegate;
-    [delegate.centerVC moveOrderViewToOriginalPosition];
-    
+    /*
+     // 抽屉效果
+     AppDelegate * delegate = [UIApplication sharedApplication].delegate;
+     [delegate.centerVC moveOrderViewToOriginalPosition];
+     
+     OrderDetailController * pVC = [[OrderDetailController alloc]init];
+     [self.navigationController pushViewController:pVC animated:YES];
+     */
     OrderDetailController * pVC = [[OrderDetailController alloc]init];
     [self.navigationController pushViewController:pVC animated:YES];
-    
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    
-    AppDelegate * delegate = [UIApplication sharedApplication].delegate;
-    
-    
-    if (delegate.centerVC.panGesture == nil) {
-        [delegate.centerVC setupGesture];
-    }
+    /*
+     // 抽屉效果
+     AppDelegate * delegate = [UIApplication sharedApplication].delegate;
+     
+     
+     if (delegate.centerVC.panGesture == nil) {
+     [delegate.centerVC setupGesture];
+     }
+     */
     
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
+    /*
+     // 抽屉效果
+     AppDelegate * delegate = [UIApplication sharedApplication].delegate;
+     
+     if (delegate.centerVC.panGesture) {
+     [delegate.centerVC.view removeGestureRecognizer:delegate.centerVC.panGesture];
+     
+     delegate.centerVC.panGesture = nil;
+     
+     }
+    */
     
-    AppDelegate * delegate = [UIApplication sharedApplication].delegate;
     
-    
-    if (delegate.centerVC.panGesture) {
-        [delegate.centerVC.view removeGestureRecognizer:delegate.centerVC.panGesture];
-        
-        delegate.centerVC.panGesture = nil;
-        
-    }
-    
-//    self.navigationController.interactivePopGestureRecognizer.enabled = NO;
 
 }
 

@@ -27,7 +27,7 @@
 {
     
     self.titleLabel = [[UILabel alloc]initWithFrame:CGRectMake(LEFT_SPACE, TOP_SPACE, (self.frame.size.width - 2 * LEFT_SPACE)  - 40, 30)];
-    _titleLabel.textColor = [UIColor redColor];
+    _titleLabel.textColor = [UIColor blackColor];
     [self addSubview:_titleLabel];
     
     self.detalsLabel = [[UILabel alloc]initWithFrame:CGRectMake(_titleLabel.right, TOP_SPACE, 40, 30)];
@@ -43,7 +43,7 @@
     [self addSubview:line];
     
     
-    self.backgroundColor = [UIColor clearColor];
+    self.backgroundColor = [UIColor whiteColor];
 }
 
 /*

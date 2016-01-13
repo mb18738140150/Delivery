@@ -10,9 +10,10 @@
 #import "CenterViewController.h"
 #import "OrderViewController.h"
 #import "UserCenterViewController.h"
+#import "LoginViewController.h"
 
 @interface AppDelegate ()
-
+@property (nonatomic, strong)LoginViewController * loginVC;
 @end
 
 @implementation AppDelegate
@@ -23,13 +24,27 @@
     // Override point for customization after application launch.
     self.window.backgroundColor = [UIColor whiteColor];
     
-    OrderViewController * orderVC = [[OrderViewController alloc]init];
-    self.mainNavigationController = [[UINavigationController alloc]init];
-    UserCenterViewController * userVC = [[UserCenterViewController alloc]init];
+    // 抽屉效果
+    /*
+     
+     //    OrderViewController * orderVC = [[OrderViewController alloc]init];
+     //    self.mainNavigationController = [[UINavigationController alloc]init];
+     //    UserCenterViewController * userVC = [[UserCenterViewController alloc]init];
+     //
+     ////    self.centerVC = [[CenterViewController alloc]initWithRightView:userVC andMainView:self.mainNavigationController];
+     //    self.centerVC = [[CenterViewController alloc]init];
+     //    self.window.rootViewController = self.centerVC;251 84 8
+     */
     
-//    self.centerVC = [[CenterViewController alloc]initWithRightView:userVC andMainView:self.mainNavigationController];
-    self.centerVC = [[CenterViewController alloc]init];
-    self.window.rootViewController = self.centerVC;
+    
+//    OrderViewController * orderVC = [[OrderViewController alloc]init];
+//    self.mainNavigationController = [[UINavigationController alloc]initWithRootViewController:orderVC];
+    self.loginVC = [[LoginViewController alloc]initWithNibName:@"LoginViewController" bundle:nil];
+    UINavigationController * nav = [[UINavigationController alloc]initWithRootViewController:_loginVC];
+    
+    self.window.rootViewController = nav;
+    
+    
     
     [self.window makeKeyAndVisible];
     

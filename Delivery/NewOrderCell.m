@@ -57,6 +57,7 @@
     
 }
 
+
 + (CGFloat)cellHeightWithMealCount:(int)mealCount
 {
     return SHOPVIEW_HEIGHT  + MENUVIEW_HEIGHT * ((mealCount - 1)/ 2 + 1 ) + (mealCount - 1) / 2 * 10  + 30  + CUSTOMERVIEW_HEIGHT + TOTLEPRICEVIEW_HEIGHT + TOP_SPACE ;

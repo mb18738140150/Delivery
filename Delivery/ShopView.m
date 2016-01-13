@@ -86,7 +86,7 @@
     _addressLabel.text = @"未来路商城路科苑小区1号楼3单元2楼48号";
     [self addSubview:_addressLabel];
     
-    
+    NSLog(@"dubf");
     
 }
 

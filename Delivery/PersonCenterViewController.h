@@ -10,4 +10,7 @@
 
 @interface PersonCenterViewController : UIViewController
 
+@property (nonatomic, strong)UIImage * iconImage;
+@property (nonatomic, copy)NSString * name;
+@property (nonatomic, copy)NSString * phone;
 @end

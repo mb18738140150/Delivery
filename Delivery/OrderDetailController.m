@@ -16,7 +16,7 @@
 #define SHOPDETAILSView_TAG 2000
 #define TIPVIEW_TAG 3000
 #define TEXT_COLOR [UIColor colorWithWhite:0.3 alpha:1]
-@interface OrderDetailController ()
+@interface OrderDetailController ()<HTTPPostDelegate>
 
 @property (nonatomic, strong)UIScrollView * scrollview;
 

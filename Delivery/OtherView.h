@@ -12,7 +12,7 @@
 
 @property (nonatomic, strong)UILabel * titleLabel;
 @property (nonatomic, strong)UILabel * detalsLabel;
-@property (nonatomic, strong)UIButton * detailButton;
+@property (nonatomic, strong)UISwitch * detailButton;
 
 
 @end

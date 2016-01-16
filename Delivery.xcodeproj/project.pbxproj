@@ -38,6 +38,11 @@
 		735AB3B11BDA306800075477 /* OrderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 735AB3B01BDA306800075477 /* OrderViewController.m */; };
 		735AB3BC1BDA30FB00075477 /* UserCenterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 735AB3BB1BDA30FB00075477 /* UserCenterViewController.m */; };
 		735AB3BF1BDA320800075477 /* OtherView.m in Sources */ = {isa = PBXBuildFile; fileRef = 735AB3BE1BDA320800075477 /* OtherView.m */; };
+		7365872A1C47664F00DFB6AE /* PushConfig.plist in Resources */ = {isa = PBXBuildFile; fileRef = 736587291C47664F00DFB6AE /* PushConfig.plist */; };
+		7365872D1C476EC300DFB6AE /* JSONKit.m in Sources */ = {isa = PBXBuildFile; fileRef = 7365872C1C476EC300DFB6AE /* JSONKit.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		736587301C4778A500DFB6AE /* NSDictionary+Unicode.m in Sources */ = {isa = PBXBuildFile; fileRef = 7365872F1C4778A500DFB6AE /* NSDictionary+Unicode.m */; };
+		736587331C47792B00DFB6AE /* JRSwizzle.m in Sources */ = {isa = PBXBuildFile; fileRef = 736587321C47792B00DFB6AE /* JRSwizzle.m */; };
+		736587361C477FAF00DFB6AE /* AFClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 736587351C477FAF00DFB6AE /* AFClient.m */; };
 		73711F451C45EC9300D111A8 /* setting_normal.png in Resources */ = {isa = PBXBuildFile; fileRef = 73711F441C45EC9300D111A8 /* setting_normal.png */; };
 		737A3E5D1C43729900949457 /* MealPriceView.m in Sources */ = {isa = PBXBuildFile; fileRef = 737A3E5C1C43729900949457 /* MealPriceView.m */; };
 		737A3E601C43758B00949457 /* Meal.m in Sources */ = {isa = PBXBuildFile; fileRef = 737A3E5F1C43758B00949457 /* Meal.m */; };
@@ -49,6 +54,15 @@
 		737BE8791BDF17B1002DD240 /* CenterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 737BE8781BDF17B1002DD240 /* CenterViewController.m */; };
 		737BE87B1BDF23CB002DD240 /* backImage.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 737BE87A1BDF23CB002DD240 /* backImage.jpg */; };
 		7383635C1BE094CF00F2F542 /* PersonCenterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7383635B1BE094CF00F2F542 /* PersonCenterViewController.m */; };
+		739729521C48B8210057C250 /* MJRefresh.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 739729421C48B8210057C250 /* MJRefresh.bundle */; };
+		739729531C48B8210057C250 /* MJRefreshBaseView.m in Sources */ = {isa = PBXBuildFile; fileRef = 739729451C48B8210057C250 /* MJRefreshBaseView.m */; };
+		739729541C48B8210057C250 /* MJRefreshConst.m in Sources */ = {isa = PBXBuildFile; fileRef = 739729471C48B8210057C250 /* MJRefreshConst.m */; };
+		739729551C48B8210057C250 /* MJRefreshFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 739729491C48B8210057C250 /* MJRefreshFooterView.m */; };
+		739729561C48B8210057C250 /* MJRefreshHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7397294B1C48B8210057C250 /* MJRefreshHeaderView.m */; };
+		739729571C48B8210057C250 /* UIScrollView+MJExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 7397294D1C48B8210057C250 /* UIScrollView+MJExtension.m */; };
+		739729581C48B8210057C250 /* UIScrollView+MJRefresh.m in Sources */ = {isa = PBXBuildFile; fileRef = 7397294F1C48B8210057C250 /* UIScrollView+MJRefresh.m */; };
+		739729591C48B8210057C250 /* UIView+MJExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 739729511C48B8210057C250 /* UIView+MJExtension.m */; };
+		7397295C1C48F5670057C250 /* PersonalDataViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7397295B1C48F5670057C250 /* PersonalDataViewController.m */; };
 		739EF3831BE896F000E13F81 /* NewOrderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 739EF3821BE896F000E13F81 /* NewOrderCell.m */; };
 		739EF3861BE8974F00E13F81 /* DeliveryingCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 739EF3851BE8974F00E13F81 /* DeliveryingCell.m */; };
 		739EF3891BE8976A00E13F81 /* DeliveriedCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 739EF3881BE8976A00E13F81 /* DeliveriedCell.m */; };
@@ -129,6 +143,15 @@
 		735AB3BB1BDA30FB00075477 /* UserCenterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserCenterViewController.m; sourceTree = "<group>"; };
 		735AB3BD1BDA320800075477 /* OtherView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OtherView.h; sourceTree = "<group>"; };
 		735AB3BE1BDA320800075477 /* OtherView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OtherView.m; sourceTree = "<group>"; };
+		736587291C47664F00DFB6AE /* PushConfig.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = PushConfig.plist; path = ../PushConfig.plist; sourceTree = "<group>"; };
+		7365872B1C476EC300DFB6AE /* JSONKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JSONKit.h; path = "../../微生活_配送员/未命名文件夹/JSONKit.h"; sourceTree = "<group>"; };
+		7365872C1C476EC300DFB6AE /* JSONKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JSONKit.m; path = "../../微生活_配送员/未命名文件夹/JSONKit.m"; sourceTree = "<group>"; };
+		7365872E1C4778A500DFB6AE /* NSDictionary+Unicode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+Unicode.h"; sourceTree = "<group>"; };
+		7365872F1C4778A500DFB6AE /* NSDictionary+Unicode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+Unicode.m"; sourceTree = "<group>"; };
+		736587311C47792B00DFB6AE /* JRSwizzle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JRSwizzle.h; sourceTree = "<group>"; };
+		736587321C47792B00DFB6AE /* JRSwizzle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JRSwizzle.m; sourceTree = "<group>"; };
+		736587341C477FAF00DFB6AE /* AFClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFClient.h; sourceTree = "<group>"; };
+		736587351C477FAF00DFB6AE /* AFClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFClient.m; sourceTree = "<group>"; };
 		73711F441C45EC9300D111A8 /* setting_normal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = setting_normal.png; sourceTree = "<group>"; };
 		737A3E5B1C43729900949457 /* MealPriceView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MealPriceView.h; sourceTree = "<group>"; };
 		737A3E5C1C43729900949457 /* MealPriceView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MealPriceView.m; sourceTree = "<group>"; };
@@ -147,6 +170,24 @@
 		737BE87A1BDF23CB002DD240 /* backImage.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = backImage.jpg; sourceTree = "<group>"; };
 		7383635A1BE094CF00F2F542 /* PersonCenterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersonCenterViewController.h; sourceTree = "<group>"; };
 		7383635B1BE094CF00F2F542 /* PersonCenterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersonCenterViewController.m; sourceTree = "<group>"; };
+		739729421C48B8210057C250 /* MJRefresh.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = MJRefresh.bundle; sourceTree = "<group>"; };
+		739729431C48B8210057C250 /* MJRefresh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MJRefresh.h; sourceTree = "<group>"; };
+		739729441C48B8210057C250 /* MJRefreshBaseView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MJRefreshBaseView.h; sourceTree = "<group>"; };
+		739729451C48B8210057C250 /* MJRefreshBaseView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MJRefreshBaseView.m; sourceTree = "<group>"; };
+		739729461C48B8210057C250 /* MJRefreshConst.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MJRefreshConst.h; sourceTree = "<group>"; };
+		739729471C48B8210057C250 /* MJRefreshConst.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MJRefreshConst.m; sourceTree = "<group>"; };
+		739729481C48B8210057C250 /* MJRefreshFooterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MJRefreshFooterView.h; sourceTree = "<group>"; };
+		739729491C48B8210057C250 /* MJRefreshFooterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MJRefreshFooterView.m; sourceTree = "<group>"; };
+		7397294A1C48B8210057C250 /* MJRefreshHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MJRefreshHeaderView.h; sourceTree = "<group>"; };
+		7397294B1C48B8210057C250 /* MJRefreshHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MJRefreshHeaderView.m; sourceTree = "<group>"; };
+		7397294C1C48B8210057C250 /* UIScrollView+MJExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIScrollView+MJExtension.h"; sourceTree = "<group>"; };
+		7397294D1C48B8210057C250 /* UIScrollView+MJExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIScrollView+MJExtension.m"; sourceTree = "<group>"; };
+		7397294E1C48B8210057C250 /* UIScrollView+MJRefresh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIScrollView+MJRefresh.h"; sourceTree = "<group>"; };
+		7397294F1C48B8210057C250 /* UIScrollView+MJRefresh.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIScrollView+MJRefresh.m"; sourceTree = "<group>"; };
+		739729501C48B8210057C250 /* UIView+MJExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+MJExtension.h"; sourceTree = "<group>"; };
+		739729511C48B8210057C250 /* UIView+MJExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+MJExtension.m"; sourceTree = "<group>"; };
+		7397295A1C48F5670057C250 /* PersonalDataViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersonalDataViewController.h; sourceTree = "<group>"; };
+		7397295B1C48F5670057C250 /* PersonalDataViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersonalDataViewController.m; sourceTree = "<group>"; };
 		739EF3811BE896F000E13F81 /* NewOrderCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewOrderCell.h; sourceTree = "<group>"; };
 		739EF3821BE896F000E13F81 /* NewOrderCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewOrderCell.m; sourceTree = "<group>"; };
 		739EF3841BE8974F00E13F81 /* DeliveryingCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeliveryingCell.h; sourceTree = "<group>"; };
@@ -239,6 +280,7 @@
 		7342872A1C4651550093D133 /* lib */ = {
 			isa = PBXGroup;
 			children = (
+				736587291C47664F00DFB6AE /* PushConfig.plist */,
 				7342872B1C4651550093D133 /* APService.h */,
 				7342872C1C4651550093D133 /* libPushSDK-1.8.3.a */,
 			);
@@ -334,6 +376,8 @@
 				734287251C464C0D0093D133 /* NSString+MD5.m */,
 				734287271C464F440093D133 /* UserInfo.h */,
 				734287281C464F440093D133 /* UserInfo.m */,
+				7365872E1C4778A500DFB6AE /* NSDictionary+Unicode.h */,
+				7365872F1C4778A500DFB6AE /* NSDictionary+Unicode.m */,
 			);
 			name = General;
 			sourceTree = "<group>";
@@ -341,6 +385,8 @@
 		735AB3AA1BDA2FEB00075477 /* Helps */ = {
 			isa = PBXGroup;
 			children = (
+				736587341C477FAF00DFB6AE /* AFClient.h */,
+				736587351C477FAF00DFB6AE /* AFClient.m */,
 				733168A51BDB165E00D81EC2 /* AllHeader.pch */,
 			);
 			name = Helps;
@@ -382,6 +428,11 @@
 		735AB3AE1BDA2FED00075477 /* Venders */ = {
 			isa = PBXGroup;
 			children = (
+				739729411C48B8210057C250 /* MJRefresh */,
+				736587311C47792B00DFB6AE /* JRSwizzle.h */,
+				736587321C47792B00DFB6AE /* JRSwizzle.m */,
+				7365872B1C476EC300DFB6AE /* JSONKit.h */,
+				7365872C1C476EC300DFB6AE /* JSONKit.m */,
 				7342872A1C4651550093D133 /* lib */,
 				733168A91BDB16EE00D81EC2 /* UIViewAdditions */,
 			);
@@ -405,6 +456,8 @@
 				735AB3B01BDA306800075477 /* OrderViewController.m */,
 				737A3E661C4382FD00949457 /* OrderDetailController.h */,
 				737A3E671C4382FD00949457 /* OrderDetailController.m */,
+				7397295A1C48F5670057C250 /* PersonalDataViewController.h */,
+				7397295B1C48F5670057C250 /* PersonalDataViewController.m */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -482,6 +535,29 @@
 				73CCA3D21BE20CFB0051BDFE /* ChangePasswordViewController.m */,
 			);
 			name = Controller;
+			sourceTree = "<group>";
+		};
+		739729411C48B8210057C250 /* MJRefresh */ = {
+			isa = PBXGroup;
+			children = (
+				739729421C48B8210057C250 /* MJRefresh.bundle */,
+				739729431C48B8210057C250 /* MJRefresh.h */,
+				739729441C48B8210057C250 /* MJRefreshBaseView.h */,
+				739729451C48B8210057C250 /* MJRefreshBaseView.m */,
+				739729461C48B8210057C250 /* MJRefreshConst.h */,
+				739729471C48B8210057C250 /* MJRefreshConst.m */,
+				739729481C48B8210057C250 /* MJRefreshFooterView.h */,
+				739729491C48B8210057C250 /* MJRefreshFooterView.m */,
+				7397294A1C48B8210057C250 /* MJRefreshHeaderView.h */,
+				7397294B1C48B8210057C250 /* MJRefreshHeaderView.m */,
+				7397294C1C48B8210057C250 /* UIScrollView+MJExtension.h */,
+				7397294D1C48B8210057C250 /* UIScrollView+MJExtension.m */,
+				7397294E1C48B8210057C250 /* UIScrollView+MJRefresh.h */,
+				7397294F1C48B8210057C250 /* UIScrollView+MJRefresh.m */,
+				739729501C48B8210057C250 /* UIView+MJExtension.h */,
+				739729511C48B8210057C250 /* UIView+MJExtension.m */,
+			);
+			path = MJRefresh;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -592,11 +668,13 @@
 			files = (
 				734287171C4623D90093D133 /* LoginViewController.xib in Resources */,
 				735AB3811BD9FA9200075477 /* Assets.xcassets in Resources */,
+				7365872A1C47664F00DFB6AE /* PushConfig.plist in Resources */,
 				730A3FC61BEB1E4100083906 /* location_order.png in Resources */,
 				7342871E1C4628AF0093D133 /* password_show.png in Resources */,
 				734287201C46324F0093D133 /* 1px.png in Resources */,
 				7342871D1C4628AF0093D133 /* password_hide.png in Resources */,
 				737BE8761BDF1558002DD240 /* back@2x.png in Resources */,
+				739729521C48B8210057C250 /* MJRefresh.bundle in Resources */,
 				73711F451C45EC9300D111A8 /* setting_normal.png in Resources */,
 				737BE87B1BDF23CB002DD240 /* backImage.jpg in Resources */,
 				733168AB1BDB28ED00D81EC2 /* PHOTO.png in Resources */,
@@ -660,27 +738,39 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				739729551C48B8210057C250 /* MJRefreshFooterView.m in Sources */,
 				735AB3BF1BDA320800075477 /* OtherView.m in Sources */,
 				739EF3921BE897D200E13F81 /* TotlePriceView.m in Sources */,
+				736587301C4778A500DFB6AE /* NSDictionary+Unicode.m in Sources */,
 				735AB3BC1BDA30FB00075477 /* UserCenterViewController.m in Sources */,
 				734287291C464F440093D133 /* UserInfo.m in Sources */,
 				733168A81BDB16E900D81EC2 /* UIViewAdditions.m in Sources */,
 				73CCA3D61BE211310051BDFE /* PasswordVIewHelpView.m in Sources */,
+				7365872D1C476EC300DFB6AE /* JSONKit.m in Sources */,
 				737A3E6B1C43899B00949457 /* OrderMenuVIew.m in Sources */,
 				735AB37F1BD9FA9200075477 /* AppDelegate.m in Sources */,
+				736587361C477FAF00DFB6AE /* AFClient.m in Sources */,
 				735AB3B11BDA306800075477 /* OrderViewController.m in Sources */,
+				7397295C1C48F5670057C250 /* PersonalDataViewController.m in Sources */,
 				739EF3861BE8974F00E13F81 /* DeliveryingCell.m in Sources */,
 				737A3E651C43789F00949457 /* NewOrderModel.m in Sources */,
 				739EF3891BE8976A00E13F81 /* DeliveriedCell.m in Sources */,
+				736587331C47792B00DFB6AE /* JRSwizzle.m in Sources */,
 				737A3E5D1C43729900949457 /* MealPriceView.m in Sources */,
+				739729581C48B8210057C250 /* UIScrollView+MJRefresh.m in Sources */,
 				739EF38C1BE8978E00E13F81 /* ShopView.m in Sources */,
+				739729531C48B8210057C250 /* MJRefreshBaseView.m in Sources */,
+				739729571C48B8210057C250 /* UIScrollView+MJExtension.m in Sources */,
+				739729541C48B8210057C250 /* MJRefreshConst.m in Sources */,
 				734287231C463C8C0093D133 /* HTTPPost.m in Sources */,
 				735AB37C1BD9FA9200075477 /* main.m in Sources */,
 				739EF3831BE896F000E13F81 /* NewOrderCell.m in Sources */,
+				739729561C48B8210057C250 /* MJRefreshHeaderView.m in Sources */,
 				739EF38F1BE897B900E13F81 /* CustomerView.m in Sources */,
 				7383635C1BE094CF00F2F542 /* PersonCenterViewController.m in Sources */,
 				734287261C464C0D0093D133 /* NSString+MD5.m in Sources */,
 				73CCA3D31BE20CFB0051BDFE /* ChangePasswordViewController.m in Sources */,
+				739729591C48B8210057C250 /* UIView+MJExtension.m in Sources */,
 				737A3E681C4382FD00949457 /* OrderDetailController.m in Sources */,
 				737A3E601C43758B00949457 /* Meal.m in Sources */,
 				7342871A1C4623F80093D133 /* LoginViewController.m in Sources */,

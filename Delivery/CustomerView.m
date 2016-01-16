@@ -38,7 +38,7 @@
     _nameLabel.text = @"集散地附近吧";
     [self addSubview:_nameLabel];
     
-    UIView * line1 = [[UIView alloc]initWithFrame:CGRectMake(_nameLabel.right, _nameLabel.top - 5, 1, 20)];
+    UIView * line1 = [[UIView alloc]initWithFrame:CGRectMake(_nameLabel.right, _nameLabel.top + 5, 1, 20)];
     line1.backgroundColor = [UIColor colorWithWhite:.9 alpha:1];
     [self addSubview:line1];
     
@@ -53,15 +53,15 @@
     _phoneBT.backgroundColor = [UIColor clearColor];
     [self addSubview:_phoneBT];
     
-    UIView * line2 = [[UIView alloc]initWithFrame:CGRectMake(_phoneLabel.right, TOP_SPACE + 5, 1, 20)];
-    line2.backgroundColor = [UIColor colorWithWhite:.9 alpha:1];
-    [self addSubview:line2];
-    
-    UILabel * label = [[UILabel alloc]initWithFrame:CGRectMake(line2.right, TOP_SPACE, 28, LABEL_HEIGHT)];
-    label.adjustsFontSizeToFitWidth = YES;
-    label.text = @"客户";
-    label.textColor = MAIN_COLORE;
-    [self addSubview:label];
+//    UIView * line2 = [[UIView alloc]initWithFrame:CGRectMake(_phoneLabel.right, TOP_SPACE + 5, 1, 20)];
+//    line2.backgroundColor = [UIColor colorWithWhite:.9 alpha:1];
+//    [self addSubview:line2];
+//    
+//    UILabel * label = [[UILabel alloc]initWithFrame:CGRectMake(line2.right, TOP_SPACE, 28, LABEL_HEIGHT)];
+//    label.adjustsFontSizeToFitWidth = YES;
+//    label.text = @"客户";
+//    label.textColor = MAIN_COLORE;
+//    [self addSubview:label];
     
     UITextField * textField = [[UITextField alloc]initWithFrame:CGRectMake(_phoneLabel.right, TOP_SPACE, self.width / 2 - LEFT_SPACE - NUMLABEL_WIDTH, _phoneLabel.height)];
     textField.borderStyle = UITextBorderStyleRoundedRect;
@@ -99,8 +99,8 @@
         self.nameLabel.frame = CGRectMake(_addressImageView.right + LEFT_SPACE, TOP_SPACE, 80, LABEL_HEIGHT);
         line1.frame = CGRectMake(_nameLabel.right, _nameLabel.top - 5, 1, 20);
         self.phoneLabel.frame = CGRectMake(line1.right, TOP_SPACE, 100, LABEL_HEIGHT);
-        line2.frame = CGRectMake(_phoneLabel.right, TOP_SPACE + 5, 1, 20);
-        label.frame = CGRectMake(line2.right, TOP_SPACE, 40, LABEL_HEIGHT);
+//        line2.frame = CGRectMake(_phoneLabel.right, TOP_SPACE + 5, 1, 20);
+//        label.frame = CGRectMake(line2.right, TOP_SPACE, 40, LABEL_HEIGHT);
         textField.frame = CGRectMake(self.width - LEFT_SPACE - 100 , TOP_SPACE, 100, LABEL_HEIGHT);
     }
     
@@ -110,7 +110,7 @@
     [self addSubview:_addressLabel];
     
     
-    self.mealsView = [[UIView alloc]initWithFrame:CGRectMake(_addressImageView.right + LEFT_SPACE, _addressLabel.bottom , self.width - 3 * LEFT_SPACE - IMAGE_WEIDTH, 0)];
+    self.mealsView = [[UIView alloc]initWithFrame:CGRectMake(0, _addressLabel.bottom , self.width - 3 * LEFT_SPACE - IMAGE_WEIDTH, 0)];
     [self addSubview:_mealsView];
     
     self.remarkLabel = [[UILabel alloc]initWithFrame:CGRectMake(_mealsView.left, _mealsView.bottom, _mealsView.width, LABEL_HEIGHT)];
@@ -132,15 +132,15 @@
         }
         [_mealsView addSubview:mealPriceView];
         mealPriceView.menuLabel.text = meal.name;
-        mealPriceView.menuPriceLB.text = [NSString stringWithFormat:@"¥%@", meal.money];
-        mealPriceView.numberLabel.text = [NSString stringWithFormat:@"X%@", meal.count];
+        mealPriceView.menuPriceLB.text = [NSString stringWithFormat:@"¥%g", meal.money];
+        mealPriceView.numberLabel.text = [NSString stringWithFormat:@"X%d", meal.count];
     }
     int num = 0;
     int mealCount = array.count;
     num = mealCount / 2 + mealCount % 2;
 
-    _mealsView.frame = CGRectMake(_addressImageView.right + LEFT_SPACE, _addressLabel.bottom, self.width - 3 * LEFT_SPACE - IMAGE_WEIDTH, num * 30 + 10 * (num - 1) + 30);
-    self.remarkLabel = [[UILabel alloc]initWithFrame:CGRectMake(_mealsView.left, _mealsView.bottom, _mealsView.width, LABEL_HEIGHT)];
+    _mealsView.frame = CGRectMake(0, _addressLabel.bottom, self.width - 3 * LEFT_SPACE - IMAGE_WEIDTH, num * 30 + 10 * (num - 1) + 30);
+    self.remarkLabel.frame = CGRectMake(_addressImageView.right + LEFT_SPACE, _mealsView.bottom, _mealsView.width, LABEL_HEIGHT);
     
 }
 

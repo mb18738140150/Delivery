@@ -34,8 +34,8 @@
     _detalsLabel.textAlignment = NSTextAlignmentCenter;
     [self addSubview:_detalsLabel];
     
-    self.detailButton = [UIButton buttonWithType:UIButtonTypeSystem];
-    _detailButton.frame = _detalsLabel.frame;
+    self.detailButton = [[UISwitch alloc]initWithFrame:_detalsLabel.frame];
+    _detailButton.hidden = YES;
     [self addSubview:_detailButton];
     
     UIView * line = [[UIView alloc]initWithFrame:CGRectMake(0, _detalsLabel.bottom + 9, self.width, 1)];

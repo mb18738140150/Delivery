@@ -11,9 +11,9 @@
 @interface Meal : NSObject
 
 
-@property (nonatomic, strong)NSString * name;
-@property (nonatomic, strong)NSNumber * count;
-@property (nonatomic, strong)NSNumber * money;
+@property (nonatomic, copy)NSString * name;
+@property (nonatomic, assign)int  count;
+@property (nonatomic, assign)double  money;
 
 - (id)initWithDictionary:(NSDictionary *)dic;
 

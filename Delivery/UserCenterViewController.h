@@ -17,8 +17,7 @@
 @property (nonatomic, strong)UILabel * phoneNumberLabel;
 
 @property (nonatomic, strong)OtherView * totalOrderview;
-@property (nonatomic, strong)OtherView * reciveOrderView;
 @property (nonatomic, strong)OtherView * massegeView;
-
+@property (nonatomic, strong)OtherView * todayOrderview;
 
 @end

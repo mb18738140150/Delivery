@@ -159,7 +159,7 @@ float leftWidth = 100.0; // 接单页面划出后在主屏幕剩余的宽度
                     
                     self.userVC.headView.alpha = sizeScale;
                     self.userVC.totalOrderview.alpha = sizeScale;
-                    self.userVC.reciveOrderView.alpha = sizeScale;
+//                    self.userVC.reciveOrderView.alpha = sizeScale;
                     self.userVC.massegeView.alpha = sizeScale;
                 }
             
@@ -177,7 +177,7 @@ float leftWidth = 100.0; // 接单页面划出后在主屏幕剩余的宽度
                 
                 self.userVC.headView.alpha = 1 - sizeScale;
                 self.userVC.totalOrderview.alpha = 1 - sizeScale;
-                self.userVC.reciveOrderView.alpha = 1 - sizeScale;
+//                self.userVC.reciveOrderView.alpha = 1 - sizeScale;
                 self.userVC.massegeView.alpha = 1 - sizeScale;
                 
             }
@@ -231,7 +231,7 @@ float leftWidth = 100.0; // 接单页面划出后在主屏幕剩余的宽度
         
         self.userVC.headView.alpha = 1;
         self.userVC.totalOrderview.alpha = 1;
-        self.userVC.reciveOrderView.alpha = 1;
+//        self.userVC.reciveOrderView.alpha = 1;
         self.userVC.massegeView.alpha = 1;
         
     }];
@@ -248,7 +248,7 @@ float leftWidth = 100.0; // 接单页面划出后在主屏幕剩余的宽度
         self.orderVC.view.frame = CGRectMake(0, 0, self.view.width, self.view.height);
         self.userVC.headView.alpha = 0;
         self.userVC.totalOrderview.alpha = 0;
-        self.userVC.reciveOrderView.alpha = 0;
+//        self.userVC.reciveOrderView.alpha = 0;
         self.userVC.massegeView.alpha = 0;
     } completion:^(BOOL finished) {
         if (finished) {

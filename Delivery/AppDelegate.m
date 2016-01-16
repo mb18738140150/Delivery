@@ -11,6 +11,7 @@
 #import "OrderViewController.h"
 #import "UserCenterViewController.h"
 #import "LoginViewController.h"
+#import "JRSwizzle.h"
 
 @interface AppDelegate ()
 @property (nonatomic, strong)LoginViewController * loginVC;
@@ -48,12 +49,38 @@
     
     [self.window makeKeyAndVisible];
     
+    
+    [APService registerForRemoteNotificationTypes:(UIUserNotificationTypeBadge | UIUserNotificationTypeSound | UIUserNotificationTypeAlert) categories:nil];
+    [APService setupWithOption:launchOptions];
+    
+    [NSDictionary jr_swizzleMethod:@selector(description) withMethod:@selector(my_description) error:nil];
+    
     return YES;
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
     // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
+}
+
+- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
+{
+    [APService registerDeviceToken:deviceToken];
+    
+    NSString * str = [APService registrationID];
+    NSLog(@"RegistrationID = %@", str);
+    [[NSUserDefaults standardUserDefaults]setObject:[APService registrationID] forKey:@"RegistrationID"];
+}
+
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
+{
+    [APService handleRemoteNotification:userInfo];
+}
+
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler{
+    
+    [APService handleRemoteNotification:userInfo];
+    completionHandler(UIBackgroundFetchResultNewData);
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application {

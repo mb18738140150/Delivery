@@ -16,7 +16,7 @@
 #define ICONIMAGE_WIDTH 80
 #define label_height 30
 
-@interface UserCenterViewController ()
+@interface UserCenterViewController ()<HTTPPostDelegate>
 
 
 
@@ -32,7 +32,7 @@
     self.navigationItem.title = @"设置";
     
     
-    self.headView = [[UIView alloc]initWithFrame:CGRectMake(0, self.navigationController.navigationBar.height + 20 + TOP_SPACE, self.view.frame.size.width, 100)];
+    self.headView = [[UIView alloc]initWithFrame:CGRectMake(0,  TOP_SPACE, self.view.frame.size.width, 100)];
     _headView.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:_headView];
     
@@ -70,21 +70,27 @@
     [self.view addSubview:_totalOrderview];
     
     
-    self.reciveOrderView = [[OtherView alloc]initWithFrame:CGRectMake(0, _totalOrderview.bottom, self.view.width, _totalOrderview.height)];
-    _reciveOrderView.titleLabel.text = @"接收订单";
-    [_reciveOrderView.detailButton setTitle:@"允许" forState:UIControlStateNormal];
-    [_reciveOrderView.detailButton setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
-    [_reciveOrderView.detailButton addTarget:self action:@selector(allowAction:) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:_reciveOrderView];
+    self.todayOrderview = [[OtherView alloc]initWithFrame:CGRectMake(0, _totalOrderview.bottom , self.view.width, 50)];
+    _todayOrderview.titleLabel.text = @"今日订单数";
+    _todayOrderview.detalsLabel.text = @"20";
+    [self.view addSubview:_todayOrderview];
     
-    self.massegeView = [[OtherView alloc]initWithFrame:CGRectMake(0, _reciveOrderView.bottom, self.view.width , _totalOrderview.height)];
+    self.massegeView = [[OtherView alloc]initWithFrame:CGRectMake(0, _todayOrderview.bottom, self.view.width , _totalOrderview.height)];
     _massegeView.titleLabel.text = @"消息免打扰";
-    [_massegeView.detailButton setTitle:@"关闭" forState:UIControlStateNormal];
-    [_massegeView.detailButton setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
-    [_massegeView.detailButton addTarget:self action:@selector(openOrCloseAction:) forControlEvents:UIControlEventTouchUpInside];
+    _massegeView.detailButton.hidden = NO;
+    [_massegeView.detailButton addTarget:self action:@selector(openOrCloseAction:) forControlEvents:UIControlEventValueChanged];
     [self.view addSubview:_massegeView];
     
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:@"back.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:self action:@selector(backLastVC:)];
+    
+    NSDictionary * jsonDic = nil;
+        jsonDic = @{
+                    @"Command":@2,
+                    @"UserId":[UserInfo shareUserInfo].userId
+                    };
+    
+    [self playPostWithDictionary:jsonDic];
+
 }
 
 - (void)backLastVC:(UIBarButtonItem * )sender
@@ -107,6 +113,10 @@
     */
     PersonCenterViewController * personVC = [[PersonCenterViewController alloc]init];
     
+    personVC.iconImage = self.iconImage.image;
+    personVC.name = self.nameLabel.text;
+    personVC.phone = self.phoneNumberLabel.text;
+    
     [self.navigationController pushViewController:personVC animated:YES];
 }
 
@@ -116,9 +126,105 @@
     NSLog(@"允许接收订单");
 }
 
-- (void)openOrCloseAction:(UIButton *)button
+- (void)openOrCloseAction:(UISwitch *)aswitch
 {
-    NSLog(@"纤细免打扰");
+    NSLog(@"消息免打扰");
+    if (aswitch.isOn) {
+        UIAlertController * Controller = [UIAlertController alertControllerWithTitle:@"提示" message:@"是否开启消息免打扰" preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction * cancleAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+            UISwitch * isopen = aswitch;
+            [isopen setOn:!isopen.isOn animated:YES];
+        }];
+        UIAlertAction * sureAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            NSDictionary * jsonDic = nil;
+            jsonDic = @{
+                        @"Command":@8,
+                        @"UserId":[UserInfo shareUserInfo].userId,
+                        @"Remind":@1
+                        };
+            
+            [self playPostWithDictionary:jsonDic];
+        }];
+        [Controller addAction:cancleAction];
+        [Controller addAction:sureAction];
+        [self presentViewController:Controller animated:YES completion:nil];
+    }else
+    {
+        UIAlertController * Controller = [UIAlertController alertControllerWithTitle:@"提示" message:@"是否关闭消息免打扰" preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction * cancleAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+            UISwitch * isopen = aswitch;
+            [isopen setOn:!isopen.isOn animated:YES];
+        }];
+        UIAlertAction * sureAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            NSDictionary * jsonDic = nil;
+            jsonDic = @{
+                        @"Command":@8,
+                        @"UserId":[UserInfo shareUserInfo].userId,
+                        @"Remind":@2
+                        };
+            
+            [self playPostWithDictionary:jsonDic];
+        }];
+        [Controller addAction:cancleAction];
+        [Controller addAction:sureAction];
+        [self presentViewController:Controller animated:YES completion:nil];
+
+    }
+    
+}
+
+- (void)playPostWithDictionary:(NSDictionary *)dic
+{
+    NSString * jsonStr = [dic JSONString];
+    NSString * str = [NSString stringWithFormat:@"%@131139", jsonStr];
+    NSLog(@"jsonStr = %@", str);
+    NSString * md5Str = [str md5];
+    NSString * urlString = [NSString stringWithFormat:@"%@%@", POST_URL, md5Str];
+    HTTPPost * httpPost = [HTTPPost shareHTTPPost];
+    [httpPost post:urlString HTTPBody:[jsonStr dataUsingEncoding:NSUTF8StringEncoding]];
+    httpPost.delegate = self;
+}
+
+- (void)refresh:(id)data
+{
+    NSLog(@"data = %@", [data description]);
+    if ([[data objectForKey:@"Result"] isEqualToNumber:@1]) {
+        NSNumber * command = [data objectForKey:@"Command"];
+        if ([command isEqualToNumber:@10002]) {
+            NSDictionary * dic = [data objectForKey:@"UserInfo"];
+            
+            __weak UserCenterViewController * userVC = self;
+            [self.iconImage sd_setImageWithURL:[dic objectForKey:@"Icon"] placeholderImage:[UIImage imageNamed:@"PHOTO.png"] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+                if (image) {
+                    userVC.iconImage.image = image;
+                }
+            }];
+            
+            self.nameLabel.text = [NSString stringWithFormat:@"%@", [dic objectForKey:@"UserName"]];
+            self.phoneNumberLabel.text = [NSString stringWithFormat:@"%@", [dic objectForKey:@"Phone"]];
+            _totalOrderview.detalsLabel.text = [NSString stringWithFormat:@"%@", [dic objectForKey:@"TotalOrderCount"]];
+            _todayOrderview.detalsLabel.text = [NSString stringWithFormat:@"%@", [dic objectForKey:@"TodayOrderCount"]];
+            
+        }else if ([command isEqualToNumber:@10008])
+        {
+            UIAlertView * alertView = [[UIAlertView alloc] initWithTitle:@"提示" message:@"设置成功" delegate:self cancelButtonTitle:nil otherButtonTitles:nil, nil];
+            [alertView show];
+            [alertView performSelector:@selector(dismissAnimated:) withObject:nil afterDelay:1.0];
+
+        }
+    }else
+    {
+        if ([[data objectForKey:@"Command"] isEqualToNumber:@10008]) {
+            UISwitch * isopen = _massegeView.detailButton;
+            [isopen setOn:!isopen.isOn animated:YES];
+        }
+        
+        UIAlertController * nameController = [UIAlertController alertControllerWithTitle:@"提示" message:[data objectForKey:@"ErrorMsg"] preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction * cancleAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleCancel handler:nil];
+        [nameController addAction:cancleAction];
+        [self presentViewController:nameController animated:YES completion:nil];
+    }
+
 }
 
 - (void)didReceiveMemoryWarning {

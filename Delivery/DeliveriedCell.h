@@ -7,7 +7,15 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "NewOrderModel.h"
+#import "TotlePriceView.h"
 @interface DeliveriedCell : UITableViewCell
+
+@property (nonatomic, strong)NewOrderModel * orderModel;
+@property (nonatomic, strong)TotlePriceView * totlePriceView;
+
+
+- (void)createSubView:(CGRect)frame mealCoutn:(int)mealCount;
++ (CGFloat)cellHeightWithMealCount:(int)mealCount;
 
 @end

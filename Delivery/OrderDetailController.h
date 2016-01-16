@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface OrderDetailController : UIViewController
-
+@property (nonatomic, copy)NSString * orderID;
 @end

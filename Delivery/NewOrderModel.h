@@ -9,5 +9,18 @@
 #import <Foundation/Foundation.h>
 
 @interface NewOrderModel : NSObject
-@property (nonatomic, copy)NSString * tel;
+
+@property (nonatomic, copy)NSString * orderId;
+@property (nonatomic, copy)NSString * orderTime;
+@property (nonatomic, assign)int payType;
+@property (nonatomic, copy)NSString * customerName;
+@property (nonatomic, copy)NSString * customerPhone;
+@property (nonatomic, copy)NSString * hopeTime;
+@property (nonatomic, copy)NSString * customerAddress;
+@property (nonatomic, copy)NSString * remark;
+@property (nonatomic, strong)NSNumber * allMoney;
+@property (nonatomic, strong)NSMutableArray * mealArray;
+
+- (id)initWithDictionary:(NSDictionary *)dic;
+
 @end

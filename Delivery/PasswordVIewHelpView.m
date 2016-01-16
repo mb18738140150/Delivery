@@ -26,16 +26,16 @@
 {
     self.backgroundColor = [UIColor whiteColor];
     
-    self.nameLabel = [[UILabel alloc]initWithFrame:CGRectMake(LEFT_SPACE, TOP_SPACE, 60, 30)];
-    _nameLabel.textAlignment = NSTextAlignmentCenter;
+    self.nameLabel = [[UILabel alloc]initWithFrame:CGRectMake(LEFT_SPACE, TOP_SPACE, 80, 30)];
+    _nameLabel.textAlignment = NSTextAlignmentLeft;
     [self addSubview:_nameLabel];
     
-    UIView *lineView = [[UIView alloc]initWithFrame:CGRectMake(_nameLabel.right + LEFT_SPACE, TOP_SPACE, 1, _nameLabel.height)];
+    UIView *lineView = [[UIView alloc]initWithFrame:CGRectMake(_nameLabel.right, TOP_SPACE, 1, _nameLabel.height)];
     lineView.backgroundColor = [UIColor grayColor];
     [self addSubview:lineView];
     
     self.passwordTF = [[UITextField alloc]initWithFrame:CGRectMake(lineView.right + LEFT_SPACE, TOP_SPACE, self.width - 4 * LEFT_SPACE - 1 - _nameLabel.width, 30)];
-    _passwordTF.textColor = [UIColor grayColor];
+    _passwordTF.textColor = [UIColor blackColor];
     _passwordTF.alpha = .8;
     [self addSubview:_passwordTF];
     

@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+static BOOL isOrNo = NO;
+
 @interface PersonCenterViewController : UIViewController
 
 @property (nonatomic, strong)UIImage * iconImage;

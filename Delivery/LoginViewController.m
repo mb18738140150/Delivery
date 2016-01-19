@@ -24,6 +24,8 @@
     [super viewDidLoad];
     
     self.navigationController.navigationBar.translucent = NO;
+    [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor]}];
+    
     self.nameTextFiled.layer.borderColor = [UIColor whiteColor].CGColor;
     self.nameTextFiled.layer.borderWidth = 1;
     self.passwordTextfiled.layer.borderColor = [UIColor whiteColor].CGColor;
@@ -45,13 +47,26 @@
     UITapGestureRecognizer * tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapGestureAction)];
     [self.view addGestureRecognizer:tapGesture];
 //    [self automaticLogin];
+//    UINavigationBar * bar = self.navigationController.navigationBar;
+//    [bar setShadowImage:[UIImage imageNamed:@"1px.png"]];
+//    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"1px.png"] forBarMetrics:UIBarMetricsDefault];
+    
+//    [self automaticLogin];
+    
+    // Do any additional setup after loading the view.
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
     UINavigationBar * bar = self.navigationController.navigationBar;
     [bar setShadowImage:[UIImage imageNamed:@"1px.png"]];
     [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"1px.png"] forBarMetrics:UIBarMetricsDefault];
     
-    [self automaticLogin];
-    
-    // Do any additional setup after loading the view.
+    if (![[[NSUserDefaults standardUserDefaults] objectForKey:@"haveLogin"] boolValue]) {
+        self.passwordTextfiled.text = nil;
+        self.nameTextFiled.text = [[NSUserDefaults standardUserDefaults] objectForKey:@"UserName"];
+        NSLog(@"%@, user = %@", self.passwordTextfiled.text, self.nameTextFiled.text);
+    }
 }
 
 - (void)automaticLogin
@@ -83,6 +98,16 @@
     
     
 }
+
+//- (void)viewWillAppear:(BOOL)animated
+//{
+//    if (![[[NSUserDefaults standardUserDefaults] objectForKey:@"haveLogin"] boolValue]) {
+//        self.passwordTextfiled.text = nil;
+//        self.nameTextFiled.text = [[NSUserDefaults standardUserDefaults] objectForKey:@"UserName"];
+//        NSLog(@"%@, user = %@", self.passwordTextfiled.text, self.nameTextFiled.text);
+////        [self loginFramPost];
+//    }
+//}
 
 - (void)viewWillDisappear:(BOOL)animated
 {
@@ -144,6 +169,15 @@
                     @"UserName":self.nameTextFiled.text,
                     @"Command":@1,
                     @"RegistrationID":[[NSUserDefaults standardUserDefaults] objectForKey:@"RegistrationID"],
+                    @"DeviceType":@1
+                    };
+    }else
+    {
+        jsonDic = @{
+                    @"Pwd":self.passwordTextfiled.text,
+                    @"UserName":self.nameTextFiled.text,
+                    @"Command":@1,
+                    @"RegistrationID":[NSNull null],
                     @"DeviceType":@1
                     };
     }

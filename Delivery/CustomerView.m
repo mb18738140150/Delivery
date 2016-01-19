@@ -39,7 +39,7 @@
     [self addSubview:_nameLabel];
     
     UIView * line1 = [[UIView alloc]initWithFrame:CGRectMake(_nameLabel.right, _nameLabel.top + 5, 1, 20)];
-    line1.backgroundColor = [UIColor colorWithWhite:.9 alpha:1];
+    line1.backgroundColor = [UIColor blackColor];
     [self addSubview:line1];
     
     self.phoneLabel = [[UILabel alloc]initWithFrame:CGRectMake(line1.right, TOP_SPACE, 90, LABEL_HEIGHT)];
@@ -106,6 +106,7 @@
     
     self.addressLabel = [[UILabel alloc]initWithFrame:CGRectMake(_addressImageView.right + LEFT_SPACE, _nameLabel.bottom + TOP_SPACE, self.width - 3 * LEFT_SPACE - IMAGE_WEIDTH, LABEL_HEIGHT)];
     _addressLabel.textColor = [UIColor grayColor];
+    _addressLabel.numberOfLines = 0;
     _addressLabel.text = @"未来路商城路科苑小区1号楼3单元2楼48号";
     [self addSubview:_addressLabel];
     

@@ -28,8 +28,8 @@
 {
     self.addressImageView = [[UIImageView alloc]initWithFrame:CGRectMake(LEFT_SPACE, TOP_SPACE , IMAGE_WEIDTH, IMAGE_WEIDTH)];
     _addressImageView.image = [UIImage imageNamed:@"location_order.png"];
-    [self addSubview:_addressImageView];
-//    
+//    [self addSubview:_addressImageView];
+//
 //    self.nameLabel = [[UILabel alloc]initWithFrame:CGRectMake(_addressImageView.right + LEFT_SPACE, TOP_SPACE, 60, LABEL_HEIGHT)];
 //    _nameLabel.textAlignment = NSTextAlignmentCenter;
 //    _nameLabel.adjustsFontSizeToFitWidth = YES;
@@ -81,7 +81,7 @@
 //        self.payStateLabel.frame = CGRectMake(self.width - LEFT_SPACE - 90 , TOP_SPACE, 90, LABEL_HEIGHT);
 //    }
     
-    self.addressLabel = [[UILabel alloc]initWithFrame:CGRectMake(_addressImageView.right + LEFT_SPACE, _nameLabel.bottom + TOP_SPACE, self.width - 3 * LEFT_SPACE - IMAGE_WEIDTH, LABEL_HEIGHT)];
+    self.addressLabel = [[UILabel alloc]initWithFrame:CGRectMake( LEFT_SPACE, _nameLabel.bottom + TOP_SPACE, self.width - 3 * LEFT_SPACE , LABEL_HEIGHT)];
     _addressLabel.textColor = [UIColor grayColor];
     _addressLabel.text = @"未来路商城路科苑小区1号楼3单元2楼48号";
     _addressLabel.numberOfLines = 0;

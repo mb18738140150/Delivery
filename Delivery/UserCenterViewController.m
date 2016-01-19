@@ -31,7 +31,6 @@
     
     self.navigationItem.title = @"设置";
     
-    
     self.headView = [[UIView alloc]initWithFrame:CGRectMake(0,  TOP_SPACE, self.view.frame.size.width, 100)];
     _headView.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:_headView];

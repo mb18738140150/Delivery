@@ -100,11 +100,12 @@
     [self.view addSubview:_nOrderTableView];
     _nOrderPag = 1;
     _orderState = 1;
-//    [self.nOrderTableView addHeaderWithTarget:self action:@selector(headerRereshing)];
-//    [self.nOrderTableView addFooterWithTarget:self action:@selector(footerRereshing)];
+    self.nOrderTableView.header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(headerRereshing)];
+    self.nOrderTableView.footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(footerRereshing)];
     [_nOrderTableView registerClass:[NewOrderCell class] forCellReuseIdentifier:NORDERCELL_IDENTIFIER];
     [self downloadDataWithCommand:@3 page:_nOrderPag count:10 orderState:1];
-//    [self.nOrderTableView headerBeginRefreshing];
+    [SVProgressHUD showWithStatus:@"正在加载..." maskType:SVProgressHUDMaskTypeBlack];
+    self.nOrderTableView.tableFooterView = [[UIView alloc]init];
     
     // 代配送订单
     self.deliveryingTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, self.view.width, self.view.height - 50)];
@@ -114,6 +115,9 @@
     _deliveryingTableView.backgroundColor = [UIColor colorWithWhite:.9 alpha:1];
     [self.view addSubview:_deliveryingTableView];
     _deliveryingPag = 1;
+    self.deliveryingTableView.header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(headerRereshing)];
+    self.deliveryingTableView.footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(footerRereshing)];
+    _deliveryingTableView.tableFooterView = [[UIView alloc]init];
     [_deliveryingTableView registerClass:[DeliveryingCell class] forCellReuseIdentifier:DELIVERYING_IDENTIFIER];
     self.deliveryingTableView.hidden = YES;
     
@@ -125,11 +129,16 @@
     _deliveriedTableView.backgroundColor = [UIColor colorWithWhite:.9 alpha:1];
     [self.view addSubview:_deliveriedTableView];
     _deliveriedPag = 1;
+    self.deliveriedTableView.header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(headerRereshing)];
+    self.deliveriedTableView.footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(footerRereshing)];
+    _deliveriedTableView.tableFooterView = [[UIView alloc]init];
     [_deliveriedTableView registerClass:[DeliveriedCell class] forCellReuseIdentifier:DELIVERIED_IDENTIFIER];
     self.deliveriedTableView.hidden = YES;
     
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithImage:[[UIImage imageNamed:@"setting_normal.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:self action:@selector(setupAction:)];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithImage:[[UIImage imageNamed:@"setting.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:self action:@selector(setupAction:)];
     
+//    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:@"back.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:self action:@selector(backLastVC:)];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]init];
 }
 
 - (void)addHeaderView
@@ -173,10 +182,11 @@
 #pragma mark - 下拉刷新，上拉加载
 - (void)headerRereshing
 {
-    [self tableViewEndRereshing];
+    
     if (self.segment.selectedSegmentIndex == 0) {
         _orderState = 1;
         _nOrderPag = 1;
+        [self.nOrderTableView.footer resetNoMoreData];
         [self downloadDataWithCommand:@3 page:_nOrderPag count:10 orderState:1];
     }else if (self.segment.selectedSegmentIndex == 1)
     {
@@ -193,65 +203,30 @@
 
 - (void)footerRereshing
 {
-    [self tableViewEndRereshing];
     if (self.segment.selectedSegmentIndex == 0) {
         if (self.nOrderArray.count < _nOrderCount) {
-            self.nOrderTableView.footerRefreshingText = @"正在加载数据";
             [self downloadDataWithCommand:@3 page:++_nOrderPag count:10 orderState:1];
         }else
         {
-            self.nOrderTableView.footerRefreshingText = @"数据已经加载完";
-            [self.nOrderTableView performSelector:@selector(footerEndRefreshing) withObject:nil afterDelay:1];
+            [self.nOrderTableView.footer endRefreshingWithNoMoreData];
 
         }
     }else if (self.segment.selectedSegmentIndex == 1)
     {
         if (_deliveryingArray.count < _deliveryingCount ) {
-            self.deliveryingTableView.footerRefreshingText = @"正在加载数据";
             [self downloadDataWithCommand:@3 page:++_deliveryingPag count:10 orderState:2];
         }else
         {
-            self.deliveryingTableView.footerRefreshingText = @"数据已经加载完";
-            [self.deliveryingTableView performSelector:@selector(footerEndRefreshing) withObject:nil afterDelay:1];
+            [self.deliveryingTableView.footer endRefreshingWithNoMoreData];
         }
     }else
     {
         if (_deliveriedArray.count < _deliveriedCount) {
-            self.deliveriedTableView.footerRefreshingText = @"正在加载数据";
             [self downloadDataWithCommand:@3 page:++_deliveriedPag count:10 orderState:3];
         }else
         {
-            self.deliveriedTableView.footerRefreshingText = @"数据已经加载完";
-            [self.deliveriedTableView performSelector:@selector(footerEndRefreshing) withObject:nil afterDelay:1];
-        }
-    }
-}
+            [self.deliveriedTableView.footer endRefreshingWithNoMoreData];
 
-- (void)tableViewEndRereshing
-{
-    if (self.segment.selectedSegmentIndex == 0) {
-        
-        if (self.nOrderTableView.isHeaderRefreshing) {
-            [self.nOrderTableView headerEndRefreshing];
-        }
-        if (self.nOrderTableView.isFooterRefreshing) {
-            [self.nOrderTableView footerEndRefreshing];
-        }
-    }else if (self.segment.selectedSegmentIndex == 1)
-    {
-        if (self.deliveryingTableView.isHeaderRefreshing) {
-            [self.deliveryingTableView headerEndRefreshing];
-        }
-        if (self.deliveryingTableView.isFooterRefreshing) {
-            [self.deliveryingTableView footerEndRefreshing];
-        }
-    }else
-    {
-        if (self.deliveriedTableView.isHeaderRefreshing) {
-            [self.deliveriedTableView headerEndRefreshing];
-        }
-        if (self.deliveriedTableView.isFooterRefreshing) {
-            [self.deliveriedTableView footerEndRefreshing];
         }
     }
 }
@@ -284,6 +259,7 @@
 
 - (void)refresh:(id)data
 {
+    [SVProgressHUD dismiss];
     NSLog(@"data = %@", [data description]);
     if ([[data objectForKey:@"Result"] isEqualToNumber:@1]) {
         NSNumber * command = [data objectForKey:@"Command"];
@@ -293,6 +269,8 @@
                 if (_nOrderPag == 1) {
                     [self.nOrderArray removeAllObjects];
                 }
+                [self.nOrderTableView.header endRefreshing];
+                [self.nOrderTableView.footer endRefreshing];
                 self.nOrderCount = [[data objectForKey:@"AllCount"] intValue];
                 NSArray * array = [data objectForKey:@"OrderList"];
                 for (NSDictionary * dic in array) {
@@ -305,6 +283,8 @@
                 if (_deliveryingPag == 1) {
                     [self.deliveryingArray removeAllObjects];
                 }
+                [self.deliveryingTableView.header endRefreshing];
+                [self.deliveryingTableView.footer endRefreshing];
                 self.deliveryingCount = [[data objectForKey:@"AllCount"] intValue];
                 NSArray * array = [data objectForKey:@"OrderList"];
                 for (NSDictionary * dic in array) {
@@ -317,6 +297,8 @@
                 if (_deliveriedPag == 1) {
                     [self.deliveriedArray removeAllObjects];
                 }
+                [self.deliveriedTableView.header endRefreshing];
+                [self.deliveriedTableView.footer endRefreshing];
                 self.deliveriedCount = [[data objectForKey:@"AllCount"] intValue];
                 NSArray * array = [data objectForKey:@"OrderList"];
                 for (NSDictionary * dic in array) {
@@ -459,6 +441,8 @@
      OrderDetailController * pVC = [[OrderDetailController alloc]init];
     PersonalDataViewController * vc = [[PersonalDataViewController alloc]init];
     
+
+    
     if (self.segment.selectedSegmentIndex == 0) {
         NSSet * touches = [event allTouches];
         UITouch * touch = [touches anyObject];
@@ -491,7 +475,7 @@
         
     }
     NSLog(@"pVC.orderID = %@", pVC.orderID);
-    [self.navigationController pushViewController:vc animated:YES];
+    [self.navigationController pushViewController:pVC animated:YES];
     
 }
 #pragma mark - 抢单

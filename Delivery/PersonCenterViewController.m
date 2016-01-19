@@ -416,6 +416,10 @@
 - (void)exitAction:(UIButton *)button
 {
     NSLog(@"退出登录");
+    
+    [self.navigationController popToViewController:[self.navigationController.viewControllers objectAtIndex:0] animated:YES];
+    [[NSUserDefaults standardUserDefaults] setValue:@NO forKey:@"haveLogin"];
+    [[NSUserDefaults standardUserDefaults] setValue:@"" forKey:@"Pwd"];
 }
 
 - (void)didReceiveMemoryWarning {

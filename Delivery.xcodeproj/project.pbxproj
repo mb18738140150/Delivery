@@ -43,7 +43,20 @@
 		736587301C4778A500DFB6AE /* NSDictionary+Unicode.m in Sources */ = {isa = PBXBuildFile; fileRef = 7365872F1C4778A500DFB6AE /* NSDictionary+Unicode.m */; };
 		736587331C47792B00DFB6AE /* JRSwizzle.m in Sources */ = {isa = PBXBuildFile; fileRef = 736587321C47792B00DFB6AE /* JRSwizzle.m */; };
 		736587361C477FAF00DFB6AE /* AFClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 736587351C477FAF00DFB6AE /* AFClient.m */; };
+		736A12021C4DDB2100549177 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 736A12011C4DDB2100549177 /* Images.xcassets */; };
+		736A120B1C4DFCDB00549177 /* BaiduMapAPI_Base.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 736A12041C4DFCDB00549177 /* BaiduMapAPI_Base.framework */; };
+		736A120C1C4DFCDB00549177 /* BaiduMapAPI_Cloud.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 736A12051C4DFCDB00549177 /* BaiduMapAPI_Cloud.framework */; };
+		736A120D1C4DFCDB00549177 /* BaiduMapAPI_Location.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 736A12061C4DFCDB00549177 /* BaiduMapAPI_Location.framework */; };
+		736A120E1C4DFCDB00549177 /* BaiduMapAPI_Map.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 736A12071C4DFCDB00549177 /* BaiduMapAPI_Map.framework */; };
+		736A120F1C4DFCDB00549177 /* BaiduMapAPI_Radar.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 736A12081C4DFCDB00549177 /* BaiduMapAPI_Radar.framework */; };
+		736A12101C4DFCDB00549177 /* BaiduMapAPI_Search.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 736A12091C4DFCDB00549177 /* BaiduMapAPI_Search.framework */; };
+		736A12111C4DFCDB00549177 /* BaiduMapAPI_Utils.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 736A120A1C4DFCDB00549177 /* BaiduMapAPI_Utils.framework */; };
 		73711F451C45EC9300D111A8 /* setting_normal.png in Resources */ = {isa = PBXBuildFile; fileRef = 73711F441C45EC9300D111A8 /* setting_normal.png */; };
+		73792F501C4C754A00E4BD58 /* sound.caf in Resources */ = {isa = PBXBuildFile; fileRef = 73792F4F1C4C754A00E4BD58 /* sound.caf */; };
+		73792F521C4C763200E4BD58 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73792F511C4C763200E4BD58 /* AudioToolbox.framework */; };
+		73792F541C4C8B9100E4BD58 /* setting.png in Resources */ = {isa = PBXBuildFile; fileRef = 73792F531C4C8B9100E4BD58 /* setting.png */; };
+		73792F561C4C8C8E00E4BD58 /* setting@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 73792F551C4C8C8E00E4BD58 /* setting@2x.png */; };
+		73792F581C4C8EA600E4BD58 /* remark_order.png in Resources */ = {isa = PBXBuildFile; fileRef = 73792F571C4C8EA600E4BD58 /* remark_order.png */; };
 		737A3E5D1C43729900949457 /* MealPriceView.m in Sources */ = {isa = PBXBuildFile; fileRef = 737A3E5C1C43729900949457 /* MealPriceView.m */; };
 		737A3E601C43758B00949457 /* Meal.m in Sources */ = {isa = PBXBuildFile; fileRef = 737A3E5F1C43758B00949457 /* Meal.m */; };
 		737A3E621C43778700949457 /* action_food_left.png in Resources */ = {isa = PBXBuildFile; fileRef = 737A3E611C43778700949457 /* action_food_left.png */; };
@@ -54,14 +67,6 @@
 		737BE8791BDF17B1002DD240 /* CenterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 737BE8781BDF17B1002DD240 /* CenterViewController.m */; };
 		737BE87B1BDF23CB002DD240 /* backImage.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 737BE87A1BDF23CB002DD240 /* backImage.jpg */; };
 		7383635C1BE094CF00F2F542 /* PersonCenterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7383635B1BE094CF00F2F542 /* PersonCenterViewController.m */; };
-		739729521C48B8210057C250 /* MJRefresh.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 739729421C48B8210057C250 /* MJRefresh.bundle */; };
-		739729531C48B8210057C250 /* MJRefreshBaseView.m in Sources */ = {isa = PBXBuildFile; fileRef = 739729451C48B8210057C250 /* MJRefreshBaseView.m */; };
-		739729541C48B8210057C250 /* MJRefreshConst.m in Sources */ = {isa = PBXBuildFile; fileRef = 739729471C48B8210057C250 /* MJRefreshConst.m */; };
-		739729551C48B8210057C250 /* MJRefreshFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 739729491C48B8210057C250 /* MJRefreshFooterView.m */; };
-		739729561C48B8210057C250 /* MJRefreshHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7397294B1C48B8210057C250 /* MJRefreshHeaderView.m */; };
-		739729571C48B8210057C250 /* UIScrollView+MJExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 7397294D1C48B8210057C250 /* UIScrollView+MJExtension.m */; };
-		739729581C48B8210057C250 /* UIScrollView+MJRefresh.m in Sources */ = {isa = PBXBuildFile; fileRef = 7397294F1C48B8210057C250 /* UIScrollView+MJRefresh.m */; };
-		739729591C48B8210057C250 /* UIView+MJExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 739729511C48B8210057C250 /* UIView+MJExtension.m */; };
 		7397295C1C48F5670057C250 /* PersonalDataViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7397295B1C48F5670057C250 /* PersonalDataViewController.m */; };
 		739EF3831BE896F000E13F81 /* NewOrderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 739EF3821BE896F000E13F81 /* NewOrderCell.m */; };
 		739EF3861BE8974F00E13F81 /* DeliveryingCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 739EF3851BE8974F00E13F81 /* DeliveryingCell.m */; };
@@ -152,7 +157,20 @@
 		736587321C47792B00DFB6AE /* JRSwizzle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JRSwizzle.m; sourceTree = "<group>"; };
 		736587341C477FAF00DFB6AE /* AFClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFClient.h; sourceTree = "<group>"; };
 		736587351C477FAF00DFB6AE /* AFClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFClient.m; sourceTree = "<group>"; };
+		736A12011C4DDB2100549177 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		736A12041C4DFCDB00549177 /* BaiduMapAPI_Base.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = BaiduMapAPI_Base.framework; sourceTree = "<group>"; };
+		736A12051C4DFCDB00549177 /* BaiduMapAPI_Cloud.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = BaiduMapAPI_Cloud.framework; sourceTree = "<group>"; };
+		736A12061C4DFCDB00549177 /* BaiduMapAPI_Location.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = BaiduMapAPI_Location.framework; sourceTree = "<group>"; };
+		736A12071C4DFCDB00549177 /* BaiduMapAPI_Map.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = BaiduMapAPI_Map.framework; sourceTree = "<group>"; };
+		736A12081C4DFCDB00549177 /* BaiduMapAPI_Radar.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = BaiduMapAPI_Radar.framework; sourceTree = "<group>"; };
+		736A12091C4DFCDB00549177 /* BaiduMapAPI_Search.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = BaiduMapAPI_Search.framework; sourceTree = "<group>"; };
+		736A120A1C4DFCDB00549177 /* BaiduMapAPI_Utils.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = BaiduMapAPI_Utils.framework; sourceTree = "<group>"; };
 		73711F441C45EC9300D111A8 /* setting_normal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = setting_normal.png; sourceTree = "<group>"; };
+		73792F4F1C4C754A00E4BD58 /* sound.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = sound.caf; sourceTree = "<group>"; };
+		73792F511C4C763200E4BD58 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		73792F531C4C8B9100E4BD58 /* setting.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = setting.png; sourceTree = "<group>"; };
+		73792F551C4C8C8E00E4BD58 /* setting@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "setting@2x.png"; sourceTree = "<group>"; };
+		73792F571C4C8EA600E4BD58 /* remark_order.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = remark_order.png; sourceTree = "<group>"; };
 		737A3E5B1C43729900949457 /* MealPriceView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MealPriceView.h; sourceTree = "<group>"; };
 		737A3E5C1C43729900949457 /* MealPriceView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MealPriceView.m; sourceTree = "<group>"; };
 		737A3E5E1C43758B00949457 /* Meal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Meal.h; sourceTree = "<group>"; };
@@ -170,22 +188,6 @@
 		737BE87A1BDF23CB002DD240 /* backImage.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = backImage.jpg; sourceTree = "<group>"; };
 		7383635A1BE094CF00F2F542 /* PersonCenterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersonCenterViewController.h; sourceTree = "<group>"; };
 		7383635B1BE094CF00F2F542 /* PersonCenterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersonCenterViewController.m; sourceTree = "<group>"; };
-		739729421C48B8210057C250 /* MJRefresh.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = MJRefresh.bundle; sourceTree = "<group>"; };
-		739729431C48B8210057C250 /* MJRefresh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MJRefresh.h; sourceTree = "<group>"; };
-		739729441C48B8210057C250 /* MJRefreshBaseView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MJRefreshBaseView.h; sourceTree = "<group>"; };
-		739729451C48B8210057C250 /* MJRefreshBaseView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MJRefreshBaseView.m; sourceTree = "<group>"; };
-		739729461C48B8210057C250 /* MJRefreshConst.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MJRefreshConst.h; sourceTree = "<group>"; };
-		739729471C48B8210057C250 /* MJRefreshConst.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MJRefreshConst.m; sourceTree = "<group>"; };
-		739729481C48B8210057C250 /* MJRefreshFooterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MJRefreshFooterView.h; sourceTree = "<group>"; };
-		739729491C48B8210057C250 /* MJRefreshFooterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MJRefreshFooterView.m; sourceTree = "<group>"; };
-		7397294A1C48B8210057C250 /* MJRefreshHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MJRefreshHeaderView.h; sourceTree = "<group>"; };
-		7397294B1C48B8210057C250 /* MJRefreshHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MJRefreshHeaderView.m; sourceTree = "<group>"; };
-		7397294C1C48B8210057C250 /* UIScrollView+MJExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIScrollView+MJExtension.h"; sourceTree = "<group>"; };
-		7397294D1C48B8210057C250 /* UIScrollView+MJExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIScrollView+MJExtension.m"; sourceTree = "<group>"; };
-		7397294E1C48B8210057C250 /* UIScrollView+MJRefresh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIScrollView+MJRefresh.h"; sourceTree = "<group>"; };
-		7397294F1C48B8210057C250 /* UIScrollView+MJRefresh.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIScrollView+MJRefresh.m"; sourceTree = "<group>"; };
-		739729501C48B8210057C250 /* UIView+MJExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+MJExtension.h"; sourceTree = "<group>"; };
-		739729511C48B8210057C250 /* UIView+MJExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+MJExtension.m"; sourceTree = "<group>"; };
 		7397295A1C48F5670057C250 /* PersonalDataViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersonalDataViewController.h; sourceTree = "<group>"; };
 		7397295B1C48F5670057C250 /* PersonalDataViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersonalDataViewController.m; sourceTree = "<group>"; };
 		739EF3811BE896F000E13F81 /* NewOrderCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewOrderCell.h; sourceTree = "<group>"; };
@@ -211,17 +213,25 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				736A120B1C4DFCDB00549177 /* BaiduMapAPI_Base.framework in Frameworks */,
+				73792F521C4C763200E4BD58 /* AudioToolbox.framework in Frameworks */,
 				7342873F1C4651EE0093D133 /* libz.tbd in Frameworks */,
 				7342873D1C4651DC0093D133 /* Security.framework in Frameworks */,
 				7342873B1C4651D20093D133 /* UIKit.framework in Frameworks */,
 				734287391C4651C70093D133 /* Foundation.framework in Frameworks */,
 				734287371C4651BB0093D133 /* CoreGraphics.framework in Frameworks */,
 				734287351C4651B10093D133 /* SystemConfiguration.framework in Frameworks */,
+				736A12101C4DFCDB00549177 /* BaiduMapAPI_Search.framework in Frameworks */,
+				736A120C1C4DFCDB00549177 /* BaiduMapAPI_Cloud.framework in Frameworks */,
 				734287331C4651A00093D133 /* CoreTelephony.framework in Frameworks */,
 				734287311C4651950093D133 /* CoreFoundation.framework in Frameworks */,
+				736A120F1C4DFCDB00549177 /* BaiduMapAPI_Radar.framework in Frameworks */,
 				7342872F1C46518D0093D133 /* CFNetwork.framework in Frameworks */,
 				B3558747461A64B44E6FDB9B /* libPods.a in Frameworks */,
+				736A12111C4DFCDB00549177 /* BaiduMapAPI_Utils.framework in Frameworks */,
+				736A120D1C4DFCDB00549177 /* BaiduMapAPI_Location.framework in Frameworks */,
 				7342872D1C4651550093D133 /* libPushSDK-1.8.3.a in Frameworks */,
+				736A120E1C4DFCDB00549177 /* BaiduMapAPI_Map.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -245,6 +255,8 @@
 		15EB3FD6E4E5F59DA85F2918 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				736A12031C4DFCC100549177 /* 百度地图 */,
+				73792F511C4C763200E4BD58 /* AudioToolbox.framework */,
 				7342873E1C4651EE0093D133 /* libz.tbd */,
 				7342873C1C4651DC0093D133 /* Security.framework */,
 				7342873A1C4651D20093D133 /* UIKit.framework */,
@@ -322,6 +334,7 @@
 				735AB3801BD9FA9200075477 /* Assets.xcassets */,
 				735AB3821BD9FA9200075477 /* LaunchScreen.storyboard */,
 				735AB3851BD9FA9200075477 /* Info.plist */,
+				736A12011C4DDB2100549177 /* Images.xcassets */,
 				735AB37A1BD9FA9200075477 /* Supporting Files */,
 			);
 			path = Delivery;
@@ -395,13 +408,17 @@
 		735AB3AB1BDA2FEB00075477 /* Reco */ = {
 			isa = PBXGroup;
 			children = (
+				73792F4E1C4C74FE00E4BD58 /* 新订单提示音 */,
 				7342871F1C46324F0093D133 /* 1px.png */,
 				7342871B1C4628AF0093D133 /* password_hide.png */,
 				7342871C1C4628AF0093D133 /* password_show.png */,
 				734287141C4621480093D133 /* arrowright.png */,
+				73792F551C4C8C8E00E4BD58 /* setting@2x.png */,
+				73792F531C4C8B9100E4BD58 /* setting.png */,
 				73711F441C45EC9300D111A8 /* setting_normal.png */,
 				737A3E611C43778700949457 /* action_food_left.png */,
 				730A3FC51BEB1E4100083906 /* location_order.png */,
+				73792F571C4C8EA600E4BD58 /* remark_order.png */,
 				737BE87A1BDF23CB002DD240 /* backImage.jpg */,
 				737BE8751BDF1558002DD240 /* back@2x.png */,
 				733168AA1BDB28ED00D81EC2 /* PHOTO.png */,
@@ -428,7 +445,6 @@
 		735AB3AE1BDA2FED00075477 /* Venders */ = {
 			isa = PBXGroup;
 			children = (
-				739729411C48B8210057C250 /* MJRefresh */,
 				736587311C47792B00DFB6AE /* JRSwizzle.h */,
 				736587321C47792B00DFB6AE /* JRSwizzle.m */,
 				7365872B1C476EC300DFB6AE /* JSONKit.h */,
@@ -537,27 +553,26 @@
 			name = Controller;
 			sourceTree = "<group>";
 		};
-		739729411C48B8210057C250 /* MJRefresh */ = {
+		736A12031C4DFCC100549177 /* 百度地图 */ = {
 			isa = PBXGroup;
 			children = (
-				739729421C48B8210057C250 /* MJRefresh.bundle */,
-				739729431C48B8210057C250 /* MJRefresh.h */,
-				739729441C48B8210057C250 /* MJRefreshBaseView.h */,
-				739729451C48B8210057C250 /* MJRefreshBaseView.m */,
-				739729461C48B8210057C250 /* MJRefreshConst.h */,
-				739729471C48B8210057C250 /* MJRefreshConst.m */,
-				739729481C48B8210057C250 /* MJRefreshFooterView.h */,
-				739729491C48B8210057C250 /* MJRefreshFooterView.m */,
-				7397294A1C48B8210057C250 /* MJRefreshHeaderView.h */,
-				7397294B1C48B8210057C250 /* MJRefreshHeaderView.m */,
-				7397294C1C48B8210057C250 /* UIScrollView+MJExtension.h */,
-				7397294D1C48B8210057C250 /* UIScrollView+MJExtension.m */,
-				7397294E1C48B8210057C250 /* UIScrollView+MJRefresh.h */,
-				7397294F1C48B8210057C250 /* UIScrollView+MJRefresh.m */,
-				739729501C48B8210057C250 /* UIView+MJExtension.h */,
-				739729511C48B8210057C250 /* UIView+MJExtension.m */,
+				736A12041C4DFCDB00549177 /* BaiduMapAPI_Base.framework */,
+				736A12051C4DFCDB00549177 /* BaiduMapAPI_Cloud.framework */,
+				736A12061C4DFCDB00549177 /* BaiduMapAPI_Location.framework */,
+				736A12071C4DFCDB00549177 /* BaiduMapAPI_Map.framework */,
+				736A12081C4DFCDB00549177 /* BaiduMapAPI_Radar.framework */,
+				736A12091C4DFCDB00549177 /* BaiduMapAPI_Search.framework */,
+				736A120A1C4DFCDB00549177 /* BaiduMapAPI_Utils.framework */,
 			);
-			path = MJRefresh;
+			name = "百度地图";
+			sourceTree = "<group>";
+		};
+		73792F4E1C4C74FE00E4BD58 /* 新订单提示音 */ = {
+			isa = PBXGroup;
+			children = (
+				73792F4F1C4C754A00E4BD58 /* sound.caf */,
+			);
+			name = "新订单提示音";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -630,6 +645,11 @@
 					735AB3761BD9FA9200075477 = {
 						CreatedOnToolsVersion = 7.0.1;
 						DevelopmentTeam = 26NQNZ7FXL;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+						};
 					};
 					735AB3891BD9FA9200075477 = {
 						CreatedOnToolsVersion = 7.0.1;
@@ -673,11 +693,15 @@
 				7342871E1C4628AF0093D133 /* password_show.png in Resources */,
 				734287201C46324F0093D133 /* 1px.png in Resources */,
 				7342871D1C4628AF0093D133 /* password_hide.png in Resources */,
+				73792F501C4C754A00E4BD58 /* sound.caf in Resources */,
 				737BE8761BDF1558002DD240 /* back@2x.png in Resources */,
-				739729521C48B8210057C250 /* MJRefresh.bundle in Resources */,
 				73711F451C45EC9300D111A8 /* setting_normal.png in Resources */,
+				73792F581C4C8EA600E4BD58 /* remark_order.png in Resources */,
 				737BE87B1BDF23CB002DD240 /* backImage.jpg in Resources */,
 				733168AB1BDB28ED00D81EC2 /* PHOTO.png in Resources */,
+				73792F561C4C8C8E00E4BD58 /* setting@2x.png in Resources */,
+				73792F541C4C8B9100E4BD58 /* setting.png in Resources */,
+				736A12021C4DDB2100549177 /* Images.xcassets in Resources */,
 				734287151C4621480093D133 /* arrowright.png in Resources */,
 				737A3E621C43778700949457 /* action_food_left.png in Resources */,
 				735AB3841BD9FA9200075477 /* LaunchScreen.storyboard in Resources */,
@@ -738,7 +762,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				739729551C48B8210057C250 /* MJRefreshFooterView.m in Sources */,
 				735AB3BF1BDA320800075477 /* OtherView.m in Sources */,
 				739EF3921BE897D200E13F81 /* TotlePriceView.m in Sources */,
 				736587301C4778A500DFB6AE /* NSDictionary+Unicode.m in Sources */,
@@ -757,20 +780,14 @@
 				739EF3891BE8976A00E13F81 /* DeliveriedCell.m in Sources */,
 				736587331C47792B00DFB6AE /* JRSwizzle.m in Sources */,
 				737A3E5D1C43729900949457 /* MealPriceView.m in Sources */,
-				739729581C48B8210057C250 /* UIScrollView+MJRefresh.m in Sources */,
 				739EF38C1BE8978E00E13F81 /* ShopView.m in Sources */,
-				739729531C48B8210057C250 /* MJRefreshBaseView.m in Sources */,
-				739729571C48B8210057C250 /* UIScrollView+MJExtension.m in Sources */,
-				739729541C48B8210057C250 /* MJRefreshConst.m in Sources */,
 				734287231C463C8C0093D133 /* HTTPPost.m in Sources */,
 				735AB37C1BD9FA9200075477 /* main.m in Sources */,
 				739EF3831BE896F000E13F81 /* NewOrderCell.m in Sources */,
-				739729561C48B8210057C250 /* MJRefreshHeaderView.m in Sources */,
 				739EF38F1BE897B900E13F81 /* CustomerView.m in Sources */,
 				7383635C1BE094CF00F2F542 /* PersonCenterViewController.m in Sources */,
 				734287261C464C0D0093D133 /* NSString+MD5.m in Sources */,
 				73CCA3D31BE20CFB0051BDFE /* ChangePasswordViewController.m in Sources */,
-				739729591C48B8210057C250 /* UIView+MJExtension.m in Sources */,
 				737A3E681C4382FD00949457 /* OrderDetailController.m in Sources */,
 				737A3E601C43758B00949457 /* Meal.m in Sources */,
 				7342871A1C4623F80093D133 /* LoginViewController.m in Sources */,
@@ -906,9 +923,14 @@
 			baseConfigurationReference = 5894D001A122085DAECA8784 /* Pods.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer: fuqian yu (X7Q7RAWEB7)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				ENABLE_BITCODE = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				GCC_PREFIX_HEADER = "$(SRCROOT)/Delivery/AllHeader.pch";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -919,6 +941,7 @@
 					"$(PROJECT_DIR)/Delivery/lib",
 				);
 				INFOPLIST_FILE = Delivery/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -935,9 +958,14 @@
 			baseConfigurationReference = 21577E8C685630529905863D /* Pods.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: fuqian yu (26NQNZ7FXL)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				ENABLE_BITCODE = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				GCC_PREFIX_HEADER = "$(SRCROOT)/Delivery/AllHeader.pch";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -948,6 +976,7 @@
 					"$(PROJECT_DIR)/Delivery/lib",
 				);
 				INFOPLIST_FILE = Delivery/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",

@@ -42,7 +42,7 @@ static int height = 0;
     [self addSubview:_backView];
     
     self.shopView = [[ShopView alloc]initWithFrame:CGRectMake(0, 0, self.width, SHOPVIEW_HEIGHT)];
-    [_shopView.phoneBT addTarget:self action:@selector(telToOrderTelNumber:) forControlEvents:UIControlEventTouchUpInside];
+//    [_shopView.phoneBT addTarget:self action:@selector(telToOrderTelNumber:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:_shopView];
     
     UIView * line = [[UIView alloc]initWithFrame:CGRectMake(0, _shopView.bottom, self.width, 1)];
@@ -88,7 +88,7 @@ static int height = 0;
     self.customerView.addressLabel.text = orderModel.customerAddress;
     self.customerView.arriveTimeLabel.text = orderModel.hopeTime;
     if (orderModel.remark.length == 0) {
-        self.customerView.remarkLabel.text = @"暂无描述";
+        self.customerView.remarkLabel.text = @"暂无备注";
     }else
     {
         self.customerView.remarkLabel.text = orderModel.remark;
@@ -98,14 +98,16 @@ static int height = 0;
     CGSize maxSize = CGSizeMake(self.customerView.addressLabel.width, 1000);
     CGRect textRect = [contentText boundingRectWithSize:maxSize options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:17]} context:nil];
     
-    if (textRect.size.height < 30) {
+    if (textRect.size.height + 10 < 30) {
         ;
     }else
     {
-        height = textRect.size.height - 30;
-        self.customerView.addressLabel.height = textRect.size.height;
+        height = textRect.size.height + 10 - 30;
+        self.customerView.addressLabel.height = textRect.size.height + 10;
         self.customerView.mealsView.top = self.customerView.addressLabel.bottom;
     }
+    
+    NSLog(@"textRect.size.height = %f", textRect.size.height);
     
     [self.customerView creatMealViewWithArray:orderModel.mealArray];
     
@@ -114,14 +116,16 @@ static int height = 0;
     self.totlePriceView.top = self.linePrice.bottom;
     self.totlePriceView.totlePriceLabel.text = [NSString stringWithFormat:@"%@", orderModel.allMoney];
     [self.totlePriceView.startDeliveryBT setTitle:@"立即抢单" forState:UIControlStateNormal];
+    self.backView.frame = CGRectMake(0, 0, self.frame.size.width, [NewOrderCell cellHeightWithMealCount:orderModel.mealArray.count] - TOP_SPACE );
 //    self.totlePriceView.totlePriceLabel.frame = self.totlePriceView.detailsButton.frame;
 //    self.totlePriceView.detailsButton.hidden = YES;
 }
 
 - (void)telToOrderTelNumber:(UIButton *)button
 {
+    NSLog(@"打电话%@", [NSString stringWithFormat:@"%@", self.customerView.phoneLabel.text]);
     UIWebView *callWebView = [[UIWebView alloc]init];
-    NSURL * telURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@", self.orderModel.customerPhone]];
+    NSURL * telURL = [NSURL URLWithString:[NSString stringWithFormat:@"tel:%@", self.customerView.phoneLabel.text]];
     [callWebView loadRequest:[NSURLRequest requestWithURL:telURL]];
     [self.window addSubview:callWebView];
     

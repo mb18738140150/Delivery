@@ -15,7 +15,7 @@
 #import <AVFoundation/AVFoundation.h>
 #import <AudioToolbox/AudioToolbox.h>
 
-@interface AppDelegate ()<HTTPPostDelegate>
+@interface AppDelegate ()<HTTPPostDelegate, BMKGeneralDelegate>
 @property (nonatomic, strong)LoginViewController * loginVC;
 @end
 
@@ -53,6 +53,12 @@ static SystemSoundID shake_sound_male_id = 0;
     
     [self.window makeKeyAndVisible];
     
+    // 初始化百度地图
+    BMKMapManager * mapManager = [[BMKMapManager alloc]init];
+    BOOL ret = [mapManager start:@"1IuetZKXAwIv8oGEGpVbzo6f" generalDelegate:self];
+    if (!ret) {
+        NSLog(@"百度地图初始化失败");
+    }
     
     [APService registerForRemoteNotificationTypes:(UIUserNotificationTypeBadge | UIUserNotificationTypeSound | UIUserNotificationTypeAlert) categories:nil];
     [APService setupWithOption:launchOptions];

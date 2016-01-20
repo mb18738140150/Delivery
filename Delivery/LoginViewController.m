@@ -51,7 +51,7 @@
 //    [bar setShadowImage:[UIImage imageNamed:@"1px.png"]];
 //    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"1px.png"] forBarMetrics:UIBarMetricsDefault];
     
-//    [self automaticLogin];
+    [self automaticLogin];
     
     // Do any additional setup after loading the view.
 }
@@ -197,9 +197,8 @@
 - (void)refresh:(id)data
 {
     NSDictionary * dataDic = (NSDictionary *)data;
+    NSLog(@"data = %@", [dataDic description]);
     if ([[dataDic objectForKey:@"Result"] isEqual:@1]) {
-        
-        
         [self registerRemoteNotification];
         NSString * registrationID = [APService registrationID];
         

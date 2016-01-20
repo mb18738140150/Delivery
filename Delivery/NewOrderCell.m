@@ -7,23 +7,25 @@
 //
 
 #import "NewOrderCell.h"
-#import "ShopView.h"
-#import "CustomerView.h"
+
+
 
 
 #define TOP_SPACE 10
-#define SHOPVIEW_HEIGHT 50
+#define SHOPVIEW_HEIGHT 120
 #define CUSTOMERVIEW_HEIGHT 120
 #define TOTLEPRICEVIEW_HEIGHT 60
 #define MENUVIEW_HEIGHT 30
+#define LINE_tag 8000
 
 static int height = 0;
+static int shopHeight = 0;
 
 @interface NewOrderCell ()
 
 @property (nonatomic, strong)UIView *backView;
-@property (nonatomic, strong)ShopView * shopView;
-@property (nonatomic, strong)CustomerView * customerView;
+
+
 
 @property (nonatomic, strong)UIView * linePrice;
 
@@ -42,11 +44,12 @@ static int height = 0;
     [self addSubview:_backView];
     
     self.shopView = [[ShopView alloc]initWithFrame:CGRectMake(0, 0, self.width, SHOPVIEW_HEIGHT)];
-//    [_shopView.phoneBT addTarget:self action:@selector(telToOrderTelNumber:) forControlEvents:UIControlEventTouchUpInside];
+    [_shopView.phoneBT addTarget:self action:@selector(telToOrderTelNumber:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:_shopView];
     
     UIView * line = [[UIView alloc]initWithFrame:CGRectMake(0, _shopView.bottom, self.width, 1)];
     line.backgroundColor = [UIColor colorWithWhite:.9 alpha:1];
+    line.tag = LINE_tag;
     [self addSubview:line];
     
     self.customerView = [[CustomerView alloc]initWithFrame:CGRectMake(0, line.bottom, self.width, 120)];
@@ -69,13 +72,37 @@ static int height = 0;
 //
 //    _mealsView.frame = CGRectMake(0, _addressLabel.bottom, self.width - 3 * LEFT_SPACE - IMAGE_WEIDTH, num * 30 + 10 * (num - 1) + 30);
     
-    return SHOPVIEW_HEIGHT  + MENUVIEW_HEIGHT * ((mealCount - 1)/ 2 + 1 ) + (mealCount - 1) / 2 * 10  + 30  + CUSTOMERVIEW_HEIGHT + TOTLEPRICEVIEW_HEIGHT + TOP_SPACE + height;
+    return SHOPVIEW_HEIGHT  + MENUVIEW_HEIGHT * ((mealCount - 1)/ 2 + 1 ) + (mealCount - 1) / 2 * 10  + 30  + CUSTOMERVIEW_HEIGHT + TOTLEPRICEVIEW_HEIGHT + TOP_SPACE + height + shopHeight;
 //    return SHOPVIEW_HEIGHT  + num * 30 + 10 * (num - 1) + 30  + CUSTOMERVIEW_HEIGHT + TOTLEPRICEVIEW_HEIGHT + TOP_SPACE ;
 }
 
 - (void)setOrderModel:(NewOrderModel *)orderModel
 {
-    self.shopView.addressLabel.text = orderModel.orderTime;
+    self.shopView.name = orderModel.busiName;
+    self.shopView.phone = orderModel.busiPhone;
+    self.shopView.addressLabel.text = orderModel.busiAddress;
+    
+    NSString * shopaddress =  self.shopView.addressLabel.text;
+    CGSize size = CGSizeMake(self.shopView.addressLabel.width, 1000);
+    CGRect shopRect = [shopaddress boundingRectWithSize:size options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:17]} context:nil];
+    
+    if (shopRect.size.height + 5 < 30) {
+        ;
+    }else
+    {
+        shopHeight = shopRect.size.height + 5 - 30;
+        self.shopView.addressLabel.height = shopRect.size.height + 5;
+        self.shopView.orderTimeLB.top = self.shopView.addressLabel.bottom;
+        self.shopView.payStateLabel.top = self.shopView.orderTimeLB.top;
+        self.shopView.height = SHOPVIEW_HEIGHT + shopHeight;
+        UIView * line = [self viewWithTag:LINE_tag];
+        line.top = self.shopView.bottom;
+        self.customerView.top = line.bottom;
+    }
+
+    
+    self.shopView.orderTimeLB.text = orderModel.orderTime;
+    
     if (orderModel.payType == 1) {
         self.shopView.payStateLabel.text = @"在线支付";
     }else
@@ -83,12 +110,12 @@ static int height = 0;
         self.shopView.payStateLabel.text = @"餐到付款";
     }
     
-    self.customerView.nameLabel.text = orderModel.customerName;
-    self.customerView.phoneLabel.text = orderModel.customerPhone;
+    self.customerView.name = orderModel.customerName;
+    self.customerView.phone = orderModel.customerPhone;
     self.customerView.addressLabel.text = orderModel.customerAddress;
     self.customerView.arriveTimeLabel.text = orderModel.hopeTime;
     if (orderModel.remark.length == 0) {
-        self.customerView.remarkLabel.text = @"暂无备注";
+        self.customerView.remarkLabel.text = @"暂无备注!";
     }else
     {
         self.customerView.remarkLabel.text = orderModel.remark;
@@ -107,10 +134,10 @@ static int height = 0;
         self.customerView.mealsView.top = self.customerView.addressLabel.bottom;
     }
     
-    NSLog(@"textRect.size.height = %f", textRect.size.height);
+//    NSLog(@"textRect.size.height = %f", textRect.size.height);
+    
     
     [self.customerView creatMealViewWithArray:orderModel.mealArray];
-    
     self.customerView.height = CUSTOMERVIEW_HEIGHT + height + MENUVIEW_HEIGHT * ((orderModel.mealArray.count - 1)/ 2 + 1 ) + (orderModel.mealArray.count - 1) / 2 * 10 + 30;
     self.linePrice.top = self.customerView.bottom ;
     self.totlePriceView.top = self.linePrice.bottom;
@@ -123,11 +150,21 @@ static int height = 0;
 
 - (void)telToOrderTelNumber:(UIButton *)button
 {
-    NSLog(@"打电话%@", [NSString stringWithFormat:@"%@", self.customerView.phoneLabel.text]);
-    UIWebView *callWebView = [[UIWebView alloc]init];
-    NSURL * telURL = [NSURL URLWithString:[NSString stringWithFormat:@"tel:%@", self.customerView.phoneLabel.text]];
-    [callWebView loadRequest:[NSURLRequest requestWithURL:telURL]];
-    [self.window addSubview:callWebView];
+    if ([button isEqual:_shopView.phoneBT]) {
+        NSLog(@"打电话%@", [NSString stringWithFormat:@"%@", self.shopView.phoneLabel.text]);
+        UIWebView *callWebView = [[UIWebView alloc]init];
+        NSURL * telURL = [NSURL URLWithString:[NSString stringWithFormat:@"tel:%@", self.shopView.phoneLabel.text]];
+        [callWebView loadRequest:[NSURLRequest requestWithURL:telURL]];
+        [self.window addSubview:callWebView];
+    }else
+    {
+        
+        NSLog(@"打电话%@", [NSString stringWithFormat:@"%@", self.customerView.phoneLabel.text]);
+        UIWebView *callWebView = [[UIWebView alloc]init];
+        NSURL * telURL = [NSURL URLWithString:[NSString stringWithFormat:@"tel:%@", self.customerView.phoneLabel.text]];
+        [callWebView loadRequest:[NSURLRequest requestWithURL:telURL]];
+        [self.window addSubview:callWebView];
+    }
     
 }
 

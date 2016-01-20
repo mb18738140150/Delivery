@@ -10,11 +10,16 @@
 
 @interface ShopView : UIView
 
+@property (nonatomic, copy)NSString * name;
+@property (nonatomic, copy)NSString * phone;
+
 @property (nonatomic, strong)UIImageView * addressImageView;
+@property (nonatomic, strong)UIButton * addressBT;
 @property (nonatomic, strong)UILabel * nameLabel;
 @property (nonatomic, strong)UILabel * phoneLabel;
 @property (nonatomic, strong)UILabel * payStateLabel;
 @property (nonatomic, strong)UILabel * addressLabel;
+@property (nonatomic, strong)UILabel * orderTimeLB;
 @property (nonatomic, strong)UIButton *phoneBT;
 
 @end

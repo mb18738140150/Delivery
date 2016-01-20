@@ -11,6 +11,7 @@
 #import "PersonCenterViewController.h"
 #import "OrderDetailController.h"
 #import "AppDelegate.h"
+#import "Mapcontroller.h"
 
 #import "PersonalDataViewController.h"
 
@@ -28,6 +29,9 @@
 #define SEGMENT_X self.view.width / 2 - SEGMENT_WIDTH / 2
 #define TOP_SPACE 10
 #define HEARDERVIEW_HEIGHT 4 + SEGMENT_HEIGHT
+
+#define ADDRESS_SHOP_TAG 1000
+#define ADDRESS_CUSTOM_TAG 2000
 
 @interface OrderViewController ()<UITableViewDataSource, UITableViewDelegate, HTTPPostDelegate>
 
@@ -138,7 +142,7 @@
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithImage:[[UIImage imageNamed:@"setting.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:self action:@selector(setupAction:)];
     
 //    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:@"back.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:self action:@selector(backLastVC:)];
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]init];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
 }
 
 - (void)addHeaderView
@@ -377,6 +381,12 @@
         [newOrderCell createSubView:tableView.bounds mealCoutn:(int)model.mealArray.count];
         newOrderCell.orderModel = model;
         
+        [newOrderCell.shopView.addressBT addTarget:self action:@selector(mapAction:event:) forControlEvents:UIControlEventTouchUpInside];
+        newOrderCell.shopView.addressBT.tag = ADDRESS_SHOP_TAG;
+        
+        [newOrderCell.customerView.addressBT addTarget:self action:@selector(mapAction:event:) forControlEvents:UIControlEventTouchUpInside];
+        newOrderCell.customerView.addressBT.tag = ADDRESS_CUSTOM_TAG;
+        
         [newOrderCell.totlePriceView.detailsButton addTarget:self action:@selector(orderDetais:event:) forControlEvents:UIControlEventTouchUpInside];
         [newOrderCell.totlePriceView.startDeliveryBT addTarget:self action:@selector(robAction:event:) forControlEvents:UIControlEventTouchUpInside];
         
@@ -387,6 +397,13 @@
         DeliveryingCell * deliveryingCell = [tableView dequeueReusableCellWithIdentifier:DELIVERYING_IDENTIFIER forIndexPath:indexPath];
         [deliveryingCell createSubView:tableView.bounds mealCoutn:model.mealArray.count];
         deliveryingCell.orderModel = model;
+        
+        [deliveryingCell.shopView.addressBT addTarget:self action:@selector(mapAction:event:) forControlEvents:UIControlEventTouchUpInside];
+        deliveryingCell.shopView.addressBT.tag = ADDRESS_SHOP_TAG;
+        
+        [deliveryingCell.customerView.addressBT addTarget:self action:@selector(mapAction:event:) forControlEvents:UIControlEventTouchUpInside];
+        deliveryingCell.customerView.addressBT.tag = ADDRESS_CUSTOM_TAG;
+        
         [deliveryingCell.totlePriceView.detailsButton addTarget:self action:@selector(orderDetais:event:) forControlEvents:UIControlEventTouchUpInside];
         [deliveryingCell.totlePriceView.startDeliveryBT addTarget:self action:@selector(deliveryAction:event:) forControlEvents:UIControlEventTouchUpInside];
         return deliveryingCell;
@@ -396,6 +413,12 @@
         DeliveriedCell * deliveriedCell = [tableView dequeueReusableCellWithIdentifier:DELIVERIED_IDENTIFIER forIndexPath:indexPath];
         [deliveriedCell createSubView:tableView.bounds mealCoutn:model.mealArray.count];
         deliveriedCell.orderModel = model;
+        [deliveriedCell.shopView.addressBT addTarget:self action:@selector(mapAction:event:) forControlEvents:UIControlEventTouchUpInside];
+        deliveriedCell.shopView.addressBT.tag = ADDRESS_SHOP_TAG;
+        
+        [deliveriedCell.customerView.addressBT addTarget:self action:@selector(mapAction:event:) forControlEvents:UIControlEventTouchUpInside];
+        deliveriedCell.customerView.addressBT.tag = ADDRESS_CUSTOM_TAG;
+        
         [deliveriedCell.totlePriceView.detailsButton addTarget:self action:@selector(orderDetais:event:) forControlEvents:UIControlEventTouchUpInside];
         return deliveriedCell;
     }
@@ -429,17 +452,81 @@
      OrderDetailController * pVC = [[OrderDetailController alloc]init];
      [self.navigationController pushViewController:pVC animated:YES];
      */
-    if ([tableView isEqual:_nOrderTableView]) {
-        OrderDetailController * pVC = [[OrderDetailController alloc]init];
-        [self.navigationController pushViewController:pVC animated:YES];
+}
+
+#pragma mark - 查看地址
+- (void)mapAction:(UIButton *)button event:(UIEvent *)event
+{
+    Mapcontroller * mapVC = [[Mapcontroller alloc]init];
+    
+    NSSet * touches = [event allTouches];
+    UITouch * touch = [touches anyObject];
+    if (self.segment.selectedSegmentIndex == 0) {
+        CGPoint currentPoint = [touch locationInView:self.nOrderTableView];
+        NSIndexPath * indexpath = [self.nOrderTableView indexPathForRowAtPoint:currentPoint];
+        if (indexpath) {
+            NewOrderModel * model = [self.nOrderArray objectAtIndex:indexpath.row];
+            if (button.tag == ADDRESS_CUSTOM_TAG) {
+                mapVC.address = model.customerAddress;
+                mapVC.name = model.customerName;
+                mapVC.phone = model.customerPhone;
+            }else
+            {
+                mapVC.address = model.busiAddress;
+                mapVC.name = model.busiName;
+                mapVC.phone = model.busiPhone;
+            }
+            NSLog(@"segment = %d, address = %@", self.segment.selectedSegmentIndex, mapVC.address);
+        }
+        
+    }else if (self.segment.selectedSegmentIndex == 1)
+    {
+        CGPoint currentPoint = [touch locationInView:self.deliveryingTableView];
+        NSIndexPath * indexpath = [self.deliveryingTableView indexPathForRowAtPoint:currentPoint];
+        if (indexpath) {
+            NewOrderModel * model = [self.deliveryingArray objectAtIndex:indexpath.row];
+            if (button.tag == ADDRESS_CUSTOM_TAG) {
+                mapVC.address = model.customerAddress;
+                mapVC.name = model.customerName;
+                mapVC.phone = model.customerPhone;
+            }else
+            {
+                mapVC.address = model.busiAddress;
+                mapVC.name = model.busiName;
+                mapVC.phone = model.busiPhone;
+            }
+
+             NSLog(@"segment = %d, address = %@", self.segment.selectedSegmentIndex, mapVC.address);
+        }
+    }else
+    {
+        CGPoint currentPoint = [touch locationInView:self.deliveriedTableView];
+        NSIndexPath * indexpath = [self.deliveriedTableView indexPathForRowAtPoint:currentPoint];
+        if (indexpath) {
+            NewOrderModel * model = [self.deliveriedArray objectAtIndex:indexpath.row];
+            if (button.tag == ADDRESS_CUSTOM_TAG) {
+                mapVC.address = model.customerAddress;
+                mapVC.name = model.customerName;
+                mapVC.phone = model.customerPhone;
+            }else
+            {
+                mapVC.address = model.busiAddress;
+                mapVC.name = model.busiName;
+                mapVC.phone = model.busiPhone;
+            }
+
+             NSLog(@"segment = %d, address = %@", self.segment.selectedSegmentIndex, mapVC.address);
+        }
     }
+    
+    [self.navigationController pushViewController:mapVC animated:YES];
 }
 
 #pragma mark - 查看详情
 - (void)orderDetais:(UIButton *)button event:(UIEvent *)event
 {
      OrderDetailController * pVC = [[OrderDetailController alloc]init];
-    PersonalDataViewController * vc = [[PersonalDataViewController alloc]init];
+//    PersonalDataViewController * vc = [[PersonalDataViewController alloc]init];
     
 
     

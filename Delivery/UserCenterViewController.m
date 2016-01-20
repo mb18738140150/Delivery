@@ -99,7 +99,7 @@
 
 - (void)personCenterAction:(UITapGestureRecognizer *)sender
 {
-    NSLog(@"此处应该跳转到个人中心界面了");
+//    NSLog(@"此处应该跳转到个人中心界面了");
     /*
      // 抽屉效果
      PersonCenterViewController * personVC = [[PersonCenterViewController alloc]init];

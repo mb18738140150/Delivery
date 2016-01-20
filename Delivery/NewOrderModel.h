@@ -13,6 +13,11 @@
 @property (nonatomic, copy)NSString * orderId;
 @property (nonatomic, copy)NSString * orderTime;
 @property (nonatomic, assign)int payType;
+// shop
+@property (nonatomic, copy)NSString * busiName;
+@property (nonatomic, copy)NSString * busiPhone;
+@property (nonatomic, copy)NSString * busiAddress;
+// custom
 @property (nonatomic, copy)NSString * customerName;
 @property (nonatomic, copy)NSString * customerPhone;
 @property (nonatomic, copy)NSString * hopeTime;

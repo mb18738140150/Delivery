@@ -10,7 +10,12 @@
 
 @interface CustomerView : UIView
 
+@property (nonatomic, copy)NSString * name;
+@property (nonatomic, copy)NSString * phone;
+
 @property (nonatomic, strong)UIImageView * addressImageView;
+@property (nonatomic, strong)UIButton * addressBT;
+
 @property (nonatomic, strong)UILabel * nameLabel;
 @property (nonatomic, strong)UILabel * phoneLabel;
 @property (nonatomic, strong)UIButton * phoneBT;

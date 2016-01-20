@@ -10,6 +10,7 @@
 #import "Meal.h"
 #import "MealPriceView.h"
 #import "TotlePriceView.h"
+#import "Mapcontroller.h"
 
 #define IMAGE_WEIDTH 30
 #define LABEL_HEIGHT 30
@@ -43,6 +44,7 @@
 
 @property (nonatomic, strong)TotlePriceView * totlePriceView;
 
+
 @end
 
 @implementation OrderDetailController
@@ -64,6 +66,13 @@
     self.addressImageView = [[UIImageView alloc]initWithFrame:CGRectMake(LEFT_SPACE, TOP_SPACE * 3, IMAGE_WEIDTH, IMAGE_WEIDTH)];
     _addressImageView.image = [UIImage imageNamed:@"location_order.png"];
     [totleView addSubview:_addressImageView];
+    
+    UIButton * addressBt = [UIButton buttonWithType:UIButtonTypeSystem];
+    addressBt.frame = _addressImageView.frame;
+    addressBt.backgroundColor = [UIColor clearColor];
+    [addressBt addTarget:self action:@selector(mapAction:) forControlEvents:UIControlEventTouchUpInside];
+    [totleView addSubview:addressBt];
+    
     
     self.nameLabel = [[UILabel alloc]initWithFrame:CGRectMake(_addressImageView.right + LEFT_SPACE, TOP_SPACE, 60, LABEL_HEIGHT)];
     _nameLabel.textAlignment = NSTextAlignmentCenter;
@@ -367,6 +376,15 @@
                                    };
         [self playPostWithDictionary:jsonDic];
     
+}
+
+#pragma mark - 查看地图
+- (void)mapAction:(UIButton *)button
+{
+    Mapcontroller * mapVC = [[Mapcontroller alloc]init];
+    mapVC.address = self.addressLabel.text;
+    NSLog(@"address = %@", mapVC.address);
+    [self.navigationController pushViewController:mapVC animated:YES];
 }
 
 #pragma mark - 拨打电话

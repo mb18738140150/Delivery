@@ -9,11 +9,14 @@
 #import <UIKit/UIKit.h>
 #import "NewOrderModel.h"
 #import "TotlePriceView.h"
+#import "CustomerView.h"
+#import "ShopView.h"
 @interface DeliveriedCell : UITableViewCell
 
+@property (nonatomic, strong)CustomerView * customerView;
 @property (nonatomic, strong)NewOrderModel * orderModel;
 @property (nonatomic, strong)TotlePriceView * totlePriceView;
-
+@property (nonatomic, strong)ShopView * shopView;
 
 - (void)createSubView:(CGRect)frame mealCoutn:(int)mealCount;
 + (CGFloat)cellHeightWithMealCount:(int)mealCount;

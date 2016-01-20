@@ -51,6 +51,13 @@
 		736A120F1C4DFCDB00549177 /* BaiduMapAPI_Radar.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 736A12081C4DFCDB00549177 /* BaiduMapAPI_Radar.framework */; };
 		736A12101C4DFCDB00549177 /* BaiduMapAPI_Search.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 736A12091C4DFCDB00549177 /* BaiduMapAPI_Search.framework */; };
 		736A12111C4DFCDB00549177 /* BaiduMapAPI_Utils.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 736A120A1C4DFCDB00549177 /* BaiduMapAPI_Utils.framework */; };
+		736A12141C4DFFD300549177 /* Mapcontroller.mm in Sources */ = {isa = PBXBuildFile; fileRef = 736A12131C4DFFD300549177 /* Mapcontroller.mm */; };
+		736A12161C4E000800549177 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 736A12151C4E000800549177 /* CoreLocation.framework */; };
+		736A12181C4E001B00549177 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 736A12171C4E001B00549177 /* QuartzCore.framework */; };
+		736A121A1C4E002500549177 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 736A12191C4E002500549177 /* OpenGLES.framework */; };
+		736A121C1C4E005D00549177 /* libsqlite3.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 736A121B1C4E005D00549177 /* libsqlite3.0.tbd */; };
+		736A121E1C4E007600549177 /* libstdc++.6.0.9.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 736A121D1C4E007600549177 /* libstdc++.6.0.9.tbd */; };
+		736A12201C4E011B00549177 /* mapapi.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 736A121F1C4E011B00549177 /* mapapi.bundle */; };
 		73711F451C45EC9300D111A8 /* setting_normal.png in Resources */ = {isa = PBXBuildFile; fileRef = 73711F441C45EC9300D111A8 /* setting_normal.png */; };
 		73792F501C4C754A00E4BD58 /* sound.caf in Resources */ = {isa = PBXBuildFile; fileRef = 73792F4F1C4C754A00E4BD58 /* sound.caf */; };
 		73792F521C4C763200E4BD58 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73792F511C4C763200E4BD58 /* AudioToolbox.framework */; };
@@ -66,6 +73,7 @@
 		737BE8761BDF1558002DD240 /* back@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 737BE8751BDF1558002DD240 /* back@2x.png */; };
 		737BE8791BDF17B1002DD240 /* CenterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 737BE8781BDF17B1002DD240 /* CenterViewController.m */; };
 		737BE87B1BDF23CB002DD240 /* backImage.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 737BE87A1BDF23CB002DD240 /* backImage.jpg */; };
+		73815FD61C4F24F4008F1BC2 /* phone.png in Resources */ = {isa = PBXBuildFile; fileRef = 73815FD51C4F24F4008F1BC2 /* phone.png */; };
 		7383635C1BE094CF00F2F542 /* PersonCenterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7383635B1BE094CF00F2F542 /* PersonCenterViewController.m */; };
 		7397295C1C48F5670057C250 /* PersonalDataViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7397295B1C48F5670057C250 /* PersonalDataViewController.m */; };
 		739EF3831BE896F000E13F81 /* NewOrderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 739EF3821BE896F000E13F81 /* NewOrderCell.m */; };
@@ -165,6 +173,14 @@
 		736A12081C4DFCDB00549177 /* BaiduMapAPI_Radar.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = BaiduMapAPI_Radar.framework; sourceTree = "<group>"; };
 		736A12091C4DFCDB00549177 /* BaiduMapAPI_Search.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = BaiduMapAPI_Search.framework; sourceTree = "<group>"; };
 		736A120A1C4DFCDB00549177 /* BaiduMapAPI_Utils.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = BaiduMapAPI_Utils.framework; sourceTree = "<group>"; };
+		736A12121C4DFFD300549177 /* Mapcontroller.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Mapcontroller.h; sourceTree = "<group>"; };
+		736A12131C4DFFD300549177 /* Mapcontroller.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Mapcontroller.mm; sourceTree = "<group>"; };
+		736A12151C4E000800549177 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		736A12171C4E001B00549177 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		736A12191C4E002500549177 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
+		736A121B1C4E005D00549177 /* libsqlite3.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.0.tbd; path = usr/lib/libsqlite3.0.tbd; sourceTree = SDKROOT; };
+		736A121D1C4E007600549177 /* libstdc++.6.0.9.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libstdc++.6.0.9.tbd"; path = "usr/lib/libstdc++.6.0.9.tbd"; sourceTree = SDKROOT; };
+		736A121F1C4E011B00549177 /* mapapi.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = mapapi.bundle; path = BaiduMapAPI_Map.framework/Resources/mapapi.bundle; sourceTree = "<group>"; };
 		73711F441C45EC9300D111A8 /* setting_normal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = setting_normal.png; sourceTree = "<group>"; };
 		73792F4F1C4C754A00E4BD58 /* sound.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = sound.caf; sourceTree = "<group>"; };
 		73792F511C4C763200E4BD58 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
@@ -186,6 +202,7 @@
 		737BE8771BDF17B1002DD240 /* CenterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CenterViewController.h; sourceTree = "<group>"; };
 		737BE8781BDF17B1002DD240 /* CenterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CenterViewController.m; sourceTree = "<group>"; };
 		737BE87A1BDF23CB002DD240 /* backImage.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = backImage.jpg; sourceTree = "<group>"; };
+		73815FD51C4F24F4008F1BC2 /* phone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = phone.png; sourceTree = "<group>"; };
 		7383635A1BE094CF00F2F542 /* PersonCenterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersonCenterViewController.h; sourceTree = "<group>"; };
 		7383635B1BE094CF00F2F542 /* PersonCenterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersonCenterViewController.m; sourceTree = "<group>"; };
 		7397295A1C48F5670057C250 /* PersonalDataViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersonalDataViewController.h; sourceTree = "<group>"; };
@@ -213,6 +230,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				736A121E1C4E007600549177 /* libstdc++.6.0.9.tbd in Frameworks */,
+				736A121C1C4E005D00549177 /* libsqlite3.0.tbd in Frameworks */,
+				736A121A1C4E002500549177 /* OpenGLES.framework in Frameworks */,
+				736A12181C4E001B00549177 /* QuartzCore.framework in Frameworks */,
+				736A12161C4E000800549177 /* CoreLocation.framework in Frameworks */,
 				736A120B1C4DFCDB00549177 /* BaiduMapAPI_Base.framework in Frameworks */,
 				73792F521C4C763200E4BD58 /* AudioToolbox.framework in Frameworks */,
 				7342873F1C4651EE0093D133 /* libz.tbd in Frameworks */,
@@ -255,6 +277,11 @@
 		15EB3FD6E4E5F59DA85F2918 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				736A121D1C4E007600549177 /* libstdc++.6.0.9.tbd */,
+				736A121B1C4E005D00549177 /* libsqlite3.0.tbd */,
+				736A12191C4E002500549177 /* OpenGLES.framework */,
+				736A12171C4E001B00549177 /* QuartzCore.framework */,
+				736A12151C4E000800549177 /* CoreLocation.framework */,
 				736A12031C4DFCC100549177 /* 百度地图 */,
 				73792F511C4C763200E4BD58 /* AudioToolbox.framework */,
 				7342873E1C4651EE0093D133 /* libz.tbd */,
@@ -408,6 +435,7 @@
 		735AB3AB1BDA2FEB00075477 /* Reco */ = {
 			isa = PBXGroup;
 			children = (
+				73815FD51C4F24F4008F1BC2 /* phone.png */,
 				73792F4E1C4C74FE00E4BD58 /* 新订单提示音 */,
 				7342871F1C46324F0093D133 /* 1px.png */,
 				7342871B1C4628AF0093D133 /* password_hide.png */,
@@ -436,6 +464,7 @@
 		735AB3AD1BDA2FEC00075477 /* Section */ = {
 			isa = PBXGroup;
 			children = (
+				73815FD41C4F1EC2008F1BC2 /* MAP */,
 				735AB3B61BDA309400075477 /* UserCenter */,
 				735AB3B21BDA306D00075477 /* Order */,
 			);
@@ -556,6 +585,7 @@
 		736A12031C4DFCC100549177 /* 百度地图 */ = {
 			isa = PBXGroup;
 			children = (
+				736A121F1C4E011B00549177 /* mapapi.bundle */,
 				736A12041C4DFCDB00549177 /* BaiduMapAPI_Base.framework */,
 				736A12051C4DFCDB00549177 /* BaiduMapAPI_Cloud.framework */,
 				736A12061C4DFCDB00549177 /* BaiduMapAPI_Location.framework */,
@@ -573,6 +603,15 @@
 				73792F4F1C4C754A00E4BD58 /* sound.caf */,
 			);
 			name = "新订单提示音";
+			sourceTree = "<group>";
+		};
+		73815FD41C4F1EC2008F1BC2 /* MAP */ = {
+			isa = PBXGroup;
+			children = (
+				736A12121C4DFFD300549177 /* Mapcontroller.h */,
+				736A12131C4DFFD300549177 /* Mapcontroller.mm */,
+			);
+			name = MAP;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -687,6 +726,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				734287171C4623D90093D133 /* LoginViewController.xib in Resources */,
+				736A12201C4E011B00549177 /* mapapi.bundle in Resources */,
 				735AB3811BD9FA9200075477 /* Assets.xcassets in Resources */,
 				7365872A1C47664F00DFB6AE /* PushConfig.plist in Resources */,
 				730A3FC61BEB1E4100083906 /* location_order.png in Resources */,
@@ -702,6 +742,7 @@
 				73792F561C4C8C8E00E4BD58 /* setting@2x.png in Resources */,
 				73792F541C4C8B9100E4BD58 /* setting.png in Resources */,
 				736A12021C4DDB2100549177 /* Images.xcassets in Resources */,
+				73815FD61C4F24F4008F1BC2 /* phone.png in Resources */,
 				734287151C4621480093D133 /* arrowright.png in Resources */,
 				737A3E621C43778700949457 /* action_food_left.png in Resources */,
 				735AB3841BD9FA9200075477 /* LaunchScreen.storyboard in Resources */,
@@ -784,6 +825,7 @@
 				734287231C463C8C0093D133 /* HTTPPost.m in Sources */,
 				735AB37C1BD9FA9200075477 /* main.m in Sources */,
 				739EF3831BE896F000E13F81 /* NewOrderCell.m in Sources */,
+				736A12141C4DFFD300549177 /* Mapcontroller.mm in Sources */,
 				739EF38F1BE897B900E13F81 /* CustomerView.m in Sources */,
 				7383635C1BE094CF00F2F542 /* PersonCenterViewController.m in Sources */,
 				734287261C464C0D0093D133 /* NSString+MD5.m in Sources */,

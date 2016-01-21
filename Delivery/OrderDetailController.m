@@ -61,6 +61,7 @@
     
     UIView * totleView = [[UIView alloc]initWithFrame:CGRectMake(0, TOP_SPACE, self.view.width, 100)];
     totleView.backgroundColor = [UIColor whiteColor];
+    totleView.tag = 10000;
     [_scrollview addSubview:totleView];
     
     self.addressImageView = [[UIImageView alloc]initWithFrame:CGRectMake(LEFT_SPACE, TOP_SPACE * 3, IMAGE_WEIDTH, IMAGE_WEIDTH)];
@@ -80,11 +81,12 @@
     _nameLabel.text = @"集散地附近吧";
     [totleView addSubview:_nameLabel];
     
-    UIView * line1 = [[UIView alloc]initWithFrame:CGRectMake(_nameLabel.right, _nameLabel.top + 5, 1, 20)];
+    UIView * line1 = [[UIView alloc]initWithFrame:CGRectMake(_nameLabel.right, 15, 1, 20)];
     line1.backgroundColor = [UIColor grayColor];
+    line1.tag = 10001;
     [totleView addSubview:line1];
     
-    self.phoneLabel = [[UILabel alloc]initWithFrame:CGRectMake(line1.right, TOP_SPACE, 90, LABEL_HEIGHT)];
+    self.phoneLabel = [[UILabel alloc]initWithFrame:CGRectMake(_nameLabel.right + 1, TOP_SPACE, 90, LABEL_HEIGHT)];
     _phoneLabel.text = @"18734890150";
     _phoneLabel.textAlignment = NSTextAlignmentCenter;
     _phoneLabel.adjustsFontSizeToFitWidth = YES;
@@ -138,6 +140,8 @@
     self.remarkLabel = [[UILabel alloc]initWithFrame:CGRectMake(remarkLB.left + LEFT_SPACE, remarkLB.bottom + TOP_SPACE, self.view.width - 3 * LEFT_SPACE - IMAGE_WEIDTH, LABEL_HEIGHT)];
     _remarkLabel.textColor = [UIColor grayColor];
     _remarkLabel.text = @"要超辣的，拉到死的可敬的奶粉进副科级";
+    _remarkLabel.numberOfLines = 0;
+    _remarkLabel.adjustsFontSizeToFitWidth = YES;
     [totleView addSubview:_remarkLabel];
     totleView.height = _remarkLabel.bottom + TOP_SPACE;
     
@@ -235,7 +239,8 @@
                                @"Command":@9,
                                @"UserId":[UserInfo shareUserInfo].userId,
                                @"OrderId":self.orderID,
-                               @"BusiId":[UserInfo shareUserInfo].BusiId
+                               @"BusiId":[UserInfo shareUserInfo].BusiId,
+                               @"IsAgent":@([UserInfo shareUserInfo].isAgent)
                                };
     [self playPostWithDictionary:jsonDic];
 
@@ -272,6 +277,18 @@
             
             self.nameLabel.text = [NSString stringWithFormat:@"%@", [dic objectForKey:@"CustomerName"]];
             self.phoneLabel.text = [NSString stringWithFormat:@"%@", [dic objectForKey:@"CustomerPhone"]];
+            
+            NSDictionary * attributes = @{NSFontAttributeName:[UIFont systemFontOfSize:16]};
+            CGRect nameRect = [self.nameLabel.text boundingRectWithSize:CGSizeMake(MAXFLOAT, self.nameLabel.height) options:NSStringDrawingTruncatesLastVisibleLine attributes:attributes context:nil];
+            self.nameLabel.frame = CGRectMake(LEFT_SPACE + _addressImageView.right, TOP_SPACE, nameRect.size.width, LABEL_HEIGHT);
+            UIView * totleView = [_scrollview viewWithTag:10000];
+            UIView * line = [totleView viewWithTag:10001];
+            line.frame = CGRectMake(_nameLabel.right + 2, 15, 1, 20);
+            
+            CGRect phoneRect = [self.phoneLabel.text boundingRectWithSize:CGSizeMake(MAXFLOAT, self.phoneLabel.height) options:NSStringDrawingTruncatesLastVisibleLine attributes:attributes context:nil];
+            self.phoneLabel.frame = CGRectMake(line.right + 2, TOP_SPACE, phoneRect.size.width, LABEL_HEIGHT);
+            
+            
             if ([[dic objectForKey:@"PayType"] intValue] == 1) {
                 self.payStateLabel.text = @"在线支付";
                 tipView.hidden = YES;
@@ -382,6 +399,8 @@
 - (void)mapAction:(UIButton *)button
 {
     Mapcontroller * mapVC = [[Mapcontroller alloc]init];
+    mapVC.name = self.nameLabel.text;
+    mapVC.phone = self.phoneLabel.text;
     mapVC.address = self.addressLabel.text;
     NSLog(@"address = %@", mapVC.address);
     [self.navigationController pushViewController:mapVC animated:YES];

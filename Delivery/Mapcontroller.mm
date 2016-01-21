@@ -11,11 +11,11 @@
 
 #define TOP_SPACE 10
 
-@interface Mapcontroller ()<BMKMapViewDelegate, BMKGeoCodeSearchDelegate>
+@interface Mapcontroller ()<BMKMapViewDelegate, BMKGeoCodeSearchDelegate, BMKLocationServiceDelegate>
 
 @property (nonatomic, strong)BMKMapView * mapView;
 @property (nonatomic, strong)BMKGeoCodeSearch * geoCodeSearch;
-
+@property (nonatomic, strong)BMKLocationService * locService;
 
 // 客户信息
 @property (nonatomic, strong)UILabel * namelabel;
@@ -38,7 +38,7 @@
 //    _mapView.height = self.view.height - 70;
     _mapView.delegate = self;
     _mapView.zoomLevel = 18.5;
-    _mapView.userTrackingMode = BMKUserTrackingModeFollow;
+    _mapView.userTrackingMode = BMKUserTrackingModeNone;
     _mapView.showMapScaleBar = YES;
     [_mapView setTrafficEnabled:YES];
     [_mapView setMapType:BMKMapTypeStandard];
@@ -57,6 +57,9 @@
     {
         NSLog(@"geo检索发送失败");
     }
+    
+    self.locService = [[BMKLocationService alloc]init];
+    _locService.delegate = self;
     
     UIView * bottomView = [[UIView alloc]init];
     bottomView.frame = CGRectMake(0, _mapView.bottom, self.view.width, 70);
@@ -101,6 +104,7 @@
     [_mapView viewWillAppear];
     _mapView.delegate = self;
     _geoCodeSearch.delegate = self;
+    _locService.delegate = self;
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -108,6 +112,7 @@
     [_mapView viewWillDisappear];
     _mapView.delegate = nil;
     _geoCodeSearch.delegate = nil;
+    _locService.delegate = nil;
 }
 
 - (void)backLastVC:(id)sender
@@ -121,13 +126,58 @@
     [_mapView removeAnnotations:array];
     array = [NSArray arrayWithArray:_mapView.overlays];
     [_mapView removeOverlays:array];
+    
+    NSLog(@"error = %u", error);
+    
+    if (error == 5) {
+        NSLog(@"*****没找到检索结果");
+        
+        UIAlertController * alertController = [UIAlertController alertControllerWithTitle:@"提示" message:@"对不起，暂未搜索到指定位置，系统默认显示为当前位置" preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction * cancelAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleCancel handler:nil];
+        [alertController addAction:cancelAction];
+        
+        [self presentViewController:alertController animated:YES completion:nil];
+        
+        // 没找到检索结果，添加配送员的定位位置
+        [_locService startUserLocationService];
+        _mapView.showsUserLocation = NO;
+        _mapView.userTrackingMode = BMKUserTrackingModeNone;
+        _mapView.showsUserLocation = YES;
+    }
+    
     if (error == 0) {
         // 检索成功添加标注
+        NSLog(@"*****检索成功");
         BMKPointAnnotation * item = [[BMKPointAnnotation alloc]init];
         item.coordinate = result.location;
         item.title = result.address;
         [_mapView addAnnotation:item];
         _mapView.centerCoordinate = result.location;
+    }
+}
+
+/**
+ *用户位置更新后，会调用此函数
+ *@param userLocation 新的用户位置
+ */
+
+- (void)didUpdateBMKUserLocation:(BMKUserLocation *)userLocation
+{
+    if (userLocation.location != nil) {
+        NSArray * array = [NSArray arrayWithArray:_mapView.annotations];
+        [_mapView removeAnnotations:array];
+        array = [NSArray arrayWithArray:_mapView.overlays];
+        [_mapView removeOverlays:array];
+        
+        [_mapView updateLocationData:userLocation];
+        // 添加一个pointAnnotation
+        BMKPointAnnotation * annotation = [[BMKPointAnnotation alloc]init];
+        annotation.coordinate = userLocation.location.coordinate;
+        annotation.title = userLocation.title;
+        
+        [_mapView addAnnotation:annotation];
+        _mapView.centerCoordinate = userLocation.location.coordinate;
+        
     }
 }
 

@@ -12,14 +12,14 @@
 /**
  *  测试库接口
  */
-#define POST_URL @"http://ceshi.p.vlifee.com/delivery_getdata.ashx?md5="
+//#define POST_URL @"http://ceshi.p.vlifee.com/delivery_getdata.ashx?md5="
 
 /**
  *  正式库接口
  *
  *  @return urlString
  */
-//#define POST_URL @"http://p.vlifee.com/delivery_getdata.ashx?md5="
+#define POST_URL @"http://p.vlifee.com/delivery_getdata.ashx?md5="
 
 #import "UIViewAdditions.h"
 #import "HTTPPost.h"

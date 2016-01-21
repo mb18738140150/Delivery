@@ -59,6 +59,7 @@
 		736A121E1C4E007600549177 /* libstdc++.6.0.9.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 736A121D1C4E007600549177 /* libstdc++.6.0.9.tbd */; };
 		736A12201C4E011B00549177 /* mapapi.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 736A121F1C4E011B00549177 /* mapapi.bundle */; };
 		73711F451C45EC9300D111A8 /* setting_normal.png in Resources */ = {isa = PBXBuildFile; fileRef = 73711F441C45EC9300D111A8 /* setting_normal.png */; };
+		7374587B1C508AA500C37760 /* Icon-80.png in Resources */ = {isa = PBXBuildFile; fileRef = 7374587A1C508AA500C37760 /* Icon-80.png */; };
 		73792F501C4C754A00E4BD58 /* sound.caf in Resources */ = {isa = PBXBuildFile; fileRef = 73792F4F1C4C754A00E4BD58 /* sound.caf */; };
 		73792F521C4C763200E4BD58 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73792F511C4C763200E4BD58 /* AudioToolbox.framework */; };
 		73792F541C4C8B9100E4BD58 /* setting.png in Resources */ = {isa = PBXBuildFile; fileRef = 73792F531C4C8B9100E4BD58 /* setting.png */; };
@@ -182,6 +183,7 @@
 		736A121D1C4E007600549177 /* libstdc++.6.0.9.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libstdc++.6.0.9.tbd"; path = "usr/lib/libstdc++.6.0.9.tbd"; sourceTree = SDKROOT; };
 		736A121F1C4E011B00549177 /* mapapi.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = mapapi.bundle; path = BaiduMapAPI_Map.framework/Resources/mapapi.bundle; sourceTree = "<group>"; };
 		73711F441C45EC9300D111A8 /* setting_normal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = setting_normal.png; sourceTree = "<group>"; };
+		7374587A1C508AA500C37760 /* Icon-80.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-80.png"; sourceTree = "<group>"; };
 		73792F4F1C4C754A00E4BD58 /* sound.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = sound.caf; sourceTree = "<group>"; };
 		73792F511C4C763200E4BD58 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		73792F531C4C8B9100E4BD58 /* setting.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = setting.png; sourceTree = "<group>"; };
@@ -435,6 +437,7 @@
 		735AB3AB1BDA2FEB00075477 /* Reco */ = {
 			isa = PBXGroup;
 			children = (
+				7374587A1C508AA500C37760 /* Icon-80.png */,
 				73815FD51C4F24F4008F1BC2 /* phone.png */,
 				73792F4E1C4C74FE00E4BD58 /* 新订单提示音 */,
 				7342871F1C46324F0093D133 /* 1px.png */,
@@ -735,6 +738,7 @@
 				7342871D1C4628AF0093D133 /* password_hide.png in Resources */,
 				73792F501C4C754A00E4BD58 /* sound.caf in Resources */,
 				737BE8761BDF1558002DD240 /* back@2x.png in Resources */,
+				7374587B1C508AA500C37760 /* Icon-80.png in Resources */,
 				73711F451C45EC9300D111A8 /* setting_normal.png in Resources */,
 				73792F581C4C8EA600E4BD58 /* remark_order.png in Resources */,
 				737BE87B1BDF23CB002DD240 /* backImage.jpg in Resources */,

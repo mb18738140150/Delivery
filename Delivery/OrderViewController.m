@@ -121,8 +121,8 @@
     _deliveryingPag = 1;
     self.deliveryingTableView.header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(headerRereshing)];
     self.deliveryingTableView.footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(footerRereshing)];
-    _deliveryingTableView.tableFooterView = [[UIView alloc]init];
     [_deliveryingTableView registerClass:[DeliveryingCell class] forCellReuseIdentifier:DELIVERYING_IDENTIFIER];
+    _deliveryingTableView.tableFooterView = [[UIView alloc]init];
     self.deliveryingTableView.hidden = YES;
     
     // 已配送订单
@@ -188,17 +188,19 @@
 {
     
     if (self.segment.selectedSegmentIndex == 0) {
-        _orderState = 1;
+        [self.nOrderTableView.header endRefreshing];
         _nOrderPag = 1;
-        [self.nOrderTableView.footer resetNoMoreData];
+        _orderState = 1;
         [self downloadDataWithCommand:@3 page:_nOrderPag count:10 orderState:1];
     }else if (self.segment.selectedSegmentIndex == 1)
     {
+        [self.deliveryingTableView.header endRefreshing];
         _deliveryingPag = 1;
         _orderState = 2;
         [self downloadDataWithCommand:@3 page:_deliveryingPag count:10 orderState:2];
     }else
     {
+        [self.deliveriedTableView.header endRefreshing];
         _deliveriedPag = 1;
         _orderState = 3;
         [self downloadDataWithCommand:@3 page:_deliveriedPag count:10 orderState:3];
@@ -243,7 +245,8 @@
                                @"CurPage":[NSNumber numberWithInt:page],
                                @"CurCount":[NSNumber numberWithInt:count],
                                @"BusiId":[UserInfo shareUserInfo].BusiId,
-                               @"OrderState":[NSNumber numberWithInt:state]
+                               @"OrderState":[NSNumber numberWithInt:state],
+                               @"IsAgent":@([UserInfo shareUserInfo].isAgent)
                                };
     [self playPostWithDictionary:jsonDic];
 }
@@ -264,7 +267,7 @@
 - (void)refresh:(id)data
 {
     [SVProgressHUD dismiss];
-    NSLog(@"data = %@", [data description]);
+//    NSLog(@"data = %@", [data description]);
     if ([[data objectForKey:@"Result"] isEqualToNumber:@1]) {
         NSNumber * command = [data objectForKey:@"Command"];
         if ([command isEqualToNumber:@10003]) {
@@ -286,9 +289,11 @@
             {
                 if (_deliveryingPag == 1) {
                     [self.deliveryingArray removeAllObjects];
+                    [self.deliveryingTableView.header endRefreshing];
+                }else
+                {
+                    [self.deliveryingTableView.footer endRefreshing];
                 }
-                [self.deliveryingTableView.header endRefreshing];
-                [self.deliveryingTableView.footer endRefreshing];
                 self.deliveryingCount = [[data objectForKey:@"AllCount"] intValue];
                 NSArray * array = [data objectForKey:@"OrderList"];
                 for (NSDictionary * dic in array) {
@@ -476,7 +481,7 @@
                 mapVC.name = model.busiName;
                 mapVC.phone = model.busiPhone;
             }
-            NSLog(@"segment = %d, address = %@", self.segment.selectedSegmentIndex, mapVC.address);
+//            NSLog(@"segment = %d, address = %@", self.segment.selectedSegmentIndex, mapVC.address);
         }
         
     }else if (self.segment.selectedSegmentIndex == 1)
@@ -496,7 +501,7 @@
                 mapVC.phone = model.busiPhone;
             }
 
-             NSLog(@"segment = %d, address = %@", self.segment.selectedSegmentIndex, mapVC.address);
+//             NSLog(@"segment = %d, address = %@", self.segment.selectedSegmentIndex, mapVC.address);
         }
     }else
     {
@@ -515,7 +520,7 @@
                 mapVC.phone = model.busiPhone;
             }
 
-             NSLog(@"segment = %d, address = %@", self.segment.selectedSegmentIndex, mapVC.address);
+//             NSLog(@"segment = %d, address = %@", self.segment.selectedSegmentIndex, mapVC.address);
         }
     }
     
@@ -561,7 +566,7 @@
         }
         
     }
-    NSLog(@"pVC.orderID = %@", pVC.orderID);
+//    NSLog(@"pVC.orderID = %@", pVC.orderID);
     [self.navigationController pushViewController:pVC animated:YES];
     
 }
@@ -636,6 +641,7 @@
     
 
 }
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

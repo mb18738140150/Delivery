@@ -117,9 +117,6 @@
     _payStateLabel.text = @"餐到付款";
     _payStateLabel.textColor = MAIN_COLORE;
     [self addSubview:_payStateLabel];
-
-    
-    NSLog(@"dubf");
     
 }
 

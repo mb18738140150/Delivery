@@ -206,6 +206,7 @@
         [UserInfo shareUserInfo].userId = [dataDic objectForKey:@"UserId"];
         [UserInfo shareUserInfo].userName = self.nameTextFiled.text;
         [UserInfo shareUserInfo].BusiId =[dataDic objectForKey:@"BusiId"];
+        [UserInfo shareUserInfo].isAgent = [[dataDic objectForKey:@"IsAgent"] intValue];
         [[NSUserDefaults standardUserDefaults] setValue:self.passwordTextfiled.text forKey:@"Pwd"];//记录登录密码
         [[NSUserDefaults standardUserDefaults] setValue:self.nameTextFiled.text forKey:@"UserName"];
         
@@ -256,6 +257,6 @@
 
 
 - (IBAction)registeraction:(id)sender {
-    NSLog(@"注册");
+//    NSLog(@"注册");
 }
 @end

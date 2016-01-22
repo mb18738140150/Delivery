@@ -89,7 +89,7 @@
                     };
     
     [self playPostWithDictionary:jsonDic];
-
+    [SVProgressHUD showWithStatus:@"正在加载..." maskType:SVProgressHUDMaskTypeBlack];
 }
 
 - (void)backLastVC:(UIBarButtonItem * )sender
@@ -187,6 +187,7 @@
 - (void)refresh:(id)data
 {
     NSLog(@"data = %@", [data description]);
+    [SVProgressHUD dismiss];
     if ([[data objectForKey:@"Result"] isEqualToNumber:@1]) {
         NSNumber * command = [data objectForKey:@"Command"];
         if ([command isEqualToNumber:@10002]) {

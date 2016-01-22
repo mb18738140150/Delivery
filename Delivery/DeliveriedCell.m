@@ -107,7 +107,7 @@ static int shopHeight = 0;
         self.shopView.payStateLabel.text = @"在线支付";
     }else
     {
-        self.shopView.payStateLabel.text = @"餐到付款";
+        self.shopView.payStateLabel.text = @"现金支付";
     }
     
     self.customerView.name = orderModel.customerName;

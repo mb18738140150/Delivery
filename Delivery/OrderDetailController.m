@@ -105,7 +105,7 @@
     _payStateLabel.layer.borderWidth = 1;
     _payStateLabel.layer.borderColor = [UIColor grayColor].CGColor;
     _payStateLabel.textAlignment = NSTextAlignmentCenter;
-    _payStateLabel.text = @"餐到付款";
+    _payStateLabel.text = @"现金支付";
     _payStateLabel.textColor = MAIN_COLORE;
     [totleView addSubview:_payStateLabel];
     
@@ -219,7 +219,7 @@
     
     self.tiplabel = [[UILabel alloc]initWithFrame:CGRectMake(tipLabel.right, TOP_SPACE, self.view.width - 2 * LEFT_SPACE - tipLabel.width, 30)];
     _tiplabel.textColor = [UIColor grayColor];
-    _tiplabel.text = @"此订单支付方式为餐到付款，别忘记收款哦！";
+    _tiplabel.text = @"此订单支付方式为现金支付，别忘记收款哦！";
     _tiplabel.adjustsFontSizeToFitWidth = YES;
     [tipView addSubview:_tiplabel];
     
@@ -243,7 +243,7 @@
                                @"IsAgent":@([UserInfo shareUserInfo].isAgent)
                                };
     [self playPostWithDictionary:jsonDic];
-
+    [SVProgressHUD showWithStatus:@"正在加载..." maskType:SVProgressHUDMaskTypeBlack];
     
     // Do any additional setup after loading the view.
 }
@@ -266,6 +266,7 @@
 - (void)refresh:(id)data
 {
     NSLog(@"**%@", [data description]);
+    [SVProgressHUD dismiss];
     if ([[data objectForKey:@"Result"] isEqualToNumber:@1]) {
         NSNumber * command = [data objectForKey:@"Command"];
         if ([command isEqualToNumber:@10009]) {
@@ -294,7 +295,7 @@
                 tipView.hidden = YES;
             }else
             {
-                self.payStateLabel.text = @"餐到付款";
+                self.payStateLabel.text = @"现金支付";
             }
             
             self.addressLabel.text = [NSString stringWithFormat:@"%@", [dic objectForKey:@"CustomerAddress"]];
@@ -349,13 +350,14 @@
             UIAlertView * alertView = [[UIAlertView alloc] initWithTitle:@"提示" message:@"抢单成功" delegate:self cancelButtonTitle:nil otherButtonTitles:nil, nil];
             [alertView show];
             [alertView performSelector:@selector(dismissAnimated:) withObject:nil afterDelay:1.0];
+            [self.navigationController popViewControllerAnimated:YES];
             
         }else if ([command isEqualToNumber:@10007])
         {
             UIAlertView * alertView = [[UIAlertView alloc] initWithTitle:@"提示" message:@"开始配送成功" delegate:self cancelButtonTitle:nil otherButtonTitles:nil, nil];
             [alertView show];
             [alertView performSelector:@selector(dismissAnimated:) withObject:nil afterDelay:1.0];
-            
+            [self.navigationController popViewControllerAnimated:YES];
         }
         
         

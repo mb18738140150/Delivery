@@ -165,22 +165,19 @@
         self.nOrderTableView.hidden = NO;
         self.deliveryingTableView.hidden = YES;
         self.deliveriedTableView.hidden = YES;
-        _orderState = 1;
-        [self downloadDataWithCommand:@3 page:_nOrderPag count:10 orderState:1];
+        [self.nOrderTableView.header beginRefreshing];
     }else if (segment.selectedSegmentIndex == 1)
     {
         self.nOrderTableView.hidden = YES;
         self.deliveryingTableView.hidden = NO;
         self.deliveriedTableView.hidden = YES;
-        _orderState = 2;
-        [self downloadDataWithCommand:@3 page:_nOrderPag count:10 orderState:2];
+        [self.deliveryingTableView.header beginRefreshing];
     }else
     {
         self.nOrderTableView.hidden = YES;
         self.deliveryingTableView.hidden = YES;
         self.deliveriedTableView.hidden = NO;
-        _orderState = 3;
-        [self downloadDataWithCommand:@3 page:_nOrderPag count:10 orderState:3];
+        [self.deliveriedTableView.header beginRefreshing];
     }
 }
 #pragma mark - 下拉刷新，上拉加载
@@ -621,7 +618,44 @@
      [delegate.centerVC setupGesture];
      }
      */
+    NSLog(@"***");
+//    [UIView animateWithDuration:2 animations:^{
+//        
+//    } completion:^(BOOL finished) {
+//        
+//        
+//        if (self.segment.selectedSegmentIndex == 0) {
+//            [self.nOrderTableView.header beginRefreshing];
+//        }else if (self.segment.selectedSegmentIndex == 1)
+//        {
+//            [self.deliveryingTableView.header beginRefreshing];
+//            
+//        }else
+//        {
+//            [self.deliveriedTableView.header beginRefreshing];
+//            
+//        }
+//        
+//    }];
     
+    [self performSelector:@selector(pullrefresh) withObject:nil afterDelay:.35];
+    
+}
+
+- (void)pullrefresh
+{
+    NSLog(@"两秒以后*****");
+    if (self.segment.selectedSegmentIndex == 0) {
+        [self.nOrderTableView.header beginRefreshing];
+    }else if (self.segment.selectedSegmentIndex == 1)
+    {
+        [self.deliveryingTableView.header beginRefreshing];
+        
+    }else
+    {
+        [self.deliveriedTableView.header beginRefreshing];
+        
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -637,7 +671,6 @@
      
      }
     */
-    
     
 
 }

@@ -114,7 +114,7 @@
     _payStateLabel.layer.borderWidth = 1;
     _payStateLabel.layer.borderColor = [UIColor grayColor].CGColor;
     _payStateLabel.textAlignment = NSTextAlignmentCenter;
-    _payStateLabel.text = @"餐到付款";
+    _payStateLabel.text = @"现金支付";
     _payStateLabel.textColor = MAIN_COLORE;
     [self addSubview:_payStateLabel];
     

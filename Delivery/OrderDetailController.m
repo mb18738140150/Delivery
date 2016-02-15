@@ -219,7 +219,12 @@
     
     self.tiplabel = [[UILabel alloc]initWithFrame:CGRectMake(tipLabel.right, TOP_SPACE, self.view.width - 2 * LEFT_SPACE - tipLabel.width, 30)];
     _tiplabel.textColor = [UIColor grayColor];
-    _tiplabel.text = @"此订单支付方式为现金支付，别忘记收款哦！";
+    
+    NSString * contentstr = @"此订单支付方式为现金支付，别忘记收款哦！";
+    NSMutableAttributedString * str = [[NSMutableAttributedString alloc]initWithString:contentstr];
+    [str addAttributes:@{NSForegroundColorAttributeName:[UIColor redColor]} range:NSMakeRange(8, 4)];
+    
+    _tiplabel.attributedText = str;
     _tiplabel.adjustsFontSizeToFitWidth = YES;
     [tipView addSubview:_tiplabel];
     
@@ -372,7 +377,17 @@
     
     
 }
-
+- (void)failWithError:(NSError *)error
+{
+    [SVProgressHUD dismiss];
+    //    AccountViewCell * cell = (AccountViewCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+    //    cell.isBusinessSW.on = !cell.isBusinessSW.isOn;
+    //    [self.tableView headerEndRefreshing];
+    UIAlertView * alertV = [[UIAlertView alloc] initWithTitle:@"提示" message:@"连接服务器失败" delegate:nil cancelButtonTitle:nil otherButtonTitles:nil, nil];
+    [alertV show];
+    [alertV performSelector:@selector(dismiss) withObject:nil afterDelay:1.5];
+    NSLog(@"%@", error);
+}
 - (void)robAction:(UIButton *)button
 {
             NSDictionary * jsonDic = @{

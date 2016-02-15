@@ -217,14 +217,39 @@
         [self.navigationController pushViewController:orderVC animated:YES];
     }else
     {
-        UIAlertController * nameController = [UIAlertController alertControllerWithTitle:@"提示" message:[dataDic objectForKey:@"ErrorMsg"] preferredStyle:UIAlertControllerStyleAlert];
-        UIAlertAction * cancleAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleCancel handler:nil];
-        [nameController addAction:cancleAction];
-        [self presentViewController:nameController animated:YES completion:nil];
-        self.passwordTextfiled.text = nil;
+//        UIAlertController * nameController = [UIAlertController alertControllerWithTitle:@"提示" message:[dataDic objectForKey:@"ErrorMsg"] preferredStyle:UIAlertControllerStyleAlert];
+//        UIAlertAction * cancleAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleCancel handler:nil];
+//        [nameController addAction:cancleAction];
+//        [self presentViewController:nameController animated:YES completion:nil];
+//        self.passwordTextfiled.text = nil;
+        
+        if ([[dataDic objectForKey:@"ErrorMsg"] length]) {
+            UIAlertView * alerView = [[UIAlertView alloc] initWithTitle:@"提示" message:[dataDic objectForKey:@"ErrorMsg"] delegate:nil cancelButtonTitle:nil otherButtonTitles:nil, nil];
+            [alerView show];
+            [alerView performSelector:@selector(dismissAnimated:) withObject:nil afterDelay:2];
+            self.passwordTextfiled.text = nil;
+        }else
+        {
+            UIAlertView * alerView = [[UIAlertView alloc] initWithTitle:@"提示" message:@"连接服务器失败" delegate:nil cancelButtonTitle:nil otherButtonTitles:nil, nil];
+            [alerView show];
+            [alerView performSelector:@selector(dismissAnimated:) withObject:nil afterDelay:2];
+        }
+
     }
 
 }
+- (void)failWithError:(NSError *)error
+{
+    [SVProgressHUD dismiss];
+    //    AccountViewCell * cell = (AccountViewCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+    //    cell.isBusinessSW.on = !cell.isBusinessSW.isOn;
+    //    [self.tableView headerEndRefreshing];
+    UIAlertView * alertV = [[UIAlertView alloc] initWithTitle:@"提示" message:@"连接服务器失败" delegate:nil cancelButtonTitle:nil otherButtonTitles:nil, nil];
+    [alertV show];
+    [alertV performSelector:@selector(dismiss) withObject:nil afterDelay:1.5];
+    NSLog(@"%@", error);
+}
+
 - (void)registerRemoteNotification
 {
 #if __IPHONE_OS_VERSION_MAX_ALLOWED > __IPHONE_7_1

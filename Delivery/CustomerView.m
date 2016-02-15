@@ -50,8 +50,8 @@
     _nameLabel.text = @"集散地附近吧";
     [self addSubview:_nameLabel];
     
-    UIView * line1 = [[UIView alloc]initWithFrame:CGRectMake(_nameLabel.right, _nameLabel.top + 5, 1, 20)];
-    line1.backgroundColor = [UIColor blackColor];
+    UIView * line1 = [[UIView alloc]initWithFrame:CGRectMake(_nameLabel.right, TOP_SPACE + 5, 1, 20)];
+    line1.backgroundColor = [UIColor grayColor];
     line1.tag = 1001;
     [self addSubview:line1];
     
@@ -73,7 +73,7 @@
     [self addSubview:_imageView];
     
     UIView * line2 = [[UIView alloc]initWithFrame:CGRectMake(_phoneLabel.right, TOP_SPACE + 5, 1, 20)];
-    line2.backgroundColor = [UIColor blackColor];
+    line2.backgroundColor = [UIColor grayColor];
     line2.tag = 1002;
     [self addSubview:line2];
     
@@ -101,8 +101,8 @@
     arriveLB.textAlignment = NSTextAlignmentCenter;
     [self addSubview:arriveLB];
     
-    UIView * line = [[UIView alloc]initWithFrame:CGRectMake(arriveLB.right - 1, arriveLB.top + 4, 1, 20)];
-    line.backgroundColor = [UIColor colorWithWhite:.9 alpha:1];
+    UIView * line = [[UIView alloc]initWithFrame:CGRectMake(arriveLB.right + 1, arriveLB.top + 4, 1, 20)];
+    line.backgroundColor = [UIColor grayColor];
     [self addSubview:line];
     
     self.arriveTimeLabel = [[UILabel alloc]initWithFrame:CGRectMake(line.right, arriveLB.top, textField.width / 2 - 1, arriveLB.height)];
@@ -116,14 +116,14 @@
     [self addSubview:_arriveTimeLabel];
 
     
-    if (self.width >= 370) {
-        self.nameLabel.frame = CGRectMake(_addressImageView.right + LEFT_SPACE, TOP_SPACE, 80, LABEL_HEIGHT);
-        line1.frame = CGRectMake(_nameLabel.right, _nameLabel.top - 5, 1, 20);
-        self.phoneLabel.frame = CGRectMake(line1.right, TOP_SPACE, 100, LABEL_HEIGHT);
-//        line2.frame = CGRectMake(_phoneLabel.right, TOP_SPACE + 5, 1, 20);
-//        label.frame = CGRectMake(line2.right, TOP_SPACE, 40, LABEL_HEIGHT);
-        textField.frame = CGRectMake(self.width - LEFT_SPACE - 100 , TOP_SPACE, 100, LABEL_HEIGHT);
-    }
+//    if (self.width >= 370) {
+////        self.nameLabel.frame = CGRectMake(_addressImageView.right + LEFT_SPACE, TOP_SPACE, 80, LABEL_HEIGHT);
+////        line1.frame = CGRectMake(_nameLabel.right, _nameLabel.top - 5, 1, 20);
+////        self.phoneLabel.frame = CGRectMake(line1.right, TOP_SPACE, 100, LABEL_HEIGHT);
+////        line2.frame = CGRectMake(_phoneLabel.right, TOP_SPACE + 5, 1, 20);
+////        label.frame = CGRectMake(line2.right, TOP_SPACE, 40, LABEL_HEIGHT);
+//        textField.frame = CGRectMake(self.width - LEFT_SPACE - 100 , TOP_SPACE, 100, LABEL_HEIGHT);
+//    }
     
     self.addressLabel = [[UILabel alloc]initWithFrame:CGRectMake(_addressImageView.right + LEFT_SPACE, _nameLabel.bottom + TOP_SPACE, self.width - 3 * LEFT_SPACE - IMAGE_WEIDTH, LABEL_HEIGHT)];
     _addressLabel.textColor = [UIColor grayColor];
@@ -173,7 +173,7 @@
     self.nameLabel.frame = CGRectMake(LEFT_SPACE, TOP_SPACE, nameRect.size.width, LABEL_HEIGHT);
     self.nameLabel.text = name;
     UIView * line1 = [self viewWithTag:1001];
-    line1.frame = CGRectMake(_nameLabel.right, _nameLabel.top + 8, 1, 14);
+    line1.frame = CGRectMake(_nameLabel.right, _nameLabel.top + 9, 1, 14);
     self.phoneLabel.frame = CGRectMake(line1.right, TOP_SPACE, 90, LABEL_HEIGHT);
     self.phoneBT.frame = self.phoneLabel.frame;
     self.imageView.frame = CGRectMake(_phoneLabel.right, _phoneLabel.top + 5, 20, 20);

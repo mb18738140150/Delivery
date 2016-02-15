@@ -48,7 +48,7 @@
     [self addSubview:_nameLabel];
     
     UIView * line1 = [[UIView alloc]initWithFrame:CGRectMake(_nameLabel.right, _nameLabel.top + 5, 1, 20)];
-    line1.backgroundColor = [UIColor blackColor];
+    line1.backgroundColor = [UIColor grayColor];
     line1.tag = 1001;
     [self addSubview:line1];
     
@@ -71,7 +71,7 @@
     [self addSubview:_imageView];
     
     UIView * line2 = [[UIView alloc]initWithFrame:CGRectMake(_imageView.right, TOP_SPACE + 5, 1, 20)];
-    line2.backgroundColor = [UIColor blackColor];
+    line2.backgroundColor = [UIColor grayColor];
     line2.tag = 1002;
     [self addSubview:line2];
     

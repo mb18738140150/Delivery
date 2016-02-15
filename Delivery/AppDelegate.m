@@ -101,6 +101,7 @@ static SystemSoundID shake_sound_male_id = 0;
     [APService handleRemoteNotification:userInfo];
     completionHandler(UIBackgroundFetchResultNewData);
     
+    NSLog(@"%@", [userInfo description]);
     
     if ([[[userInfo objectForKey:@"aps"] objectForKey:@"alert"] containsString:@"你的帐号在别的设备登录"]) {
         UIAlertController * alertcontroller = [UIAlertController alertControllerWithTitle:@"提示" message:@"您的账号已在另一台设备登录" preferredStyle:UIAlertControllerStyleAlert];

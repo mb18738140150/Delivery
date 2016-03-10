@@ -14,6 +14,7 @@
 #import "Mapcontroller.h"
 
 #import "PersonalDataViewController.h"
+#import "ViewController.h"
 
 #import "NewOrderCell.h"
 #import "DeliveryingCell.h"
@@ -538,9 +539,9 @@
 - (void)orderDetais:(UIButton *)button event:(UIEvent *)event
 {
      OrderDetailController * pVC = [[OrderDetailController alloc]init];
-//    PersonalDataViewController * vc = [[PersonalDataViewController alloc]init];
     
-
+//    ViewController * VC = [[ViewController alloc]init];
+//    [self.navigationController pushViewController:VC animated:YES];
     
     if (self.segment.selectedSegmentIndex == 0) {
         NSSet * touches = [event allTouches];
@@ -573,7 +574,6 @@
         }
         
     }
-//    NSLog(@"pVC.orderID = %@", pVC.orderID);
     [self.navigationController pushViewController:pVC animated:YES];
     
 }
@@ -654,7 +654,7 @@
 
 - (void)pullrefresh
 {
-    NSLog(@"两秒以后*****");
+    NSLog(@"0.35以后*****");
     if (self.segment.selectedSegmentIndex == 0) {
         [self.nOrderTableView.header beginRefreshing];
     }else if (self.segment.selectedSegmentIndex == 1)

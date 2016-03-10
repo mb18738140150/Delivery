@@ -10,4 +10,5 @@
 
 @interface OrderDetailController : UIViewController
 @property (nonatomic, copy)NSString * orderID;
+//@property (nonatomic)CLLocationCoordinate2D cllocationCoordinate;
 @end

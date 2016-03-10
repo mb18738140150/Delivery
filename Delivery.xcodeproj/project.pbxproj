@@ -60,6 +60,10 @@
 		736A12201C4E011B00549177 /* mapapi.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 736A121F1C4E011B00549177 /* mapapi.bundle */; };
 		73711F451C45EC9300D111A8 /* setting_normal.png in Resources */ = {isa = PBXBuildFile; fileRef = 73711F441C45EC9300D111A8 /* setting_normal.png */; };
 		7374587B1C508AA500C37760 /* Icon-80.png in Resources */ = {isa = PBXBuildFile; fileRef = 7374587A1C508AA500C37760 /* Icon-80.png */; };
+		7374C00C1C8D0D7500A30CF8 /* TransportLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 7374C00B1C8D0D7500A30CF8 /* TransportLocation.m */; };
+		7374C0131C8D143500A30CF8 /* CLLocation+YCLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 7374C0121C8D143500A30CF8 /* CLLocation+YCLocation.m */; };
+		7374C0161C8D4E4B00A30CF8 /* CCLocationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7374C0151C8D4E4B00A30CF8 /* CCLocationManager.m */; };
+		7374C0191C8D5E5800A30CF8 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7374C0181C8D5E5800A30CF8 /* ViewController.m */; };
 		73792F501C4C754A00E4BD58 /* sound.caf in Resources */ = {isa = PBXBuildFile; fileRef = 73792F4F1C4C754A00E4BD58 /* sound.caf */; };
 		73792F521C4C763200E4BD58 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73792F511C4C763200E4BD58 /* AudioToolbox.framework */; };
 		73792F541C4C8B9100E4BD58 /* setting.png in Resources */ = {isa = PBXBuildFile; fileRef = 73792F531C4C8B9100E4BD58 /* setting.png */; };
@@ -184,6 +188,14 @@
 		736A121F1C4E011B00549177 /* mapapi.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = mapapi.bundle; path = BaiduMapAPI_Map.framework/Resources/mapapi.bundle; sourceTree = "<group>"; };
 		73711F441C45EC9300D111A8 /* setting_normal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = setting_normal.png; sourceTree = "<group>"; };
 		7374587A1C508AA500C37760 /* Icon-80.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-80.png"; sourceTree = "<group>"; };
+		7374C00A1C8D0D7500A30CF8 /* TransportLocation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransportLocation.h; sourceTree = "<group>"; };
+		7374C00B1C8D0D7500A30CF8 /* TransportLocation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransportLocation.m; sourceTree = "<group>"; };
+		7374C0111C8D143500A30CF8 /* CLLocation+YCLocation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CLLocation+YCLocation.h"; sourceTree = "<group>"; };
+		7374C0121C8D143500A30CF8 /* CLLocation+YCLocation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CLLocation+YCLocation.m"; sourceTree = "<group>"; };
+		7374C0141C8D4E4B00A30CF8 /* CCLocationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCLocationManager.h; sourceTree = "<group>"; };
+		7374C0151C8D4E4B00A30CF8 /* CCLocationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCLocationManager.m; sourceTree = "<group>"; };
+		7374C0171C8D5E5800A30CF8 /* ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		7374C0181C8D5E5800A30CF8 /* ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		73792F4F1C4C754A00E4BD58 /* sound.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = sound.caf; sourceTree = "<group>"; };
 		73792F511C4C763200E4BD58 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		73792F531C4C8B9100E4BD58 /* setting.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = setting.png; sourceTree = "<group>"; };
@@ -420,6 +432,9 @@
 				734287281C464F440093D133 /* UserInfo.m */,
 				7365872E1C4778A500DFB6AE /* NSDictionary+Unicode.h */,
 				7365872F1C4778A500DFB6AE /* NSDictionary+Unicode.m */,
+				7374C00A1C8D0D7500A30CF8 /* TransportLocation.h */,
+				7374C00B1C8D0D7500A30CF8 /* TransportLocation.m */,
+				7374C00D1C8D0EF900A30CF8 /* 获取位置及坐标 */,
 			);
 			name = General;
 			sourceTree = "<group>";
@@ -506,6 +521,8 @@
 				737A3E671C4382FD00949457 /* OrderDetailController.m */,
 				7397295A1C48F5670057C250 /* PersonalDataViewController.h */,
 				7397295B1C48F5670057C250 /* PersonalDataViewController.m */,
+				7374C0171C8D5E5800A30CF8 /* ViewController.h */,
+				7374C0181C8D5E5800A30CF8 /* ViewController.m */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -598,6 +615,17 @@
 				736A120A1C4DFCDB00549177 /* BaiduMapAPI_Utils.framework */,
 			);
 			name = "百度地图";
+			sourceTree = "<group>";
+		};
+		7374C00D1C8D0EF900A30CF8 /* 获取位置及坐标 */ = {
+			isa = PBXGroup;
+			children = (
+				7374C0111C8D143500A30CF8 /* CLLocation+YCLocation.h */,
+				7374C0121C8D143500A30CF8 /* CLLocation+YCLocation.m */,
+				7374C0141C8D4E4B00A30CF8 /* CCLocationManager.h */,
+				7374C0151C8D4E4B00A30CF8 /* CCLocationManager.m */,
+			);
+			name = "获取位置及坐标";
 			sourceTree = "<group>";
 		};
 		73792F4E1C4C74FE00E4BD58 /* 新订单提示音 */ = {
@@ -809,6 +837,7 @@
 			files = (
 				735AB3BF1BDA320800075477 /* OtherView.m in Sources */,
 				739EF3921BE897D200E13F81 /* TotlePriceView.m in Sources */,
+				7374C0161C8D4E4B00A30CF8 /* CCLocationManager.m in Sources */,
 				736587301C4778A500DFB6AE /* NSDictionary+Unicode.m in Sources */,
 				735AB3BC1BDA30FB00075477 /* UserCenterViewController.m in Sources */,
 				734287291C464F440093D133 /* UserInfo.m in Sources */,
@@ -820,6 +849,7 @@
 				736587361C477FAF00DFB6AE /* AFClient.m in Sources */,
 				735AB3B11BDA306800075477 /* OrderViewController.m in Sources */,
 				7397295C1C48F5670057C250 /* PersonalDataViewController.m in Sources */,
+				7374C0191C8D5E5800A30CF8 /* ViewController.m in Sources */,
 				739EF3861BE8974F00E13F81 /* DeliveryingCell.m in Sources */,
 				737A3E651C43789F00949457 /* NewOrderModel.m in Sources */,
 				739EF3891BE8976A00E13F81 /* DeliveriedCell.m in Sources */,
@@ -827,10 +857,12 @@
 				737A3E5D1C43729900949457 /* MealPriceView.m in Sources */,
 				739EF38C1BE8978E00E13F81 /* ShopView.m in Sources */,
 				734287231C463C8C0093D133 /* HTTPPost.m in Sources */,
+				7374C00C1C8D0D7500A30CF8 /* TransportLocation.m in Sources */,
 				735AB37C1BD9FA9200075477 /* main.m in Sources */,
 				739EF3831BE896F000E13F81 /* NewOrderCell.m in Sources */,
 				736A12141C4DFFD300549177 /* Mapcontroller.mm in Sources */,
 				739EF38F1BE897B900E13F81 /* CustomerView.m in Sources */,
+				7374C0131C8D143500A30CF8 /* CLLocation+YCLocation.m in Sources */,
 				7383635C1BE094CF00F2F542 /* PersonCenterViewController.m in Sources */,
 				734287261C464C0D0093D133 /* NSString+MD5.m in Sources */,
 				73CCA3D31BE20CFB0051BDFE /* ChangePasswordViewController.m in Sources */,

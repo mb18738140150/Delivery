@@ -23,6 +23,7 @@
 @property (nonatomic, copy)NSString * hopeTime;
 @property (nonatomic, copy)NSString * customerAddress;
 @property (nonatomic, copy)NSString * remark;
+@property (nonatomic, copy)NSString * gift;
 @property (nonatomic, strong)NSNumber * allMoney;
 @property (nonatomic, strong)NSMutableArray * mealArray;
 

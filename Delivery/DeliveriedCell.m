@@ -14,7 +14,7 @@
 
 #define TOP_SPACE 10
 #define SHOPVIEW_HEIGHT 120
-#define CUSTOMERVIEW_HEIGHT 120
+#define CUSTOMERVIEW_HEIGHT 150
 #define TOTLEPRICEVIEW_HEIGHT 60
 #define MENUVIEW_HEIGHT 30
 #define LINE_tag 8000
@@ -119,6 +119,12 @@ static int shopHeight = 0;
     }else
     {
         self.customerView.remarkLabel.text = orderModel.remark;
+    }
+    if (orderModel.gift.length == 0) {
+        self.customerView.giftLabel.text = @"赠品:无";
+    }else
+    {
+        self.customerView.giftLabel.text = [NSString stringWithFormat:@"赠品:%@", orderModel.remark];
     }
     // 计算字符串高度
     NSString * contentText = orderModel.customerAddress;

@@ -23,6 +23,7 @@
 @property (nonatomic, strong)UILabel * addressLabel;
 @property (nonatomic, strong)UIView * mealsView;
 @property (nonatomic, strong)UILabel * remarkLabel;
+@property (nonatomic, strong)UILabel * giftLabel;
 
 - (void)creatMealViewWithArray:(NSMutableArray *)array;
 

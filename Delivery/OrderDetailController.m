@@ -16,9 +16,17 @@
 #define LABEL_HEIGHT 30
 #define TOP_SPACE 10
 #define LEFT_SPACE 10
+
+#define TOTLEVIEW_tag 10000
 #define MEALSView_tag 1000
 #define SHOPDETAILSView_TAG 2000
 #define TIPVIEW_TAG 3000
+
+#define SHOP_PHONE_BT_TAG 4000
+#define SHOP_ADDRESS_BT_TAG 5000
+#define CUSTOM_PHONT_BT_TAG 6000
+#define CUSTOM_ADDRESS_BT_TAG 7000
+
 #define TEXT_COLOR [UIColor colorWithWhite:0.3 alpha:1]
 @interface OrderDetailController ()<HTTPPostDelegate>
 
@@ -33,9 +41,12 @@
 @property (nonatomic, strong)UILabel * addressLabel;
 // 菜品
 @property (nonatomic, strong)UILabel * remarkLabel;
+// 赠品
+@property (nonatomic, strong)UILabel * giftLabel;
 // 商家
 @property (nonatomic, strong)UIImageView * addressImageViewshop;
 @property (nonatomic, strong)UILabel * nameLabelshop;
+@property (nonatomic, strong)UILabel * phoneLabelshop;
 @property (nonatomic, strong)UIButton * phoneBTshop;
 @property (nonatomic, strong)UILabel * addressLabelshop;
 
@@ -55,13 +66,15 @@
     self.navigationItem.title = @"餐单详情";
     
     self.scrollview= [[UIScrollView alloc]initWithFrame:self.view.frame];
-    _scrollview.height = self.view.height - 50;
+    _scrollview.height = self.view.height - 64 - 60;
     _scrollview.backgroundColor = [UIColor colorWithWhite:.9 alpha:1];
     [self.view addSubview:_scrollview];
     
+    
+    // 用户信息
     UIView * totleView = [[UIView alloc]initWithFrame:CGRectMake(0, TOP_SPACE, self.view.width, 100)];
     totleView.backgroundColor = [UIColor whiteColor];
-    totleView.tag = 10000;
+    totleView.tag = TOTLEVIEW_tag;
     [_scrollview addSubview:totleView];
     
     self.addressImageView = [[UIImageView alloc]initWithFrame:CGRectMake(LEFT_SPACE, TOP_SPACE * 3, IMAGE_WEIDTH, IMAGE_WEIDTH)];
@@ -71,6 +84,7 @@
     UIButton * addressBt = [UIButton buttonWithType:UIButtonTypeSystem];
     addressBt.frame = _addressImageView.frame;
     addressBt.backgroundColor = [UIColor clearColor];
+    addressBt.tag = CUSTOM_ADDRESS_BT_TAG;
     [addressBt addTarget:self action:@selector(mapAction:) forControlEvents:UIControlEventTouchUpInside];
     [totleView addSubview:addressBt];
     
@@ -95,6 +109,7 @@
     self.phoneBT = [UIButton buttonWithType:UIButtonTypeSystem];
     _phoneBT.frame = _phoneLabel.frame;
     _phoneBT.backgroundColor = [UIColor clearColor];
+    _phoneBT.tag = CUSTOM_PHONT_BT_TAG;
     [_phoneBT addTarget:self action:@selector(telToOrderTelNumber:) forControlEvents:UIControlEventTouchUpInside];
     [totleView addSubview:_phoneBT];
     
@@ -124,27 +139,45 @@
     [totleView addSubview:_addressLabel];
 
     UIView * totoleLine = [[UIView alloc]initWithFrame:CGRectMake(LEFT_SPACE, _addressLabel.bottom + 10, self.view.width - 2 * LEFT_SPACE, 1)];
+    totoleLine.tag = 3003;
     totoleLine.backgroundColor = [UIColor colorWithWhite:.9 alpha:1];
     [totleView addSubview:totoleLine];
     
-    UIImageView * remarkImageview = [[UIImageView alloc]initWithFrame:CGRectMake(LEFT_SPACE, TOP_SPACE * 3 + totoleLine.bottom, IMAGE_WEIDTH, IMAGE_WEIDTH)];
+    UIImageView * remarkImageview = [[UIImageView alloc]initWithFrame:CGRectMake(LEFT_SPACE, TOP_SPACE + totoleLine.bottom, IMAGE_WEIDTH, IMAGE_WEIDTH)];
     remarkImageview.image = [UIImage imageNamed:@"remark_order.png"];
+    remarkImageview.tag = 4004;
     [totleView addSubview:remarkImageview];
     
-    UILabel * remarkLB = [[UILabel alloc]initWithFrame:CGRectMake(remarkImageview.right + LEFT_SPACE, TOP_SPACE + totoleLine.bottom, 100, LABEL_HEIGHT)];
-    remarkLB.textAlignment = NSTextAlignmentCenter;
-    remarkLB.adjustsFontSizeToFitWidth = YES;
-    remarkLB.text = @"客户备注:";
-    [totleView addSubview:remarkLB];
+//    UILabel * remarkLB = [[UILabel alloc]initWithFrame:CGRectMake(remarkImageview.right + LEFT_SPACE, TOP_SPACE + totoleLine.bottom, 100, LABEL_HEIGHT)];
+//    remarkLB.textAlignment = NSTextAlignmentCenter;
+//    remarkLB.adjustsFontSizeToFitWidth = YES;
+//    remarkLB.text = @"客户备注:";
+//    [totleView addSubview:remarkLB];
     
-    self.remarkLabel = [[UILabel alloc]initWithFrame:CGRectMake(remarkLB.left + LEFT_SPACE, remarkLB.bottom + TOP_SPACE, self.view.width - 3 * LEFT_SPACE - IMAGE_WEIDTH, LABEL_HEIGHT)];
+    self.remarkLabel = [[UILabel alloc]initWithFrame:CGRectMake(remarkImageview.right + LEFT_SPACE, TOP_SPACE + totoleLine.bottom , self.view.width - 3 * LEFT_SPACE - IMAGE_WEIDTH, LABEL_HEIGHT)];
     _remarkLabel.textColor = [UIColor grayColor];
-    _remarkLabel.text = @"要超辣的，拉到死的可敬的奶粉进副科级";
+    _remarkLabel.text = @"要超辣的，拉到死的可敬的奶粉进副科级未付费的爽肤水";
     _remarkLabel.numberOfLines = 0;
-    _remarkLabel.adjustsFontSizeToFitWidth = YES;
+//    _remarkLabel.adjustsFontSizeToFitWidth = YES;
     [totleView addSubview:_remarkLabel];
-    totleView.height = _remarkLabel.bottom + TOP_SPACE;
     
+//    UILabel * giftLB = [[UILabel alloc]initWithFrame:CGRectMake(remarkImageview.right + LEFT_SPACE, _remarkLabel.bottom, 50, LABEL_HEIGHT)];
+//    giftLB.textAlignment = NSTextAlignmentCenter;
+//    giftLB.adjustsFontSizeToFitWidth = YES;
+//    giftLB.text = @"赠品:";
+//    [totleView addSubview:giftLB];
+    
+    self.giftLabel = [[UILabel alloc]initWithFrame:CGRectMake(remarkImageview.right + LEFT_SPACE, _remarkLabel.bottom, self.view.width - 3 * LEFT_SPACE - IMAGE_WEIDTH , LABEL_HEIGHT)];
+    _giftLabel.textColor = [UIColor grayColor];
+    _giftLabel.text = @"手机一部jhdsbf跨世纪的办法看电视剧电脑是豆腐脑";
+    _giftLabel.numberOfLines = 0;
+//    _giftLabel.adjustsFontSizeToFitWidth = YES;
+    [totleView addSubview:_giftLabel];
+    
+    totleView.height = _giftLabel.bottom + TOP_SPACE;
+    
+    
+    // 菜单信息
     UIView * mealsView = [[UIView alloc]initWithFrame:CGRectMake(0, totleView.bottom + TOP_SPACE, self.view.width, 100)];
     mealsView.backgroundColor = [UIColor whiteColor];
     mealsView.tag = MEALSView_tag;
@@ -161,50 +194,66 @@
     [mealsView addSubview:lineView5];
     
     // 商家信息
-//    UIView * shopdetailsView = [[UIView alloc]initWithFrame:CGRectMake(0, mealsView.bottom + 10, self.view.width, 100)];
-//    shopdetailsView.backgroundColor = [UIColor whiteColor];
-//    shopdetailsView.tag = SHOPDETAILSView_TAG;
-//    [_scrollview addSubview:shopdetailsView];
+    UIView * shopdetailsView = [[UIView alloc]initWithFrame:CGRectMake(0, mealsView.bottom + 10, self.view.width, 100)];
+    shopdetailsView.backgroundColor = [UIColor whiteColor];
+    shopdetailsView.tag = SHOPDETAILSView_TAG;
+    [_scrollview addSubview:shopdetailsView];
     
-//    UILabel * shopLabel = [[UILabel alloc] initWithFrame:CGRectMake(LEFT_SPACE, TOP_SPACE, shopdetailsView.width - 10 , 30)];
-//    shopLabel.text = @"菜单详情";
-//    shopLabel.textColor = TEXT_COLOR;
-//    [shopdetailsView addSubview:shopLabel];
-//    
-//    UIView * lineViewshop = [[UIView alloc] initWithFrame:CGRectMake(10, shopLabel.bottom, shopdetailsView.width - 20, 1)];
-//    lineViewshop.backgroundColor = [UIColor colorWithWhite:0.8 alpha:0.8];
-//    [shopdetailsView addSubview:lineViewshop];
-//    
-//    
-//    self.addressImageViewshop = [[UIImageView alloc]initWithFrame:CGRectMake(LEFT_SPACE, TOP_SPACE * 3 + lineViewshop.bottom, IMAGE_WEIDTH, IMAGE_WEIDTH)];
-//    _addressImageViewshop.image = [UIImage imageNamed:@"location_order.png"];
-//    [shopdetailsView addSubview:_addressImageViewshop];
-//    
-//    self.nameLabelshop = [[UILabel alloc]initWithFrame:CGRectMake(_addressImageViewshop.right + LEFT_SPACE, TOP_SPACE + lineViewshop.bottom, 80, LABEL_HEIGHT)];
-//    _nameLabelshop.textAlignment = NSTextAlignmentCenter;
-//    _nameLabelshop.adjustsFontSizeToFitWidth = YES;
-//    _nameLabelshop.text = @"邻家小厨蓝湖湾";
-//    [shopdetailsView addSubview:_nameLabelshop];
-//    
-//    UIView * line1shop = [[UIView alloc]initWithFrame:CGRectMake(_nameLabelshop.right, _nameLabelshop.top - 5, 1, 20)];
-//    line1shop.backgroundColor = [UIColor colorWithWhite:.9 alpha:1];
-//    [shopdetailsView addSubview:line1shop];
-//    
-//    self.phoneBTshop = [UIButton buttonWithType:UIButtonTypeSystem];
-//    _phoneBTshop.frame = CGRectMake(line1shop.right, TOP_SPACE + lineViewshop.bottom, 120, LABEL_HEIGHT);
+    UILabel * shopLabel = [[UILabel alloc] initWithFrame:CGRectMake(LEFT_SPACE, TOP_SPACE, shopdetailsView.width - 10 , 30)];
+    shopLabel.text = @"商家详情";
+    shopLabel.textColor = TEXT_COLOR;
+    [shopdetailsView addSubview:shopLabel];
+    
+    UIView * lineViewshop = [[UIView alloc] initWithFrame:CGRectMake(10, shopLabel.bottom, shopdetailsView.width - 20, 1)];
+    lineViewshop.backgroundColor = [UIColor colorWithWhite:0.8 alpha:0.8];
+    [shopdetailsView addSubview:lineViewshop];
+    
+    
+    self.addressImageViewshop = [[UIImageView alloc]initWithFrame:CGRectMake(LEFT_SPACE, TOP_SPACE * 3 + lineViewshop.bottom, IMAGE_WEIDTH, IMAGE_WEIDTH)];
+    _addressImageViewshop.image = [UIImage imageNamed:@"location_order.png"];
+    [shopdetailsView addSubview:_addressImageViewshop];
+    
+    UIButton * shopaddressBt = [UIButton buttonWithType:UIButtonTypeSystem];
+    shopaddressBt.frame = _addressImageViewshop.frame;
+    shopaddressBt.backgroundColor = [UIColor clearColor];
+    shopaddressBt.tag = SHOP_ADDRESS_BT_TAG;
+    [shopaddressBt addTarget:self action:@selector(mapAction:) forControlEvents:UIControlEventTouchUpInside];
+    [shopdetailsView addSubview:shopaddressBt];
+    
+    self.nameLabelshop = [[UILabel alloc]initWithFrame:CGRectMake(_addressImageViewshop.right + LEFT_SPACE, TOP_SPACE + lineViewshop.bottom, 80, LABEL_HEIGHT)];
+    _nameLabelshop.textAlignment = NSTextAlignmentCenter;
+    _nameLabelshop.adjustsFontSizeToFitWidth = YES;
+    _nameLabelshop.text = @"邻家小厨蓝湖湾";
+    [shopdetailsView addSubview:_nameLabelshop];
+    
+    UIView * line1shop = [[UIView alloc]initWithFrame:CGRectMake(_nameLabelshop.right, _nameLabelshop.top - 5, 1, 20)];
+    line1shop.backgroundColor = [UIColor grayColor];
+    line1shop.tag = 20002;
+    [shopdetailsView addSubview:line1shop];
+    
+    self.phoneLabelshop = [[UILabel alloc]initWithFrame:CGRectMake(line1shop.right, TOP_SPACE + lineViewshop.bottom, 120, LABEL_HEIGHT)];
+    _phoneLabelshop.text = @"18734890150";
+    _phoneLabelshop.textAlignment = NSTextAlignmentCenter;
+//    _phoneLabelshop.adjustsFontSizeToFitWidth = YES;
+    [shopdetailsView addSubview:_phoneLabelshop];
+    
+    self.phoneBTshop = [UIButton buttonWithType:UIButtonTypeSystem];
+    _phoneBTshop.frame = CGRectMake(line1shop.right, TOP_SPACE + lineViewshop.bottom, 120, LABEL_HEIGHT);
 //    [_phoneBTshop setTitle:@"18736087590" forState:UIControlStateNormal];
-//    [_phoneBTshop setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-//    _phoneBTshop.backgroundColor = [UIColor whiteColor];
-//    [shopdetailsView addSubview:_phoneBTshop];
-//    
-//    self.addressLabelshop = [[UILabel alloc]initWithFrame:CGRectMake(_addressImageViewshop.right + LEFT_SPACE, _nameLabelshop.bottom , self.view.width - 3 * LEFT_SPACE - IMAGE_WEIDTH, LABEL_HEIGHT + 10)];
-//    _addressLabelshop.textColor = [UIColor grayColor];
-//    _addressLabelshop.numberOfLines = 0;
-//    _addressLabelshop.adjustsFontSizeToFitWidth = YES;
-//    _addressLabelshop.text = @"前进路中原路锦艺怡心苑区1号楼3单元2楼48号";
-//    [shopdetailsView addSubview:_addressLabelshop];
-//    
-//    shopdetailsView.height = _addressLabelshop.bottom + 10;
+    _phoneBTshop.tag = SHOP_PHONE_BT_TAG;
+    [_phoneBTshop setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    _phoneBTshop.backgroundColor = [UIColor clearColor];
+    [_phoneBTshop addTarget:self action:@selector(telToOrderTelNumber:) forControlEvents:UIControlEventTouchUpInside];
+    [shopdetailsView addSubview:_phoneBTshop];
+    
+    self.addressLabelshop = [[UILabel alloc]initWithFrame:CGRectMake(_addressImageViewshop.right + LEFT_SPACE, _nameLabelshop.bottom , self.view.width - 3 * LEFT_SPACE - IMAGE_WEIDTH, LABEL_HEIGHT + 10)];
+    _addressLabelshop.textColor = [UIColor grayColor];
+    _addressLabelshop.numberOfLines = 0;
+    _addressLabelshop.adjustsFontSizeToFitWidth = YES;
+    _addressLabelshop.text = @"前进路中原路锦艺怡心苑区1号楼3单元2楼48号";
+    [shopdetailsView addSubview:_addressLabelshop];
+    
+    shopdetailsView.height = _addressLabelshop.bottom + 10;
     
     
     UIView * tipView = [[UIView alloc]initWithFrame:CGRectMake(0, mealsView.bottom + 10, self.view.width, 50)];
@@ -233,7 +282,7 @@
     _scrollview.contentSize = CGSizeMake(self.view.width, tipView.bottom + 20);
     
     CGRect rect = [UIScreen mainScreen].bounds;
-    self.totlePriceView = [[TotlePriceView alloc]initWithFrame:CGRectMake(0, rect.size.height - 120, self.view.width, 60)];
+    self.totlePriceView = [[TotlePriceView alloc]initWithFrame:CGRectMake(0, _scrollview.bottom, self.view.width, 60)];
     self.totlePriceView.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:_totlePriceView];
     
@@ -279,21 +328,22 @@
             NSDictionary * dic = [data objectForKey:@"OrderDetail"];
             
             UIView * mealView = [_scrollview viewWithTag:MEALSView_tag];
+            UIView * shopDetailsView = [_scrollview viewWithTag:SHOPDETAILSView_TAG];
             UIView * tipView = [_scrollview viewWithTag:TIPVIEW_TAG];
             
             self.nameLabel.text = [NSString stringWithFormat:@"%@", [dic objectForKey:@"CustomerName"]];
             self.phoneLabel.text = [NSString stringWithFormat:@"%@", [dic objectForKey:@"CustomerPhone"]];
             
-            NSDictionary * attributes = @{NSFontAttributeName:[UIFont systemFontOfSize:16]};
+            NSDictionary * attributes = @{NSFontAttributeName:[UIFont systemFontOfSize:17]};
             CGRect nameRect = [self.nameLabel.text boundingRectWithSize:CGSizeMake(MAXFLOAT, self.nameLabel.height) options:NSStringDrawingTruncatesLastVisibleLine attributes:attributes context:nil];
             self.nameLabel.frame = CGRectMake(LEFT_SPACE + _addressImageView.right, TOP_SPACE, nameRect.size.width, LABEL_HEIGHT);
-            UIView * totleView = [_scrollview viewWithTag:10000];
+            UIView * totleView = [_scrollview viewWithTag:TOTLEVIEW_tag];
             UIView * line = [totleView viewWithTag:10001];
             line.frame = CGRectMake(_nameLabel.right + 2, 15, 1, 20);
             
             CGRect phoneRect = [self.phoneLabel.text boundingRectWithSize:CGSizeMake(MAXFLOAT, self.phoneLabel.height) options:NSStringDrawingTruncatesLastVisibleLine attributes:attributes context:nil];
             self.phoneLabel.frame = CGRectMake(line.right + 2, TOP_SPACE, phoneRect.size.width, LABEL_HEIGHT);
-            
+            self.phoneBT.frame = _phoneLabel.frame;
             
             if ([[dic objectForKey:@"PayType"] intValue] == 1) {
                 self.payStateLabel.text = @"在线支付";
@@ -304,13 +354,52 @@
             }
             
             self.addressLabel.text = [NSString stringWithFormat:@"%@", [dic objectForKey:@"CustomerAddress"]];
+            CGRect addressRect = [self.addressLabel.text boundingRectWithSize:CGSizeMake(_addressLabel.width, MAXFLOAT) options:NSStringDrawingUsesLineFragmentOrigin attributes:attributes context:nil];
+            
+            _addressLabel.frame = CGRectMake(_addressImageView.right + LEFT_SPACE, _nameLabel.bottom , self.view.width - 3 * LEFT_SPACE - IMAGE_WEIDTH, addressRect.size.height);
+            
+            UIView * totleLine = [totleView viewWithTag:3003];
+            UIImageView * remarkImageView = (UIImageView *)[totleView viewWithTag:4004];
+            totleLine.frame = CGRectMake(LEFT_SPACE, _addressLabel.bottom + 10, self.view.width - 2 * LEFT_SPACE, 1);
+            remarkImageView.frame = CGRectMake(LEFT_SPACE, TOP_SPACE + totleLine.bottom, IMAGE_WEIDTH, IMAGE_WEIDTH);
+            
+            _remarkLabel.frame = CGRectMake(remarkImageView.right + LEFT_SPACE, TOP_SPACE + totleLine.bottom , self.view.width - 3 * LEFT_SPACE - IMAGE_WEIDTH, LABEL_HEIGHT);
+            
             NSString * remark = [NSString stringWithFormat:@"%@", [dic objectForKey:@"Remark"]];
+            
+            
             if (remark.length == 0) {
-                self.remarkLabel.text = @"暂无备注";
+                self.remarkLabel.text = @"客户备注:暂无备注";
             }else
             {
-                self.remarkLabel.text = [NSString stringWithFormat:@"%@", [dic objectForKey:@"Remark"]];
+                self.remarkLabel.text = [NSString stringWithFormat:@"客户备注:%@", [dic objectForKey:@"Remark"]];
             }
+            
+            NSDictionary * attributes1 = @{NSFontAttributeName:[UIFont systemFontOfSize:17]};
+            CGRect remaskRect = [self.remarkLabel.text boundingRectWithSize:CGSizeMake(_remarkLabel.width, MAXFLOAT) options:NSStringDrawingUsesLineFragmentOrigin attributes:attributes1 context:nil];
+            _remarkLabel.frame = CGRectMake(_remarkLabel.left, _remarkLabel.top , self.view.width - 3 * LEFT_SPACE - IMAGE_WEIDTH, remaskRect.size.height);
+            
+            NSString * giftStr =[NSString stringWithFormat:@"%@", [dic objectForKey:@"Gift"]];
+            if (giftStr.length == 0) {
+                self.giftLabel.text = @"赠品:暂无赠品";
+            }else
+            {
+                self.giftLabel.text = [NSString stringWithFormat:@"赠品:%@", [dic objectForKey:@"Remark"]];
+            }
+            
+            CGSize giftSize = [self.giftLabel sizeThatFits:CGSizeMake(self.remarkLabel.width, CGFLOAT_MAX)];
+            _giftLabel.frame = CGRectMake(_giftLabel.left, _remarkLabel.bottom, self.view.width - 3 * LEFT_SPACE - IMAGE_WEIDTH , giftSize.height);
+            
+            NSMutableAttributedString * remarkStr = [[NSMutableAttributedString alloc]initWithString:self.remarkLabel.text];
+            [remarkStr addAttributes:@{NSForegroundColorAttributeName:[UIColor blackColor]} range:NSMakeRange(0, 4)];
+            self.remarkLabel.attributedText = remarkStr;
+            
+            NSMutableAttributedString * giftMUtableStr = [[NSMutableAttributedString alloc]initWithString:self.giftLabel.text];
+            [giftMUtableStr addAttributes:@{NSForegroundColorAttributeName:[UIColor blackColor]} range:NSMakeRange(0, 2)];
+            self.giftLabel.attributedText = giftMUtableStr;
+            
+            totleView.height = _giftLabel.bottom + TOP_SPACE;
+            mealView.frame = CGRectMake(0, totleView.bottom + TOP_SPACE, self.view.width, 100);
             
             int k = 0;
             NSArray * array = [dic objectForKey:@"MealList"];
@@ -332,8 +421,33 @@
             num = mealCount / 2 + mealCount % 2;
             mealView.frame = CGRectMake(0, mealView.top, mealView.width, num * 30 + 10 * (num - 1) + 41 + 30);
             
+            shopDetailsView.frame = CGRectMake(0, mealView.bottom + 10, self.view.width, 100);
+            // BusiName BusiPhone  BusiAddress
+            self.nameLabelshop.text = [NSString stringWithFormat:@"%@", [dic objectForKey:@"BusiName"]];
+            self.phoneLabelshop.text = [NSString stringWithFormat:@"%@", [dic objectForKey:@"BusiPhone"]];
+            
+            CGRect nameRectshop = [self.nameLabelshop.text boundingRectWithSize:CGSizeMake(MAXFLOAT, self.nameLabelshop.height) options:NSStringDrawingTruncatesLastVisibleLine attributes:attributes context:nil];
+            self.nameLabelshop.frame = CGRectMake(_addressImageViewshop.right + LEFT_SPACE, _nameLabelshop.top, nameRectshop.size.width, LABEL_HEIGHT);
+            
+            UIView * line1shop = [shopDetailsView viewWithTag:20002];
+            line1shop.frame = CGRectMake(_nameLabelshop.right + 2, _nameLabelshop.top + 5, 1, 20);
+            
+            CGRect phoneRectshop = [self.phoneLabelshop.text boundingRectWithSize:CGSizeMake(MAXFLOAT, self.phoneLabelshop.height) options:NSStringDrawingTruncatesLastVisibleLine attributes:attributes context:nil];
+//            self.phoneBTshop.frame = CGRectMake(line1shop.right + 2, _nameLabelshop.top, phoneRectshop.size.width, LABEL_HEIGHT);
+            _phoneLabelshop.frame = CGRectMake(line1shop.right + 2, _nameLabelshop.top, phoneRectshop.size.width, LABEL_HEIGHT);
+            self.phoneBTshop.frame = _phoneLabelshop.frame;
+            
+            self.addressLabelshop.text = [NSString stringWithFormat:@"%@", [dic objectForKey:@"BusiAddress"]];
+            CGRect addressRectshop = [self.addressLabelshop.text boundingRectWithSize:CGSizeMake(_addressLabelshop.width, MAXFLOAT) options:NSStringDrawingUsesLineFragmentOrigin attributes:attributes context:nil];
+            _addressLabelshop.frame = CGRectMake(_addressImageViewshop.right + LEFT_SPACE, _nameLabelshop.bottom , self.view.width - 3 * LEFT_SPACE - IMAGE_WEIDTH, addressRectshop.size.height);
+            shopDetailsView.height = _addressLabelshop.bottom + TOP_SPACE;
+            
             if (!tipView.hidden) {
-                tipView.frame = CGRectMake(0, mealView.bottom + 10, self.view.width, 50);
+                tipView.frame = CGRectMake(0, shopDetailsView.bottom + 10, self.view.width, 50);
+                _scrollview.contentSize = CGSizeMake(self.view.width, tipView.bottom + 20);
+            }else
+            {
+                _scrollview.contentSize = CGSizeMake(self.view.width, shopDetailsView.bottom + 20);
             }
             
             self.totlePriceView.totlePriceLabel.text = [NSString stringWithFormat:@"%@", [dic objectForKey:@"AllMoney"]];
@@ -416,9 +530,16 @@
 - (void)mapAction:(UIButton *)button
 {
     Mapcontroller * mapVC = [[Mapcontroller alloc]init];
-    mapVC.name = self.nameLabel.text;
-    mapVC.phone = self.phoneLabel.text;
-    mapVC.address = self.addressLabel.text;
+    if (button.tag == CUSTOM_ADDRESS_BT_TAG) {
+        mapVC.name = self.nameLabel.text;
+        mapVC.phone = self.phoneLabel.text;
+        mapVC.address = self.addressLabel.text;
+    }else
+    {
+        mapVC.name = self.nameLabelshop.text;
+        mapVC.phone = self.phoneLabelshop.text;
+        mapVC.address = self.addressLabelshop.text;
+    }
     NSLog(@"address = %@", mapVC.address);
     [self.navigationController pushViewController:mapVC animated:YES];
 }
@@ -426,11 +547,20 @@
 #pragma mark - 拨打电话
 - (void)telToOrderTelNumber:(UIButton *)button
 {
-    NSLog(@"打电话%@", [NSString stringWithFormat:@"%@", self.phoneLabel.text]);
-    UIWebView *callWebView = [[UIWebView alloc]init];
-    NSURL * telURL = [NSURL URLWithString:[NSString stringWithFormat:@"tel:%@", self.phoneLabel.text]];
-    [callWebView loadRequest:[NSURLRequest requestWithURL:telURL]];
-    [self.view addSubview:callWebView];
+    if (button.tag == CUSTOM_PHONT_BT_TAG) {
+        NSLog(@"打电话%@", [NSString stringWithFormat:@"%@", self.phoneLabel.text]);
+        UIWebView *callWebView = [[UIWebView alloc]init];
+        NSURL * telURL = [NSURL URLWithString:[NSString stringWithFormat:@"tel:%@", self.phoneLabel.text]];
+        [callWebView loadRequest:[NSURLRequest requestWithURL:telURL]];
+        [self.view addSubview:callWebView];
+    }else
+    {
+        NSLog(@"打电话%@", [NSString stringWithFormat:@"%@", self.phoneLabelshop.text]);
+        UIWebView *callWebView = [[UIWebView alloc]init];
+        NSURL * telURL = [NSURL URLWithString:[NSString stringWithFormat:@"tel:%@", self.phoneLabelshop.text]];
+        [callWebView loadRequest:[NSURLRequest requestWithURL:telURL]];
+        [self.view addSubview:callWebView];
+    }
     
 }
 

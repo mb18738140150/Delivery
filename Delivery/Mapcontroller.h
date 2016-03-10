@@ -14,5 +14,6 @@
 @property (nonatomic, copy)NSString * name;
 @property (nonatomic, copy)NSString * phone;
 
+@property (nonatomic)CLLocationCoordinate2D coordinate2D;
 
 @end

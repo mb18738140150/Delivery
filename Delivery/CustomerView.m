@@ -140,6 +140,11 @@
     _remarkLabel.textColor = [UIColor grayColor];
     [self addSubview:_remarkLabel];
     
+    self.giftLabel = [[UILabel alloc]initWithFrame:CGRectMake(LEFT_SPACE, _remarkLabel.bottom, _remarkLabel.width, LABEL_HEIGHT)];
+    _giftLabel.text = @"赠品：抽纸一盒";
+    _giftLabel.textColor = [UIColor grayColor];
+    [self addSubview:_giftLabel];
+    
     
 }
 - (void)creatMealViewWithArray:(NSMutableArray *)array
@@ -163,6 +168,7 @@
 
     _mealsView.frame = CGRectMake(0, _addressLabel.bottom, self.width - 3 * LEFT_SPACE - IMAGE_WEIDTH, num * 30 + 10 * (num - 1) + 30);
     self.remarkLabel.frame = CGRectMake(LEFT_SPACE, _mealsView.bottom, _mealsView.width, LABEL_HEIGHT);
+    self.giftLabel.frame = CGRectMake(LEFT_SPACE, _remarkLabel.bottom, _remarkLabel.width, LABEL_HEIGHT);
     
 }
 

@@ -58,6 +58,27 @@
         NSLog(@"geo检索发送失败");
     }
     
+    // 根据手机自己定位功能，得到经纬度，传给百度地图，来进行定位
+    
+//    NSDictionary* testdic = BMKConvertBaiduCoorFrom(self.coordinate2D,BMK_COORDTYPE_GPS);
+//    CLLocationCoordinate2D coordinate2d = BMKCoorDictionaryDecode(testdic);
+//    
+//    BMKReverseGeoCodeOption *reverseGeoCodeSearchOption = [[BMKReverseGeoCodeOption alloc] init];
+//    BOOL reverseGeoFlag;
+//    reverseGeoCodeSearchOption.reverseGeoPoint = coordinate2d;
+//    
+//    NSLog(@"dic = %@, coordinate2D.latitude = %f, coordinate2D.longitude = %f",[testdic description], coordinate2d.latitude, coordinate2d.longitude);
+//    
+//    reverseGeoFlag = [_geoCodeSearch reverseGeoCode:reverseGeoCodeSearchOption];
+//    if(reverseGeoFlag)
+//    {
+//        NSLog(@"反geo检索发送成功");
+//    }
+//    else
+//    {
+//        NSLog(@"反geo检索发送失败");
+//    }
+    
     self.locService = [[BMKLocationService alloc]init];
     _locService.delegate = self;
     
@@ -155,7 +176,28 @@
         _mapView.centerCoordinate = result.location;
     }
 }
-
+- (void)onGetReverseGeoCodeResult:(BMKGeoCodeSearch *)searcher result:(BMKReverseGeoCodeResult *)result errorCode:(BMKSearchErrorCode)error
+{
+//    NSLog(@"%u", error);
+    
+    if (error == BMK_SEARCH_NO_ERROR) {
+        //在此处理正常结果
+        //        result.addressDetail.district
+//        NSLog(@"处理结果2 %@, %@, %@ %@", result.address, result.addressDetail.streetName, result.addressDetail.streetNumber, result.addressDetail.district);
+        BMKPointAnnotation * item = [[BMKPointAnnotation alloc]init];
+        item.coordinate = result.location;
+        
+        NSLog(@"%f, %f", result.location.latitude, result.location.longitude);
+        
+        item.title = result.address;
+        [_mapView addAnnotation:item];
+        _mapView.centerCoordinate = result.location;
+        //        self.lon = self.coor.longitude;
+        //        self.lat = self.coor.latitude;
+    }else {
+        NSLog(@"抱歉，未找到结果");
+    }
+}
 /**
  *用户位置更新后，会调用此函数
  *@param userLocation 新的用户位置

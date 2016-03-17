@@ -14,7 +14,7 @@
 #define TOP_SPACE 10
 #define SHOPVIEW_HEIGHT 120
 #define CUSTOMERVIEW_HEIGHT 150
-#define TOTLEPRICEVIEW_HEIGHT 60
+#define TOTLEPRICEVIEW_HEIGHT 50
 #define MENUVIEW_HEIGHT 30
 #define LINE_tag 8000
 
@@ -57,7 +57,7 @@ static int shopHeight = 0;
     _linePrice.backgroundColor = [UIColor colorWithWhite:.9 alpha:1];
     [self addSubview:_linePrice];
     
-    self.totlePriceView = [[TotlePriceView alloc]initWithFrame:CGRectMake(0, _linePrice.bottom, self.width, 60)];
+    self.totlePriceView = [[TotlePriceView alloc]initWithFrame:CGRectMake(0, _linePrice.bottom, self.width, TOTLEPRICEVIEW_HEIGHT)];
     [self addSubview:_totlePriceView];
     
 }

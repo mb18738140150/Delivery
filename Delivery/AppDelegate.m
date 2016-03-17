@@ -28,6 +28,7 @@ static SystemSoundID shake_sound_male_id = 0;
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
+    [AFAppDotNetAPIClient shareClientWithView:self.window];
     self.window.backgroundColor = [UIColor whiteColor];
     
     // 抽屉效果

@@ -15,6 +15,8 @@
 #import <AVFoundation/AVFoundation.h>
 #import <AudioToolbox/AudioToolbox.h>
 
+#import "Mapcontroller.h"
+
 #define MAPKEY   1IuetZKXAwIv8oGEGpVbzo6f
 
 @interface AppDelegate ()<HTTPPostDelegate, BMKGeneralDelegate>
@@ -47,7 +49,10 @@ static SystemSoundID shake_sound_male_id = 0;
 //    OrderViewController * orderVC = [[OrderViewController alloc]init];
 //    self.mainNavigationController = [[UINavigationController alloc]initWithRootViewController:orderVC];
     self.loginVC = [[LoginViewController alloc]initWithNibName:@"LoginViewController" bundle:nil];
-    UINavigationController * nav = [[UINavigationController alloc]initWithRootViewController:_loginVC];
+    
+    Mapcontroller * mapVC = [[Mapcontroller alloc]init];
+    UINavigationController * nav = [[UINavigationController alloc]initWithRootViewController:self.loginVC];
+    
     
     self.window.rootViewController = nav;
     
@@ -62,6 +67,10 @@ static SystemSoundID shake_sound_male_id = 0;
     if (!ret) {
         NSLog(@"百度地图初始化失败");
     }
+    
+    // 初始化腾讯地图
+    [[QMapServices sharedServices] setApiKey:@"HZ4BZ-JX7RF-M6BJ7-NQRVB-HX3SH-TGF4Z"];
+    [[QMSSearchServices sharedServices] setApiKey:@"HZ4BZ-JX7RF-M6BJ7-NQRVB-HX3SH-TGF4Z"];
     
     [APService registerForRemoteNotificationTypes:(UIUserNotificationTypeBadge | UIUserNotificationTypeSound | UIUserNotificationTypeAlert) categories:nil];
     [APService setupWithOption:launchOptions];

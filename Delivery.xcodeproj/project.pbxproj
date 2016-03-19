@@ -82,6 +82,10 @@
 		73815FD61C4F24F4008F1BC2 /* phone.png in Resources */ = {isa = PBXBuildFile; fileRef = 73815FD51C4F24F4008F1BC2 /* phone.png */; };
 		7383635C1BE094CF00F2F542 /* PersonCenterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7383635B1BE094CF00F2F542 /* PersonCenterViewController.m */; };
 		7397295C1C48F5670057C250 /* PersonalDataViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7397295B1C48F5670057C250 /* PersonalDataViewController.m */; };
+		739D6A621C9A83FC00427FA8 /* QMapSearchKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 739D6A611C9A83FC00427FA8 /* QMapSearchKit.framework */; };
+		739D6A641C9A846000427FA8 /* QMapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 739D6A631C9A846000427FA8 /* QMapKit.framework */; };
+		739D6A661C9A846800427FA8 /* QMapKit.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 739D6A651C9A846800427FA8 /* QMapKit.bundle */; };
+		739D6A691C9A9E7500427FA8 /* PoiAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 739D6A681C9A9E7500427FA8 /* PoiAnnotation.m */; };
 		739EF3831BE896F000E13F81 /* NewOrderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 739EF3821BE896F000E13F81 /* NewOrderCell.m */; };
 		739EF3861BE8974F00E13F81 /* DeliveryingCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 739EF3851BE8974F00E13F81 /* DeliveryingCell.m */; };
 		739EF3891BE8976A00E13F81 /* DeliveriedCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 739EF3881BE8976A00E13F81 /* DeliveriedCell.m */; };
@@ -224,6 +228,11 @@
 		7383635B1BE094CF00F2F542 /* PersonCenterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersonCenterViewController.m; sourceTree = "<group>"; };
 		7397295A1C48F5670057C250 /* PersonalDataViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersonalDataViewController.h; sourceTree = "<group>"; };
 		7397295B1C48F5670057C250 /* PersonalDataViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersonalDataViewController.m; sourceTree = "<group>"; };
+		739D6A611C9A83FC00427FA8 /* QMapSearchKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = QMapSearchKit.framework; sourceTree = "<group>"; };
+		739D6A631C9A846000427FA8 /* QMapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = QMapKit.framework; sourceTree = "<group>"; };
+		739D6A651C9A846800427FA8 /* QMapKit.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = QMapKit.bundle; sourceTree = "<group>"; };
+		739D6A671C9A9E7500427FA8 /* PoiAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PoiAnnotation.h; sourceTree = "<group>"; };
+		739D6A681C9A9E7500427FA8 /* PoiAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PoiAnnotation.m; sourceTree = "<group>"; };
 		739EF3811BE896F000E13F81 /* NewOrderCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewOrderCell.h; sourceTree = "<group>"; };
 		739EF3821BE896F000E13F81 /* NewOrderCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewOrderCell.m; sourceTree = "<group>"; };
 		739EF3841BE8974F00E13F81 /* DeliveryingCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeliveryingCell.h; sourceTree = "<group>"; };
@@ -249,6 +258,7 @@
 			files = (
 				736A121E1C4E007600549177 /* libstdc++.6.0.9.tbd in Frameworks */,
 				736A121C1C4E005D00549177 /* libsqlite3.0.tbd in Frameworks */,
+				739D6A641C9A846000427FA8 /* QMapKit.framework in Frameworks */,
 				736A121A1C4E002500549177 /* OpenGLES.framework in Frameworks */,
 				736A12181C4E001B00549177 /* QuartzCore.framework in Frameworks */,
 				736A12161C4E000800549177 /* CoreLocation.framework in Frameworks */,
@@ -262,6 +272,7 @@
 				734287351C4651B10093D133 /* SystemConfiguration.framework in Frameworks */,
 				736A12101C4DFCDB00549177 /* BaiduMapAPI_Search.framework in Frameworks */,
 				736A120C1C4DFCDB00549177 /* BaiduMapAPI_Cloud.framework in Frameworks */,
+				739D6A621C9A83FC00427FA8 /* QMapSearchKit.framework in Frameworks */,
 				734287331C4651A00093D133 /* CoreTelephony.framework in Frameworks */,
 				734287311C4651950093D133 /* CoreFoundation.framework in Frameworks */,
 				736A120F1C4DFCDB00549177 /* BaiduMapAPI_Radar.framework in Frameworks */,
@@ -294,6 +305,9 @@
 		15EB3FD6E4E5F59DA85F2918 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				739D6A651C9A846800427FA8 /* QMapKit.bundle */,
+				739D6A631C9A846000427FA8 /* QMapKit.framework */,
+				739D6A611C9A83FC00427FA8 /* QMapSearchKit.framework */,
 				736A121D1C4E007600549177 /* libstdc++.6.0.9.tbd */,
 				736A121B1C4E005D00549177 /* libsqlite3.0.tbd */,
 				736A12191C4E002500549177 /* OpenGLES.framework */,
@@ -646,6 +660,8 @@
 			children = (
 				736A12121C4DFFD300549177 /* Mapcontroller.h */,
 				736A12131C4DFFD300549177 /* Mapcontroller.mm */,
+				739D6A671C9A9E7500427FA8 /* PoiAnnotation.h */,
+				739D6A681C9A9E7500427FA8 /* PoiAnnotation.m */,
 			);
 			name = MAP;
 			sourceTree = "<group>";
@@ -762,6 +778,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				734287171C4623D90093D133 /* LoginViewController.xib in Resources */,
+				739D6A661C9A846800427FA8 /* QMapKit.bundle in Resources */,
 				736A12201C4E011B00549177 /* mapapi.bundle in Resources */,
 				735AB3811BD9FA9200075477 /* Assets.xcassets in Resources */,
 				7365872A1C47664F00DFB6AE /* PushConfig.plist in Resources */,
@@ -870,6 +887,7 @@
 				739EF38F1BE897B900E13F81 /* CustomerView.m in Sources */,
 				7374C0131C8D143500A30CF8 /* CLLocation+YCLocation.m in Sources */,
 				7383635C1BE094CF00F2F542 /* PersonCenterViewController.m in Sources */,
+				739D6A691C9A9E7500427FA8 /* PoiAnnotation.m in Sources */,
 				734287261C464C0D0093D133 /* NSString+MD5.m in Sources */,
 				73CCA3D31BE20CFB0051BDFE /* ChangePasswordViewController.m in Sources */,
 				737A3E681C4382FD00949457 /* OrderDetailController.m in Sources */,

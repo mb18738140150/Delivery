@@ -27,6 +27,11 @@
 @property (nonatomic, strong)NSNumber * allMoney;
 @property (nonatomic, strong)NSMutableArray * mealArray;
 
+@property (nonatomic, strong)NSNumber * distanceToStore;
+@property (nonatomic, strong)NSNumber * distanceToCustom;
+
+@property (nonatomic, strong)NSNumber * orderState;
+
 - (id)initWithDictionary:(NSDictionary *)dic;
 
 @end

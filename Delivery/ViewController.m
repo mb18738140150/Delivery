@@ -90,7 +90,6 @@
     sender.layer.borderColor=[UIColor redColor].CGColor;
     sender.layer.borderWidth=0.5;
     sender.layer.cornerRadius = 8;
-
 }
 
 -(void)getLat

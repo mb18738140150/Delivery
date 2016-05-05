@@ -11,6 +11,7 @@
 #import "MealPriceView.h"
 #import "TotlePriceView.h"
 #import "Mapcontroller.h"
+#import "MealDetailsView.h"
 
 #define IMAGE_WEIDTH 30
 #define LABEL_HEIGHT 30
@@ -56,6 +57,33 @@
 @property (nonatomic, strong)TotlePriceView * totlePriceView;
 
 
+@property (strong, nonatomic) IBOutlet UIScrollView *myScrollview;
+@property (strong, nonatomic) IBOutlet UIView *backView;
+
+@property (strong, nonatomic) IBOutlet UIView *businessView;
+@property (strong, nonatomic) IBOutlet UILabel *storeNameLB;
+@property (strong, nonatomic) IBOutlet UILabel *sendState;
+@property (strong, nonatomic) IBOutlet UILabel *payTypeLB;
+@property (strong, nonatomic) IBOutlet UIView *storeLIne1;
+@property (strong, nonatomic) IBOutlet UIView *storeLine2;
+@property (strong, nonatomic) IBOutlet UILabel *storePhoneNumberLB;
+@property (strong, nonatomic) IBOutlet UIImageView *storeAddressIcon;
+@property (strong, nonatomic) IBOutlet UILabel *storeAddressLB;
+
+@property (strong, nonatomic) IBOutlet UIView *customerView;
+@property (strong, nonatomic) IBOutlet UILabel *customNameLB;
+@property (strong, nonatomic) IBOutlet UILabel *customPhoneNumberLB;
+@property (strong, nonatomic) IBOutlet UILabel *sendTimeLB;
+@property (strong, nonatomic) IBOutlet UILabel *sendtimelabel;
+@property (strong, nonatomic) IBOutlet UIView *customLine1;
+@property (strong, nonatomic) IBOutlet UIView *customLine2;
+@property (strong, nonatomic) IBOutlet UIImageView *customAddressIcon;
+@property (strong, nonatomic) IBOutlet UILabel *customAddressLB;
+
+
+@property (strong, nonatomic) IBOutlet UIView *mealDetailsView;
+@property (strong, nonatomic) IBOutlet UILabel *payStateLB;
+
 @end
 
 @implementation OrderDetailController
@@ -63,12 +91,12 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.navigationItem.title = @"餐单详情";
+    
     
     self.scrollview= [[UIScrollView alloc]initWithFrame:self.view.frame];
     _scrollview.height = self.view.height - 64 - 60;
     _scrollview.backgroundColor = [UIColor colorWithWhite:.9 alpha:1];
-    [self.view addSubview:_scrollview];
+//    [self.view addSubview:_scrollview];
     
     
     // 用户信息
@@ -84,7 +112,7 @@
     UIButton * addressBt = [UIButton buttonWithType:UIButtonTypeSystem];
     addressBt.frame = _addressImageView.frame;
     addressBt.backgroundColor = [UIColor clearColor];
-    addressBt.tag = CUSTOM_ADDRESS_BT_TAG;
+//    addressBt.tag = CUSTOM_ADDRESS_BT_TAG;
     [addressBt addTarget:self action:@selector(mapAction:) forControlEvents:UIControlEventTouchUpInside];
     [totleView addSubview:addressBt];
     
@@ -216,7 +244,7 @@
     UIButton * shopaddressBt = [UIButton buttonWithType:UIButtonTypeSystem];
     shopaddressBt.frame = _addressImageViewshop.frame;
     shopaddressBt.backgroundColor = [UIColor clearColor];
-    shopaddressBt.tag = SHOP_ADDRESS_BT_TAG;
+//    shopaddressBt.tag = SHOP_ADDRESS_BT_TAG;
     [shopaddressBt addTarget:self action:@selector(mapAction:) forControlEvents:UIControlEventTouchUpInside];
     [shopdetailsView addSubview:shopaddressBt];
     
@@ -281,13 +309,34 @@
     
     _scrollview.contentSize = CGSizeMake(self.view.width, tipView.bottom + 20);
     
+    
+    
+    UIButton * addressBt1 = [UIButton buttonWithType:UIButtonTypeSystem];
+    addressBt1.frame = self.customAddressIcon.frame;
+    addressBt1.backgroundColor = [UIColor clearColor];
+    addressBt1.tag = CUSTOM_ADDRESS_BT_TAG;
+    [addressBt1 addTarget:self action:@selector(mapAction:) forControlEvents:UIControlEventTouchUpInside];
+    [self.customerView addSubview:addressBt1];
+    
+    UIButton * shopaddressBt1 = [UIButton buttonWithType:UIButtonTypeSystem];
+    shopaddressBt1.frame = self.storeAddressIcon.frame;
+    shopaddressBt1.backgroundColor = [UIColor clearColor];
+    shopaddressBt1.tag = SHOP_ADDRESS_BT_TAG;
+    [shopaddressBt1 addTarget:self action:@selector(mapAction:) forControlEvents:UIControlEventTouchUpInside];
+    [self.businessView addSubview:shopaddressBt1];
+    self.backView.height = self.mealDetailsView.bottom ;
+    self.myScrollview.contentSize = CGSizeMake(self.myScrollview.width, self.backView.bottom + 10);
+    
+    
     CGRect rect = [UIScreen mainScreen].bounds;
     self.totlePriceView = [[TotlePriceView alloc]initWithFrame:CGRectMake(0, _scrollview.bottom, self.view.width, 60)];
     self.totlePriceView.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:_totlePriceView];
     
     
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:@"back.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:self action:@selector(backLastVC:)];
+    self.navigationController.navigationBar.titleTextAttributes = @{NSFontAttributeName:[UIFont systemFontOfSize:17], NSForegroundColorAttributeName:[UIColor blackColor]};
+    self.navigationItem.title = @"餐单详情";
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:@"back_black.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:self action:@selector(backLastVC:)];
     
     NSDictionary * jsonDic = @{
                                @"Command":@9,
@@ -300,6 +349,14 @@
     [SVProgressHUD showWithStatus:@"正在加载..." maskType:SVProgressHUDMaskTypeBlack];
     
     // Do any additional setup after loading the view.
+}
+- (void)viewWillAppear:(BOOL)animated
+{
+    
+}
+- (void)viewWillDisappear:(BOOL)animated
+{
+    
 }
 - (void)backLastVC:(id)sender
 {
@@ -450,7 +507,87 @@
                 _scrollview.contentSize = CGSizeMake(self.view.width, shopDetailsView.bottom + 20);
             }
             
-            self.totlePriceView.totlePriceLabel.text = [NSString stringWithFormat:@"%@", [dic objectForKey:@"AllMoney"]];
+            
+            
+            // 死了复活就被冻结副本及
+            self.storeNameLB.text = [NSString stringWithFormat:@"%@", [dic objectForKey:@"BusiName"]];
+            self.storePhoneNumberLB.text = [NSString stringWithFormat:@"联系电话：%@", [dic objectForKey:@"BusiPhone"]];
+            if ([[dic objectForKey:@"PayType"] intValue] == 1) {
+                self.payTypeLB.text = @"在线支付";
+                self.payStateLB.text = @"已支付";
+            }else
+            {
+                self.payTypeLB.text = @"现金支付";
+                self.payStateLB.text = @"未支付";
+            }
+            
+            switch ([[dic objectForKey:@"OrderState"] intValue]) {
+                case 1:
+                    self.sendState.text = @"新订单";
+                    break;
+                case 2:
+                    self.sendState.text = @"待配送";
+                    break;
+                case 3:
+                    self.sendState.text = @"配送中";
+                    break;
+                case 4:
+                    self.sendState.text = @"已配送";
+                    break;
+                    
+                default:
+                    break;
+            }
+            
+            NSDictionary * attribute2 = @{NSFontAttributeName:[UIFont systemFontOfSize:12]};
+            self.storeAddressLB.text = [NSString stringWithFormat:@"%@", [dic objectForKey:@"BusiAddress"]];
+//            self.storeAddressLB.text = @"金水区经八路黄河路交叉口向东100米路西九号院1号楼3单元2楼50号";
+            CGRect storeaddressRectshop = [self.storeAddressLB.text boundingRectWithSize:CGSizeMake(_addressLabelshop.width, MAXFLOAT) options:NSStringDrawingUsesLineFragmentOrigin attributes:attribute2 context:nil];
+            self.storeAddressLB.height = storeaddressRectshop.size.height;
+            self.businessView.frame = CGRectMake(self.businessView.left, self.businessView.top, self.businessView.width, self.storeAddressLB.bottom );
+            
+            
+            
+            NSLog(@"***%f***%f****%f",self.businessView.height, self.storeAddressLB.bottom, self.storeAddressLB.height);
+            
+            self.customNameLB.text = [NSString stringWithFormat:@"%@", [dic objectForKey:@"CustomerName"]];
+            self.customPhoneNumberLB.text = [NSString stringWithFormat:@"%@", [dic objectForKey:@"CustomerPhone"]];
+            self.sendTimeLB.text = [NSString stringWithFormat:@"%@", [dic objectForKey:@"HopeTime"]];
+            self.customAddressLB.text = [NSString stringWithFormat:@"%@", [dic objectForKey:@"CustomerAddress"]];
+            CGRect customAddressrect = [self.customAddressLB.text boundingRectWithSize:CGSizeMake(_customAddressLB.width, MAXFLOAT) options:NSStringDrawingUsesLineFragmentOrigin attributes:attribute2 context:nil];
+            _customAddressLB.height = customAddressrect.size.height;
+            self.customerView.top = self.businessView.bottom + TOP_SPACE;
+            self.customerView.height = _customAddressLB.bottom + TOP_SPACE;
+            
+             NSArray * mealsarray = [dic objectForKey:@"MealList"];
+            
+            NSMutableArray *mealarray = [NSMutableArray array];
+            for (NSDictionary * dic in mealsarray) {
+                Meal * meal = [[Meal alloc]initWithDictionary:dic];
+                [mealarray addObject:meal];
+            }
+            
+            
+            for (int i = 0; i < mealarray.count; i++) {
+                MealDetailsView * mealDetailView = [[MealDetailsView alloc]initWithFrame:CGRectMake(0, 47 + 30 * i, self.mealDetailsView.width, 30)];
+                Meal * meal = [mealarray objectAtIndex:i];
+                
+                mealDetailView.nametext = meal.name;
+                mealDetailView.nameLabel.text = meal.name;
+                mealDetailView.countLabel.text = [NSString stringWithFormat:@"x %d", meal.count];
+                mealDetailView.priceLabel.text = [NSString stringWithFormat:@"%.2f元", meal.money];
+                [self.mealDetailsView addSubview:mealDetailView];
+                self.mealDetailsView.height = mealDetailView.bottom + 10;
+            }
+            self.mealDetailsView.height = 47 + mealarray.count * 30;
+            
+            self.backView.height = self.mealDetailsView.bottom ;
+            NSLog(@"^^^^^^^^%f", self.backView.height);
+            self.myScrollview.backgroundColor = self.backView.backgroundColor;
+            self.myScrollview.contentSize = CGSizeMake(self.myScrollview.width, self.backView.bottom + TOP_SPACE);
+            
+            self.totlePriceView.totalPrice = [NSString stringWithFormat:@"%@", [dic objectForKey:@"AllMoney"]];
+//            self.totlePriceView.totlePriceLabel.text = [NSString stringWithFormat:@"%@", [dic objectForKey:@"AllMoney"]];
             self.totlePriceView.detailsButton.hidden = YES;
             if ([[dic objectForKey:@"OrderState"] intValue] == 2) {
                 [self.totlePriceView.startDeliveryBT setTitle:@"开始配送" forState:UIControlStateNormal];

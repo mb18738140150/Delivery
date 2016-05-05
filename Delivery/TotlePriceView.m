@@ -27,6 +27,11 @@
 - (void)createSubviews
 {
     self.backgroundColor = [UIColor whiteColor];
+    
+    UIView * line = [[UIView alloc]initWithFrame:CGRectMake(0, 0, self.width, 1)];
+    line.backgroundColor = [UIColor colorWithWhite:.9 alpha:1];
+    [self addSubview:line];
+    
     UILabel * totleLabel = [[UILabel alloc]initWithFrame:CGRectMake(LEFT_SPACE, TOP_SPACE + 5, 15, 30)];
     totleLabel.text = @"¥";
     totleLabel.textColor = [UIColor grayColor];
@@ -43,7 +48,7 @@
     
     self.detailsButton = [UIButton buttonWithType:UIButtonTypeSystem];
     _detailsButton.frame = CGRectMake(self.width - 2 * DEALBUTTON_WIDTH , 0, DEALBUTTON_WIDTH, self.height);
-    [_detailsButton setTitle:@"查看详情" forState:UIControlStateNormal];
+    [_detailsButton setTitle:@"商品详情" forState:UIControlStateNormal];
     [_detailsButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     _detailsButton.backgroundColor = [UIColor colorWithWhite:.8 alpha:1];
 //    _detailsButton.layer.borderColor = [UIColor grayColor].CGColor;
@@ -61,6 +66,28 @@
 //    _startDeliveryBT.layer.masksToBounds = YES;
     [self addSubview:_startDeliveryBT];
     
+}
+
+- (void)setTotalPrice:(NSString *)totalPrice
+{
+    NSString * moneystr = totalPrice;
+    if ([moneystr containsString:@"."]) {
+        
+        NSArray * monerArr = [moneystr componentsSeparatedByString:@"."];
+        NSString * monryStr1 = [monerArr objectAtIndex:0];
+        NSString * moneyStr2 = [monerArr objectAtIndex:1];
+        
+        if (moneyStr2.length > 2) {
+            NSString * moneyStr3 = [moneyStr2 substringToIndex:2];
+            self.totlePriceLabel.text = [NSString stringWithFormat:@"%@.%@", monryStr1, moneyStr3];
+        }else
+        {
+            self.totlePriceLabel.text = [NSString stringWithFormat:@"%@.%@", monryStr1, moneyStr2];
+        }
+    }else
+    {
+        self.totlePriceLabel.text = [NSString stringWithFormat:@"%@", moneystr];
+    }
 }
 
 /*

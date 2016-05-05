@@ -10,6 +10,7 @@
 
 @interface TotlePriceView : UIView
 
+@property (nonatomic, copy)NSString * totalPrice;
 @property (nonatomic, strong)UILabel * totlePriceLabel;
 @property (nonatomic, strong)UIButton * detailsButton;
 @property (nonatomic, strong)UIButton * startDeliveryBT;

@@ -25,6 +25,10 @@
 #define DELIVERYING_IDENTIFIER @"deliveryingcell"
 #define DELIVERIED_IDENTIFIER @"deliveriedcell"
 
+#import <QMapKit/QMapKit.h>
+#import <QMapSearchKit/QMapSearchKit.h>
+
+
 #define SEGMENT_HEIGHT 40
 #define SEGMENT_WIDTH 240
 #define SEGMENT_X self.view.width / 2 - SEGMENT_WIDTH / 2
@@ -34,7 +38,9 @@
 #define ADDRESS_SHOP_TAG 1000
 #define ADDRESS_CUSTOM_TAG 2000
 
-@interface OrderViewController ()<UITableViewDataSource, UITableViewDelegate, HTTPPostDelegate>
+NSString *const QAnnotationViewDragStateCHange = @"QAnnotationViewDragState";
+
+@interface OrderViewController ()<UITableViewDataSource, UITableViewDelegate, HTTPPostDelegate, QMapViewDelegate, QMSSearchDelegate>
 
 // 订单状态
 @property (nonatomic, assign)int orderState;
@@ -44,6 +50,11 @@
 @property (nonatomic, strong)NSMutableArray * nOrderArray;
 @property (nonatomic, assign)int nOrderCount;
 @property (nonatomic, assign)int nOrderPag;
+// 代配送
+@property (nonatomic, strong)UITableView * waitOrderTableView;
+@property (nonatomic, strong)NSMutableArray * waitOrderArray;
+@property (nonatomic, assign)int waitOrderCount;
+@property (nonatomic, assign)int waitOrderPag;
 
 // 配送中
 @property (nonatomic, strong)UITableView * deliveryingTableView;
@@ -57,6 +68,11 @@
 @property (nonatomic, assign)int deliveriedCount;
 @property (nonatomic, assign)int deliveriedPag;
 
+@property (nonatomic, assign)int toDetailsView;
+
+@property (nonatomic, strong) QMapView * qMapView;
+@property (nonatomic, assign) CLLocationCoordinate2D Coordinate;
+
 @end
 
 @implementation OrderViewController
@@ -67,6 +83,14 @@
         self.nOrderArray = [NSMutableArray array];
     }
     return _nOrderArray;
+}
+
+- (NSMutableArray *)waitOrderArray
+{
+    if (!_waitOrderArray) {
+        self.waitOrderArray = [NSMutableArray array];
+    }
+    return _waitOrderArray;
 }
 
 - (NSMutableArray *)deliveryingArray
@@ -92,8 +116,9 @@
     [self addHeaderView];
     
     self.view.backgroundColor = [UIColor redColor];
-    
-    self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:251 / 255.0 green:84 / 255.0 blue:8 / 255.0 alpha:1];
+    self.toDetailsView = 0;
+//    self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:251 / 255.0 green:84 / 255.0 blue:8 / 255.0 alpha:1];
+    self.navigationController.navigationBar.barTintColor = [UIColor whiteColor];
     
     
     // 新订单
@@ -108,11 +133,25 @@
     self.nOrderTableView.header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(headerRereshing)];
     self.nOrderTableView.footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(footerRereshing)];
     [_nOrderTableView registerClass:[NewOrderCell class] forCellReuseIdentifier:NORDERCELL_IDENTIFIER];
-    [self downloadDataWithCommand:@3 page:_nOrderPag count:10 orderState:1];
+    
     [SVProgressHUD showWithStatus:@"正在加载..." maskType:SVProgressHUDMaskTypeBlack];
     self.nOrderTableView.tableFooterView = [[UIView alloc]init];
     
     // 代配送订单
+    self.waitOrderTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, self.view.width, self.view.height - 50)];
+    _waitOrderTableView.delegate = self;
+    _waitOrderTableView.dataSource = self;
+    self.waitOrderTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    _waitOrderTableView.backgroundColor = [UIColor colorWithWhite:.9 alpha:1];
+    [self.view addSubview:_waitOrderTableView];
+    _waitOrderPag = 1;
+    self.waitOrderTableView.header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(headerRereshing)];
+    self.waitOrderTableView.footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(footerRereshing)];
+    [_waitOrderTableView registerClass:[DeliveryingCell class] forCellReuseIdentifier:DELIVERYING_IDENTIFIER];
+    _waitOrderTableView.tableFooterView = [[UIView alloc]init];
+    self.waitOrderTableView.hidden = YES;
+    
+    // 配送中订单
     self.deliveryingTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, self.view.width, self.view.height - 50)];
     _deliveryingTableView.delegate = self;
     _deliveryingTableView.dataSource = self;
@@ -144,13 +183,57 @@
     
 //    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:@"back.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:self action:@selector(backLastVC:)];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithImage:[[UIImage imageNamed:@"shezhi.png"]imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:self action:@selector(setupAction:)];
+    
+    self.qMapView = [[QMapView alloc]init];
+    self.qMapView.delegate = self;
+    self.qMapView.showsUserLocation = YES;
+    
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(qano:) name:QAnnotationViewDragStateCHange object:nil];;
+    
+}
+
+#pragma mark - 腾讯地图定位
+
+
+- (void)mapView:(QMapView *)mapView didUpdateUserLocation:(QUserLocation *)userLocation updatingLocation:(BOOL)updatingLocation
+{
+    //    NSLog(@"刷新位置");
+    
+    
+    self.Coordinate = userLocation.coordinate;
+    [[NSNotificationCenter defaultCenter]postNotificationName:QAnnotationViewDragStateCHange object:nil];
+    
+}
+- (void)mapView:(QMapView *)mapView didFailToLocateUserWithError:(NSError *)error
+{
+    NSLog(@"定位失败");
+    UIAlertController * alertController = [UIAlertController alertControllerWithTitle:@"提示" message:@"对不起，定位失败" preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction * cancelAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleCancel handler:nil];
+    [alertController addAction:cancelAction];
+    
+    [self presentViewController:alertController animated:YES completion:nil];
+    self.Coordinate = (CLLocationCoordinate2D){0.0, 0.0};
+    
+    [[NSNotificationCenter defaultCenter]postNotificationName:QAnnotationViewDragStateCHange object:nil];
+}
+
+- (void)qano:(NSNotification *)notification
+{
+    [self downloadDataWithCommand:@3 page:_nOrderPag count:10 orderState:1];
 }
 
 - (void)addHeaderView
 {
-    self.segment = [[UISegmentedControl alloc]initWithItems:@[@"新订单", @"待配送", @"已配送"]];
-    self.segment.tintColor = [UIColor whiteColor];
+    self.segment = [[UISegmentedControl alloc]initWithItems:@[@"新订单",@"待配送",@"配送中", @"已配送"]];
+    self.segment.tintColor = [UIColor colorWithRed:250 / 255.0 green:250 / 255.0 blue:250 / 255.0 alpha:1];
     self.segment.frame = CGRectMake(SEGMENT_X, 2, SEGMENT_WIDTH, SEGMENT_HEIGHT);
+    NSDictionary* selectedTextAttributes = @{NSFontAttributeName:[UIFont boldSystemFontOfSize:16],
+                                             NSForegroundColorAttributeName: MAIN_COLORE};
+    [self.segment setTitleTextAttributes:selectedTextAttributes forState:UIControlStateSelected];//设置文字属性
+    NSDictionary* unselectedTextAttributes = @{NSFontAttributeName:[UIFont boldSystemFontOfSize:16],
+                                               NSForegroundColorAttributeName: [UIColor grayColor]};
+    [self.segment setTitleTextAttributes:unselectedTextAttributes forState:UIControlStateNormal];
     self.segment.selectedSegmentIndex = 0;
     self.tableView.backgroundColor = [UIColor whiteColor];
     [_segment addTarget:self action:@selector(deliveryState:) forControlEvents:UIControlEventValueChanged];
@@ -164,18 +247,29 @@
 {
     if (segment.selectedSegmentIndex == 0) {
         self.nOrderTableView.hidden = NO;
+        self.waitOrderTableView.hidden = YES;
         self.deliveryingTableView.hidden = YES;
         self.deliveriedTableView.hidden = YES;
         [self.nOrderTableView.header beginRefreshing];
-    }else if (segment.selectedSegmentIndex == 1)
+    }
+    else if (segment.selectedSegmentIndex == 1)
+    {
+        self.waitOrderTableView.hidden = NO;
+        self.nOrderTableView.hidden = YES;
+        self.deliveryingTableView.hidden = YES;
+        self.deliveriedTableView.hidden = YES;
+        [self.waitOrderTableView.header beginRefreshing];
+    }else if (segment.selectedSegmentIndex == 2)
     {
         self.nOrderTableView.hidden = YES;
+        self.waitOrderTableView.hidden = YES;
         self.deliveryingTableView.hidden = NO;
         self.deliveriedTableView.hidden = YES;
         [self.deliveryingTableView.header beginRefreshing];
     }else
     {
         self.nOrderTableView.hidden = YES;
+        self.waitOrderTableView.hidden = YES;
         self.deliveryingTableView.hidden = YES;
         self.deliveriedTableView.hidden = NO;
         [self.deliveriedTableView.header beginRefreshing];
@@ -190,18 +284,25 @@
         _nOrderPag = 1;
         _orderState = 1;
         [self downloadDataWithCommand:@3 page:_nOrderPag count:10 orderState:1];
-    }else if (self.segment.selectedSegmentIndex == 1)
+    }
+    else if (self.segment.selectedSegmentIndex == 1)
     {
         [self.deliveryingTableView.header endRefreshing];
         _deliveryingPag = 1;
         _orderState = 2;
         [self downloadDataWithCommand:@3 page:_deliveryingPag count:10 orderState:2];
+    }else if (self.segment.selectedSegmentIndex == 2)
+    {
+        [self.deliveryingTableView.header endRefreshing];
+        _deliveryingPag = 1;
+        _orderState = 3;
+        [self downloadDataWithCommand:@3 page:_deliveryingPag count:10 orderState:2];
     }else
     {
         [self.deliveriedTableView.header endRefreshing];
         _deliveriedPag = 1;
-        _orderState = 3;
-        [self downloadDataWithCommand:@3 page:_deliveriedPag count:10 orderState:3];
+        _orderState = 4;
+        [self downloadDataWithCommand:@3 page:_deliveriedPag count:10 orderState:4];
     }
 }
 
@@ -215,7 +316,16 @@
             [self.nOrderTableView.footer endRefreshingWithNoMoreData];
 
         }
-    }else if (self.segment.selectedSegmentIndex == 1)
+    }
+    else if (self.segment.selectedSegmentIndex == 1)
+    {
+        if (_deliveryingArray.count < _deliveryingCount ) {
+            [self downloadDataWithCommand:@3 page:++_deliveryingPag count:10 orderState:2];
+        }else
+        {
+            [self.deliveryingTableView.footer endRefreshingWithNoMoreData];
+        }
+    }else if (self.segment.selectedSegmentIndex == 2)
     {
         if (_deliveryingArray.count < _deliveryingCount ) {
             [self downloadDataWithCommand:@3 page:++_deliveryingPag count:10 orderState:2];
@@ -243,6 +353,8 @@
                                @"CurPage":[NSNumber numberWithInt:page],
                                @"CurCount":[NSNumber numberWithInt:count],
                                @"BusiId":[UserInfo shareUserInfo].BusiId,
+                               @"Lat":[NSNumber numberWithDouble:self.Coordinate.latitude],
+                               @"Lon":[NSNumber numberWithDouble:self.Coordinate.longitude],
                                @"OrderState":[NSNumber numberWithInt:state],
                                @"IsAgent":@([UserInfo shareUserInfo].isAgent)
                                };
@@ -280,10 +392,32 @@
                 NSArray * array = [data objectForKey:@"OrderList"];
                 for (NSDictionary * dic in array) {
                     NewOrderModel * model = [[NewOrderModel alloc]initWithDictionary:dic];
+                    model.orderState = @1;
                     [self.nOrderArray addObject:model];
                 }
                 [self.nOrderTableView reloadData];
             }else if (_orderState == 2)
+            {
+              
+                if (_waitOrderPag == 1) {
+                    [self.waitOrderArray removeAllObjects];
+                    [self.waitOrderTableView.header endRefreshing];
+                }else
+                {
+                    [self.waitOrderTableView.footer endRefreshing];
+                }
+                self.waitOrderCount = [[data objectForKey:@"AllCount"] intValue];
+                NSArray * array1 = [data objectForKey:@"OrderList"];
+                for (NSDictionary * dic in array1) {
+                    NewOrderModel * model = [[NewOrderModel alloc]initWithDictionary:dic];
+                    model.orderState = @2;
+                    [self.waitOrderArray addObject:model];
+                }
+                [self.waitOrderTableView reloadData];
+                
+                
+            }
+            else if (_orderState == 3)
             {
                 if (_deliveryingPag == 1) {
                     [self.deliveryingArray removeAllObjects];
@@ -296,9 +430,12 @@
                 NSArray * array = [data objectForKey:@"OrderList"];
                 for (NSDictionary * dic in array) {
                     NewOrderModel * model = [[NewOrderModel alloc]initWithDictionary:dic];
+                    model.orderState = @3;
                     [self.deliveryingArray addObject:model];
                 }
                 [self.deliveryingTableView reloadData];
+                
+                
             }else
             {
                 if (_deliveriedPag == 1) {
@@ -310,6 +447,7 @@
                 NSArray * array = [data objectForKey:@"OrderList"];
                 for (NSDictionary * dic in array) {
                     NewOrderModel * model = [[NewOrderModel alloc]initWithDictionary:dic];
+                    model.orderState = @4;
                     [self.deliveriedArray addObject:model];
                 }
                 [self.deliveriedTableView reloadData];
@@ -331,17 +469,14 @@
             
             [self downloadDataWithCommand:@3 page:1 count:10 orderState:2];
             
-
         }
     }else
     {
-        
         UIAlertController * nameController = [UIAlertController alertControllerWithTitle:@"提示" message:[data objectForKey:@"ErrorMsg"] preferredStyle:UIAlertControllerStyleAlert];
         UIAlertAction * cancleAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleCancel handler:nil];
         [nameController addAction:cancleAction];
         [self presentViewController:nameController animated:YES completion:nil];
     }
-    
 }
 - (void)failWithError:(NSError *)error
 {
@@ -376,6 +511,10 @@
 {
     if ([tableView isEqual:_nOrderTableView]) {
         return self.nOrderArray.count ;
+    }
+    else if ([tableView isEqual:_waitOrderTableView])
+    {
+        return self.waitOrderArray.count;
     }else if ([tableView isEqual:_deliveryingTableView])
     {
         return self.deliveryingArray.count;
@@ -404,11 +543,28 @@
         [newOrderCell.totlePriceView.startDeliveryBT addTarget:self action:@selector(robAction:event:) forControlEvents:UIControlEventTouchUpInside];
         
         return newOrderCell;
+    }
+    else if ([tableView isEqual:_waitOrderTableView])
+    {
+        NewOrderModel * model = [self.waitOrderArray objectAtIndex:indexPath.row];
+        DeliveryingCell * deliveryingCell = [tableView dequeueReusableCellWithIdentifier:DELIVERYING_IDENTIFIER forIndexPath:indexPath];
+        [deliveryingCell createSubView:tableView.bounds mealCoutn:model];
+        deliveryingCell.orderModel = model;
+        
+        [deliveryingCell.shopView.addressBT addTarget:self action:@selector(mapAction:event:) forControlEvents:UIControlEventTouchUpInside];
+        deliveryingCell.shopView.addressBT.tag = ADDRESS_SHOP_TAG;
+        
+        [deliveryingCell.customerView.addressBT addTarget:self action:@selector(mapAction:event:) forControlEvents:UIControlEventTouchUpInside];
+        deliveryingCell.customerView.addressBT.tag = ADDRESS_CUSTOM_TAG;
+        
+        [deliveryingCell.totlePriceView.detailsButton addTarget:self action:@selector(orderDetais:event:) forControlEvents:UIControlEventTouchUpInside];
+        [deliveryingCell.totlePriceView.startDeliveryBT addTarget:self action:@selector(deliveryAction:event:) forControlEvents:UIControlEventTouchUpInside];
+        return deliveryingCell;
     }else if ([tableView isEqual:_deliveryingTableView])
     {
         NewOrderModel * model = [self.deliveryingArray objectAtIndex:indexPath.row];
         DeliveryingCell * deliveryingCell = [tableView dequeueReusableCellWithIdentifier:DELIVERYING_IDENTIFIER forIndexPath:indexPath];
-        [deliveryingCell createSubView:tableView.bounds mealCoutn:model.mealArray.count];
+        [deliveryingCell createSubView:tableView.bounds mealCoutn:model];
         deliveryingCell.orderModel = model;
         
         [deliveryingCell.shopView.addressBT addTarget:self action:@selector(mapAction:event:) forControlEvents:UIControlEventTouchUpInside];
@@ -424,15 +580,24 @@
     {
         NewOrderModel * model = [self.deliveriedArray objectAtIndex:indexPath.row];
         DeliveriedCell * deliveriedCell = [tableView dequeueReusableCellWithIdentifier:DELIVERIED_IDENTIFIER forIndexPath:indexPath];
-        [deliveriedCell createSubView:tableView.bounds mealCoutn:model.mealArray.count];
+        [deliveriedCell createSubView:tableView.bounds mealCoutn:model];
         deliveriedCell.orderModel = model;
-        [deliveriedCell.shopView.addressBT addTarget:self action:@selector(mapAction:event:) forControlEvents:UIControlEventTouchUpInside];
-        deliveriedCell.shopView.addressBT.tag = ADDRESS_SHOP_TAG;
+//        [deliveriedCell.shopView.addressBT addTarget:self action:@selector(mapAction:event:) forControlEvents:UIControlEventTouchUpInside];
+//        deliveriedCell.shopView.addressBT.tag = ADDRESS_SHOP_TAG;
+//        
+//        [deliveriedCell.customerView.addressBT addTarget:self action:@selector(mapAction:event:) forControlEvents:UIControlEventTouchUpInside];
+//        deliveriedCell.customerView.addressBT.tag = ADDRESS_CUSTOM_TAG;
+//        
+//        [deliveriedCell.totlePriceView.detailsButton addTarget:self action:@selector(orderDetais:event:) forControlEvents:UIControlEventTouchUpInside];
+        __weak OrderViewController * orderVC = self;
+        [deliveriedCell orderDetailsBlock:^{
+            OrderDetailController * pVC = [[UIStoryboard storyboardWithName:@"OrderDetailController" bundle:nil] instantiateInitialViewController];
+            pVC.orderID = model.orderId;
+            orderVC.toDetailsView = 1;
+            pVC.title = @"餐单详情";
+            [orderVC.navigationController pushViewController:pVC animated:YES];
+        }];
         
-        [deliveriedCell.customerView.addressBT addTarget:self action:@selector(mapAction:event:) forControlEvents:UIControlEventTouchUpInside];
-        deliveriedCell.customerView.addressBT.tag = ADDRESS_CUSTOM_TAG;
-        
-        [deliveriedCell.totlePriceView.detailsButton addTarget:self action:@selector(orderDetais:event:) forControlEvents:UIControlEventTouchUpInside];
         return deliveriedCell;
     }
     
@@ -443,14 +608,19 @@
     if ([tableView isEqual:_nOrderTableView]) {
         NewOrderModel * model = [self.nOrderArray objectAtIndex:indexPath.row];
         return [NewOrderCell cellHeightWithMealCount:(int)model.mealArray.count];
+    }
+    else if ([tableView isEqual:_waitOrderTableView])
+    {
+        NewOrderModel * model = [self.waitOrderArray objectAtIndex:indexPath.row];
+        return [DeliveryingCell cellHeightWithMealCount:(NewOrderModel *)model];
     }else if ([tableView isEqual:_deliveryingTableView])
     {
         NewOrderModel * model = [self.deliveryingArray objectAtIndex:indexPath.row];
-        return [DeliveryingCell cellHeightWithMealCount:(int)model.mealArray.count];
+        return [DeliveryingCell cellHeightWithMealCount:(NewOrderModel *)model];
     }else
     {
         NewOrderModel * model = [self.deliveriedArray objectAtIndex:indexPath.row];
-        return [DeliveriedCell cellHeightWithMealCount:(int)model.mealArray.count];
+        return [DeliveriedCell cellHeightWithMealCount:(NewOrderModel *)model];
     }
     
 }
@@ -538,7 +708,7 @@
 #pragma mark - 查看详情
 - (void)orderDetais:(UIButton *)button event:(UIEvent *)event
 {
-     OrderDetailController * pVC = [[OrderDetailController alloc]init];
+     OrderDetailController * pVC = [[UIStoryboard storyboardWithName:@"OrderDetailController" bundle:nil] instantiateInitialViewController];
     
 //    ViewController * VC = [[ViewController alloc]init];
 //    [self.navigationController pushViewController:VC animated:YES];
@@ -553,6 +723,17 @@
             pVC.orderID = model.orderId;
         }
     }else if(self.segment.selectedSegmentIndex == 1)
+    {
+        NSSet * touches = [event allTouches];
+        UITouch * touch = [touches anyObject];
+        CGPoint currrenPoint = [touch locationInView:self.waitOrderTableView];
+        NSIndexPath * indexpath = [self.waitOrderTableView indexPathForRowAtPoint:currrenPoint];
+        if (indexpath != nil) {
+            NewOrderModel * model = [self.waitOrderArray objectAtIndex:indexpath.row];
+            pVC.orderID = model.orderId;
+        }
+    }
+    else if(self.segment.selectedSegmentIndex == 2)
     {
         NSSet * touches = [event allTouches];
         UITouch * touch = [touches anyObject];
@@ -574,6 +755,8 @@
         }
         
     }
+    self.toDetailsView = 1;
+    pVC.title = @"餐单详情";
     [self.navigationController pushViewController:pVC animated:YES];
     
 }
@@ -647,8 +830,12 @@
 //        }
 //        
 //    }];
-    
-    [self performSelector:@selector(pullrefresh) withObject:nil afterDelay:.35];
+    if (self.toDetailsView == 1) {
+        self.toDetailsView = 0;
+    }else
+    {
+        [self performSelector:@selector(pullrefresh) withObject:nil afterDelay:.35];
+    }
     
 }
 

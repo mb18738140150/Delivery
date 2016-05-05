@@ -11,6 +11,9 @@
 #import "TotlePriceView.h"
 #import "CustomerView.h"
 #import "ShopView.h"
+
+typedef void(^DetailsBlock)();
+
 @interface DeliveriedCell : UITableViewCell
 
 @property (nonatomic, strong)CustomerView * customerView;
@@ -18,7 +21,8 @@
 @property (nonatomic, strong)TotlePriceView * totlePriceView;
 @property (nonatomic, strong)ShopView * shopView;
 
-- (void)createSubView:(CGRect)frame mealCoutn:(int)mealCount;
-+ (CGFloat)cellHeightWithMealCount:(int)mealCount;
+- (void)orderDetailsBlock:(DetailsBlock)block;
+- (void)createSubView:(CGRect)frame mealCoutn:(NewOrderModel *)model;
++ (CGFloat)cellHeightWithMealCount:(NewOrderModel *)model;
 
 @end

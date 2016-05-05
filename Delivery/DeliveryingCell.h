@@ -18,7 +18,7 @@
 @property (nonatomic, strong)TotlePriceView * totlePriceView;
 @property (nonatomic, strong)ShopView * shopView;
 
-- (void)createSubView:(CGRect)frame mealCoutn:(int)mealCount;
-+ (CGFloat)cellHeightWithMealCount:(int)mealCount;
+- (void)createSubView:(CGRect)frame mealCoutn:(NewOrderModel * )model;
++ (CGFloat)cellHeightWithMealCount:(NewOrderModel *)model;
 
 @end

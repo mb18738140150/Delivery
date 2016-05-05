@@ -7,11 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
-
+@class UICustomSwitch;
 @interface OtherView : UIView
 
+@property (nonatomic, strong)UIImageView * iconImageView;
 @property (nonatomic, strong)UILabel * titleLabel;
 @property (nonatomic, strong)UILabel * detalsLabel;
+@property (nonatomic, copy)NSString * detailStr;
 @property (nonatomic, strong)UISwitch * detailButton;
 
 

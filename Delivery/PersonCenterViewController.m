@@ -10,7 +10,7 @@
 #import "ChangePasswordViewController.h"
 #import "AppDelegate.h"
 
-#define ICONIMAGE_WIDTH 80
+#define ICONIMAGE_WIDTH 65
 #define LABEL_HEIGHT 30
 #define TOP_SPACE 10
 #define LEFT_SPACE 10
@@ -39,7 +39,7 @@
     
     self.navigationItem.title = @"个人信息";
     
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithImage:[[UIImage imageNamed:@"back.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:self action:@selector(backAction:)];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithImage:[[UIImage imageNamed:@"back_black.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:self action:@selector(backAction:)];
     
     self.view.backgroundColor = [UIColor colorWithWhite:.9 alpha:1];
     
@@ -54,7 +54,7 @@
     _imagePic.delegate = self;
     
     
-    UIView * infomationView = [[UIView alloc]initWithFrame:CGRectMake(0, TOP_SPACE , self.view.width, 202)];
+    UIView * infomationView = [[UIView alloc]initWithFrame:CGRectMake(0, TOP_SPACE , self.view.width, 187)];
     infomationView.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:infomationView];
     
@@ -319,7 +319,7 @@
 
 - (void)uploadImageWithUrlString
 {
-    NSString * urlstr = @"http://ceshi.p.vlifee.com/uploadimg.aspx?savetype=100";
+    NSString * urlstr = @"http://p3o1r7t.vlifee.com/delivery_getdata.ashx?savetype=100";
     NSString * url = [urlstr stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
     NSData * imageData = UIImageJPEGRepresentation(self.iconImageView.image, 0.5);
     NSString * imageName = [self imageName];

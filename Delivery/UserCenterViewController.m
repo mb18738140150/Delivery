@@ -12,9 +12,9 @@
 #import "AppDelegate.h"
 
 #define TOP_SPACE 10
-#define LEFT_SPACE 10
-#define ICONIMAGE_WIDTH 80
-#define label_height 30
+#define LEFT_SPACE 12
+#define ICONIMAGE_WIDTH 65
+#define label_height 15
 
 @interface UserCenterViewController ()<HTTPPostDelegate>
 
@@ -29,32 +29,43 @@
     
     self.view.backgroundColor = [UIColor colorWithWhite:.9 alpha:1];
     
+    
+    self.navigationController.navigationBar.titleTextAttributes = @{
+                                                                    NSForegroundColorAttributeName: UIColorFromRGBA(0x999999, 1),
+                                                                    NSFontAttributeName : [UIFont systemFontOfSize:16]
+                                                                    };
+    
     self.navigationItem.title = @"设置";
     
-    self.headView = [[UIView alloc]initWithFrame:CGRectMake(0,  TOP_SPACE, self.view.frame.size.width, 100)];
+    self.headView = [[UIView alloc]initWithFrame:CGRectMake(0,  TOP_SPACE , self.view.frame.size.width, 81)];
     _headView.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:_headView];
     
-    self.iconImage = [[UIImageView alloc]initWithFrame:CGRectMake(LEFT_SPACE, TOP_SPACE, ICONIMAGE_WIDTH, ICONIMAGE_WIDTH)];
+    self.iconImage = [[UIImageView alloc]initWithFrame:CGRectMake(LEFT_SPACE, TOP_SPACE - 2, ICONIMAGE_WIDTH, ICONIMAGE_WIDTH)];
     _iconImage.image = [UIImage imageNamed:@"PHOTO.png"];
     [_headView addSubview:_iconImage];
     
-    self.nameLabel = [[UILabel alloc]initWithFrame:CGRectMake(_iconImage.right + LEFT_SPACE , TOP_SPACE + 5, self.view.width - 3 * LEFT_SPACE - ICONIMAGE_WIDTH - 60, label_height)];
+    self.nameLabel = [[UILabel alloc]initWithFrame:CGRectMake(_iconImage.right + LEFT_SPACE + 5, 2*TOP_SPACE + 2, self.view.width - 3 * LEFT_SPACE - ICONIMAGE_WIDTH - 60, label_height)];
     _nameLabel.adjustsFontSizeToFitWidth = YES;
-    _nameLabel.text = @"配送员姓名"
-    ;    [_headView addSubview:_nameLabel];
+    _nameLabel.font = [UIFont systemFontOfSize:15];
+    _nameLabel.text = @"配送员姓名";
+    [_headView addSubview:_nameLabel];
     
-    self.phoneNumberLabel = [[UILabel alloc]initWithFrame:CGRectMake(_iconImage.right + LEFT_SPACE , _nameLabel.bottom + TOP_SPACE, _nameLabel.width, _nameLabel.height)];
-    _phoneNumberLabel.adjustsFontSizeToFitWidth = YES;
+    self.phoneNumberLabel = [[UILabel alloc]initWithFrame:CGRectMake(_nameLabel.left , _nameLabel.bottom + TOP_SPACE, _nameLabel.width, _nameLabel.height)];
     self.phoneNumberLabel.textColor = [UIColor grayColor];
+    _phoneNumberLabel.font = [UIFont systemFontOfSize:11];
     _phoneNumberLabel.text = @"w47872y49r8349t";
     [_headView addSubview:_phoneNumberLabel];
     
+    UIImageView * imageView = [[UIImageView alloc]initWithFrame:CGRectMake(self.view.width - 32, _headView.height / 2  - 8, 8, 15)];
+    imageView.image = [UIImage imageNamed:@"arrowright.png"];
+    [_headView addSubview:imageView];
+    
     UIButton *personCenterBT = [UIButton buttonWithType:UIButtonTypeSystem];
-    personCenterBT.frame = CGRectMake(self.view.width - 60, _nameLabel.top + 5, 40, 60);
-    [personCenterBT setImage:[[UIImage imageNamed:@"arrowright.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] forState:UIControlStateNormal];
+    personCenterBT.frame = CGRectMake(self.view.width - 50, _headView.height / 2  - 20, 40, 40);
+//    [personCenterBT setImage:[[UIImage imageNamed:@"arrowright.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] forState:UIControlStateNormal];
     [personCenterBT addTarget:self action:@selector(personCenterAction:) forControlEvents:UIControlEventTouchUpInside];
-    personCenterBT.backgroundColor = [UIColor whiteColor];
+    personCenterBT.backgroundColor = [UIColor clearColor];
     [_headView addSubview:personCenterBT];
     
     _iconImage.userInteractionEnabled = YES;
@@ -63,24 +74,27 @@
     _headView.userInteractionEnabled = YES;
     
     
-    self.totalOrderview = [[OtherView alloc]initWithFrame:CGRectMake(0, _headView.bottom + TOP_SPACE, self.view.width, 50)];
+    self.totalOrderview = [[OtherView alloc]initWithFrame:CGRectMake(0, _headView.bottom + TOP_SPACE, self.view.width / 2, 66)];
+    _totalOrderview.iconImageView.image = [UIImage imageNamed:@"icon_2.png"];
     _totalOrderview.titleLabel.text = @"总订单数";
     _totalOrderview.detalsLabel.text = @"20";
     [self.view addSubview:_totalOrderview];
     
     
-    self.todayOrderview = [[OtherView alloc]initWithFrame:CGRectMake(0, _totalOrderview.bottom , self.view.width, 50)];
+    self.todayOrderview = [[OtherView alloc]initWithFrame:CGRectMake(_totalOrderview.right + 1, _totalOrderview.top , self.view.width / 2, 66)];
+    _todayOrderview.iconImageView.image = [UIImage imageNamed:@"icon_3.png"];
     _todayOrderview.titleLabel.text = @"今日订单数";
     _todayOrderview.detalsLabel.text = @"20";
     [self.view addSubview:_todayOrderview];
     
-    self.massegeView = [[OtherView alloc]initWithFrame:CGRectMake(0, _todayOrderview.bottom, self.view.width , _totalOrderview.height)];
+    self.massegeView = [[OtherView alloc]initWithFrame:CGRectMake(0, _todayOrderview.bottom + TOP_SPACE, self.view.width , 45)];
+    _massegeView.iconImageView.image = [UIImage imageNamed:@"icon_1.png"];
     _massegeView.titleLabel.text = @"消息免打扰";
     _massegeView.detailButton.hidden = NO;
     [_massegeView.detailButton addTarget:self action:@selector(openOrCloseAction:) forControlEvents:UIControlEventValueChanged];
     [self.view addSubview:_massegeView];
     
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:@"back.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:self action:@selector(backLastVC:)];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:@"back_black.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:self action:@selector(backLastVC:)];
     
     NSDictionary * jsonDic = nil;
         jsonDic = @{
@@ -202,8 +216,8 @@
             
             self.nameLabel.text = [NSString stringWithFormat:@"%@", [dic objectForKey:@"UserName"]];
             self.phoneNumberLabel.text = [NSString stringWithFormat:@"%@", [dic objectForKey:@"Phone"]];
-            _totalOrderview.detalsLabel.text = [NSString stringWithFormat:@"%@", [dic objectForKey:@"TotalOrderCount"]];
-            _todayOrderview.detalsLabel.text = [NSString stringWithFormat:@"%@", [dic objectForKey:@"TodayOrderCount"]];
+            _totalOrderview.detailStr = [NSString stringWithFormat:@"%@", [dic objectForKey:@"TotalOrderCount"]];
+            _todayOrderview.detailStr = [NSString stringWithFormat:@"%@", [dic objectForKey:@"TodayOrderCount"]];
             
         }else if ([command isEqualToNumber:@10008])
         {

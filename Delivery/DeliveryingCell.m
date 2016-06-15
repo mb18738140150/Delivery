@@ -126,7 +126,7 @@ static int shopHeight = 0;
     
     self.phoneBt = [UIButton buttonWithType:UIButtonTypeCustom];
     self.phoneBt.frame = CGRectMake(frame.size.width - 38, self.linePrice.bottom + 70, 28, 28);
-    [self.phoneBt setImage:[UIImage imageNamed:@"phone.png"] forState:UIControlStateNormal];
+    [self.phoneBt setImage:[UIImage imageNamed:@"icon_hua.png"] forState:UIControlStateNormal];
     [self.phoneBt addTarget:self action:@selector(telToOrderTelNumber:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:self.phoneBt];
     

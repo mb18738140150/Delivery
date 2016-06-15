@@ -34,7 +34,6 @@ static int shopHeight = 0;
 @property (nonatomic, strong)UILabel * distanceOfcustomTostore;
 @property (nonatomic, strong)UILabel * sendTimeLabel;
 
-
 @end
 
 @implementation NewOrderCell
@@ -96,7 +95,7 @@ static int shopHeight = 0;
     customTostoreimageview.image = [UIImage imageNamed:@"colect_s.png"];
     
     self.distanceOfcustomTostore = [[UILabel alloc]initWithFrame:CGRectMake(customTostoreimageview.right + 10, self.linePrice.bottom + 40, 123, 13)];
-    self.distanceOfcustomTostore.text = @"商家距离客户 0.5km";
+    self.distanceOfcustomTostore.text = @"距离客户 0.5km";
     self.distanceOfcustomTostore.font = [UIFont systemFontOfSize:13];
     self.distanceOfcustomTostore.textColor = [UIColor colorWithWhite:.4 alpha:1];
     [self addSubview:self.distanceOfcustomTostore];
@@ -132,6 +131,7 @@ static int shopHeight = 0;
     
     self.totlePriceView = [[TotlePriceView alloc]initWithFrame:CGRectMake(0, _linePrice.bottom, self.width, TOTLEPRICEVIEW_HEIGHT)];
     [self addSubview:_totlePriceView];
+    self.totlePriceView.nullityButton.hidden = YES;
     
 }
 
@@ -241,16 +241,18 @@ static int shopHeight = 0;
     NSDictionary * attribute = @{NSFontAttributeName:[UIFont systemFontOfSize:13], NSForegroundColorAttributeName:MAIN_COLORE};
     
     
-    NSString * distanceS = [NSString stringWithFormat:@"距离商家 %@km", orderModel.distanceToStore];
+    NSString * distanceSH = [self cutLengthWith:orderModel.distanceToStore];
+    NSString * distanceS = [NSString stringWithFormat:@"距离商家 %@km", distanceSH];
     NSMutableAttributedString * distanceStr = [[NSMutableAttributedString alloc]initWithString:distanceS];
     [distanceStr addAttributes:attribute range:NSMakeRange(5, distanceS.length - 7)];
     self.distanceToStoreLabel.attributedText = distanceStr;
     CGRect distanceRect = [distanceS boundingRectWithSize:CGSizeMake(MAXFLOAT, self.distanceToStoreLabel.height) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:13]} context:nil];
     self.distanceToStoreLabel.width = distanceRect.size.width;
     
-    NSString * distanceOfCustomTostoreS = [NSString stringWithFormat:@"商家距离客户 %@km", orderModel.distanceToCustom];
+    NSString * distanceCT = [self cutLengthWith:orderModel.distanceToCustom];
+    NSString * distanceOfCustomTostoreS = [NSString stringWithFormat:@"距离客户 %@km", distanceCT];
     NSMutableAttributedString * distanceOfCustomTostoreStr = [[NSMutableAttributedString alloc]initWithString:distanceOfCustomTostoreS];
-    [distanceOfCustomTostoreStr addAttributes:attribute range:NSMakeRange(7, distanceOfCustomTostoreS.length - 9)];
+    [distanceOfCustomTostoreStr addAttributes:attribute range:NSMakeRange(5, distanceOfCustomTostoreS.length - 7)];
     self.distanceOfcustomTostore.attributedText = distanceOfCustomTostoreStr;
     CGRect distanceofRect = [distanceOfCustomTostoreS boundingRectWithSize:CGSizeMake(MAXFLOAT, self.distanceOfcustomTostore.height) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:13]} context:nil];
     self.distanceOfcustomTostore.width = distanceofRect.size.width;
@@ -271,6 +273,25 @@ static int shopHeight = 0;
     self.backView.frame = CGRectMake(0, 0, self.frame.size.width, [NewOrderCell cellHeightWithMealCount:orderModel.mealArray.count] - TOP_SPACE );
 //    self.totlePriceView.totlePriceLabel.frame = self.totlePriceView.detailsButton.frame;
 //    self.totlePriceView.detailsButton.hidden = YES;
+}
+
+- (NSString *)cutLengthWith:(NSNumber *)number
+{
+    NSString * str = [NSString stringWithFormat:@"%@", number];
+    if ([str containsString:@"."]) {
+        NSArray *strARR = [str componentsSeparatedByString:@"."];
+        NSString * str1 = strARR[0];
+        NSString * str2 = strARR[1];
+        if (str2.length > 2) {
+            str2 = [str2 substringToIndex:2];
+        }
+        
+        str = [NSString stringWithFormat:@"%@.%@", str1, str2];
+    }else
+    {
+        
+    }
+    return str;
 }
 
 - (void)telToOrderTelNumber:(UIButton *)button

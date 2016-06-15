@@ -8,11 +8,16 @@
 
 #import <UIKit/UIKit.h>
 
+typedef void(^NullityBlock)();
+
 @interface TotlePriceView : UIView
 
 @property (nonatomic, copy)NSString * totalPrice;
 @property (nonatomic, strong)UILabel * totlePriceLabel;
+@property (nonatomic, strong)UIButton * nullityButton;
 @property (nonatomic, strong)UIButton * detailsButton;
 @property (nonatomic, strong)UIButton * startDeliveryBT;
+
+- (void)nulityOrderAction:(NullityBlock)block;
 
 @end

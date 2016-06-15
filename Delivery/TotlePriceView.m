@@ -7,12 +7,19 @@
 //
 
 #import "TotlePriceView.h"
+#import "UserInfo.h"
+#import "UserCenterViewController.h"
 
 #define TOP_SPACE 10
 #define LEFT_SPACE 10
 #define PRICELABEL_WIDTH 80
 #define BUTTON_HEIGHT 40
-#define DEALBUTTON_WIDTH 90
+#define DEALBUTTON_WIDTH 80
+
+@interface TotlePriceView ()<UIAlertViewDelegate>
+@property (nonatomic, copy)NullityBlock  nullityBlock;
+@end
+
 @implementation TotlePriceView
 
 - (instancetype)initWithFrame:(CGRect)frame
@@ -39,18 +46,30 @@
     totleLabel.font = [UIFont systemFontOfSize:14];
     [self addSubview:totleLabel];
     
-    self.totlePriceLabel = [[UILabel alloc]initWithFrame:CGRectMake(totleLabel.right, TOP_SPACE + 5, self.width - 2 * LEFT_SPACE - 2 * DEALBUTTON_WIDTH - totleLabel.width, 30)];
+    self.totlePriceLabel = [[UILabel alloc]initWithFrame:CGRectMake(totleLabel.right, TOP_SPACE + 5, self.width - LEFT_SPACE - 3 * DEALBUTTON_WIDTH - totleLabel.width, 30)];
     _totlePriceLabel.text = @"988.0";
     _totlePriceLabel.textColor = MAIN_COLORE;
     _totlePriceLabel.font = [UIFont systemFontOfSize:24];
 //    _totlePriceLabel.adjustsFontSizeToFitWidth = YES;
     [self addSubview:_totlePriceLabel];
     
+    
+    self.nullityButton = [UIButton buttonWithType:UIButtonTypeSystem];
+    _nullityButton.frame = CGRectMake(self.width - 3 * DEALBUTTON_WIDTH , 0, DEALBUTTON_WIDTH, self.height);
+    _nullityButton.backgroundColor = [UIColor colorWithWhite:.8 alpha:1];
+    [_nullityButton setTitle:@"拒绝接单" forState:UIControlStateNormal];
+    [_nullityButton setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
+    [_nullityButton addTarget:self action:@selector(nullityOrderAction:) forControlEvents:UIControlEventTouchUpInside];
+    //    _startDeliveryBT.layer.cornerRadius = 5;
+    //    _startDeliveryBT.layer.masksToBounds = YES;
+    [self addSubview:_nullityButton];
+    
     self.detailsButton = [UIButton buttonWithType:UIButtonTypeSystem];
     _detailsButton.frame = CGRectMake(self.width - 2 * DEALBUTTON_WIDTH , 0, DEALBUTTON_WIDTH, self.height);
     [_detailsButton setTitle:@"商品详情" forState:UIControlStateNormal];
-    [_detailsButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    _detailsButton.backgroundColor = [UIColor colorWithWhite:.8 alpha:1];
+    [_detailsButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    _detailsButton.backgroundColor = [UIColor colorWithRed:217 / 255.0 green:168 / 255.0 blue:38 / 255.0 alpha:1];
+    
 //    _detailsButton.layer.borderColor = [UIColor grayColor].CGColor;
 //    _detailsButton.layer.borderWidth = 1;
 //    _detailsButton.layer.cornerRadius = 5;
@@ -89,6 +108,49 @@
         self.totlePriceLabel.text = [NSString stringWithFormat:@"%@", moneystr];
     }
 }
+
+- (void)nulityOrderAction:(NullityBlock)block
+{
+    self.nullityBlock = [block copy];
+}
+
+- (void)nullityOrderAction:(UIButton *)button
+{
+    if ([UserInfo shareUserInfo].isOpenthebackgroundposition) {
+        self.nullityBlock();
+    }else
+    {
+        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"请先在设置界面开启实时定位功能" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
+        [alert show];
+    }
+    
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == 0) {
+        ;
+    }else
+    {
+        UIViewController * vc = [self getCurrentViewController];
+        
+        UserCenterViewController * userVC = [[UserCenterViewController alloc]init];
+        [vc.navigationController pushViewController:userVC animated:YES];
+        
+    }
+}
+
+-(UIViewController *)getCurrentViewController{
+    UIResponder *next = [self nextResponder];
+    do {
+        if ([next isKindOfClass:[UIViewController class]]) {
+            return (UIViewController *)next;
+        }
+        next = [next nextResponder];
+    } while (next != nil);
+    return nil;
+}
+
 
 /*
 // Only override drawRect: if you perform custom drawing.

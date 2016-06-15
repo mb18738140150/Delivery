@@ -12,6 +12,9 @@
 #import "TotlePriceView.h"
 #import "Mapcontroller.h"
 #import "MealDetailsView.h"
+#import "AMapSearchm.h"
+
+#import "UserCenterViewController.h"
 
 #define IMAGE_WEIDTH 30
 #define LABEL_HEIGHT 30
@@ -29,7 +32,9 @@
 #define CUSTOM_ADDRESS_BT_TAG 7000
 
 #define TEXT_COLOR [UIColor colorWithWhite:0.3 alpha:1]
-@interface OrderDetailController ()<HTTPPostDelegate>
+@interface OrderDetailController ()<HTTPPostDelegate, UIAlertViewDelegate>
+
+@property (nonatomic, copy)RefreshBlock myblock;
 
 @property (nonatomic, strong)UIScrollView * scrollview;
 
@@ -524,16 +529,24 @@
             switch ([[dic objectForKey:@"OrderState"] intValue]) {
                 case 1:
                     self.sendState.text = @"新订单";
+                    self.totlePriceView.nullityButton.hidden = YES;
                     break;
                 case 2:
                     self.sendState.text = @"待配送";
                     break;
                 case 3:
-                    self.sendState.text = @"配送中";
+                    if (self.deliveried == 1) {
+                        self.sendState.text = @"已配送";
+                        self.totlePriceView.nullityButton.hidden = YES;
+                        self.totlePriceView.startDeliveryBT.hidden = YES;
+                    }else
+                    {
+                        self.sendState.text = @"配送中";
+                        self.totlePriceView.nullityButton.hidden = YES;
+                    }
+                    
                     break;
-                case 4:
-                    self.sendState.text = @"已配送";
-                    break;
+                
                     
                 default:
                     break;
@@ -545,7 +558,6 @@
             CGRect storeaddressRectshop = [self.storeAddressLB.text boundingRectWithSize:CGSizeMake(_addressLabelshop.width, MAXFLOAT) options:NSStringDrawingUsesLineFragmentOrigin attributes:attribute2 context:nil];
             self.storeAddressLB.height = storeaddressRectshop.size.height;
             self.businessView.frame = CGRectMake(self.businessView.left, self.businessView.top, self.businessView.width, self.storeAddressLB.bottom );
-            
             
             
             NSLog(@"***%f***%f****%f",self.businessView.height, self.storeAddressLB.bottom, self.storeAddressLB.height);
@@ -588,6 +600,7 @@
             
             self.totlePriceView.totalPrice = [NSString stringWithFormat:@"%@", [dic objectForKey:@"AllMoney"]];
 //            self.totlePriceView.totlePriceLabel.text = [NSString stringWithFormat:@"%@", [dic objectForKey:@"AllMoney"]];
+            self.totlePriceView.nullityButton.left = self.totlePriceView.detailsButton.left;
             self.totlePriceView.detailsButton.hidden = YES;
             if ([[dic objectForKey:@"OrderState"] intValue] == 2) {
                 [self.totlePriceView.startDeliveryBT setTitle:@"开始配送" forState:UIControlStateNormal];
@@ -596,23 +609,57 @@
             {
                 [self.totlePriceView.startDeliveryBT setTitle:@"立即抢单" forState:UIControlStateNormal];
                 [self.totlePriceView.startDeliveryBT addTarget:self action:@selector(robAction:) forControlEvents:UIControlEventTouchUpInside];
-            }else
+            }else if ([[dic objectForKey:@"OrderState"] intValue] == 3)
+            {
+                [self.totlePriceView.startDeliveryBT setTitle:@"确认送达" forState:UIControlStateNormal];
+                [self.totlePriceView.startDeliveryBT addTarget:self action:@selector(sureAction:) forControlEvents:UIControlEventTouchUpInside];
+            }
+            else
             {
                 self.totlePriceView.startDeliveryBT.hidden = YES;
             }
+            
+            [self.totlePriceView nulityOrderAction:^{
+                NSDictionary * jsonDic = @{
+                                           @"Command":@11,
+                                           @"UserId":[UserInfo shareUserInfo].userId,
+                                           @"OrderId":self.orderID
+                                           };
+                [self playPostWithDictionary:jsonDic];
+            }];
             
         }else if ([command isEqualToNumber:@10006])
         {
             UIAlertView * alertView = [[UIAlertView alloc] initWithTitle:@"提示" message:@"抢单成功" delegate:self cancelButtonTitle:nil otherButtonTitles:nil, nil];
             [alertView show];
             [alertView performSelector:@selector(dismissAnimated:) withObject:nil afterDelay:1.0];
+            self.myblock();
             [self.navigationController popViewControllerAnimated:YES];
             
         }else if ([command isEqualToNumber:@10007])
         {
-            UIAlertView * alertView = [[UIAlertView alloc] initWithTitle:@"提示" message:@"开始配送成功" delegate:self cancelButtonTitle:nil otherButtonTitles:nil, nil];
-            [alertView show];
-            [alertView performSelector:@selector(dismissAnimated:) withObject:nil afterDelay:1.0];
+            if ([self.sendState.text isEqualToString:@"配送中"] ) {
+                UIAlertView * alertView = [[UIAlertView alloc] initWithTitle:@"提示" message:@"确认送达成功" delegate:self cancelButtonTitle:nil otherButtonTitles:nil, nil];
+                [alertView show];
+                [alertView performSelector:@selector(dismissAnimated:) withObject:nil afterDelay:1.0];
+            }else
+            {
+                
+                UIAlertView * alertView = [[UIAlertView alloc] initWithTitle:@"提示" message:@"开始配送成功" delegate:self cancelButtonTitle:nil otherButtonTitles:nil, nil];
+                [alertView show];
+                [alertView performSelector:@selector(dismissAnimated:) withObject:nil afterDelay:1.0];
+            }
+            self.myblock();
+            [self.navigationController popViewControllerAnimated:YES];
+            
+        }else if ([command isEqualToNumber:@10011])
+        {
+            
+                UIAlertView * alertView = [[UIAlertView alloc] initWithTitle:@"提示" message:@"拒绝接单成功" delegate:self cancelButtonTitle:nil otherButtonTitles:nil, nil];
+                [alertView show];
+                [alertView performSelector:@selector(dismissAnimated:) withObject:nil afterDelay:1.0];
+            
+            self.myblock();
             [self.navigationController popViewControllerAnimated:YES];
         }
         
@@ -639,46 +686,121 @@
     [alertV performSelector:@selector(dismiss) withObject:nil afterDelay:1.5];
     NSLog(@"%@", error);
 }
+
+#pragma mark - 订单处理
 - (void)robAction:(UIButton *)button
 {
-            NSDictionary * jsonDic = @{
+    
+    if ([UserInfo shareUserInfo].isOpenthebackgroundposition) {
+        NSDictionary * jsonDic = @{
                                    @"Command":@6,
                                    @"UserId":[UserInfo shareUserInfo].userId,
                                    @"OrderId":self.orderID
                                    };
         [self playPostWithDictionary:jsonDic];
-        
-    
+    }else
+    {
+        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"请先在设置界面开启实时定位功能" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
+        alert.tag = 1000;
+        [alert show];
+    }
     
 }
 - (void)deliveryAction:(UIButton *)button
 {
-    
+    if ([UserInfo shareUserInfo].isOpenthebackgroundposition) {
         NSDictionary * jsonDic = @{
                                    @"Command":@7,
                                    @"UserId":[UserInfo shareUserInfo].userId,
-                                   @"OrderId":self.orderID
+                                   @"OrderId":self.orderID,
+                                   @"SendStateType":@1
                                    };
         [self playPostWithDictionary:jsonDic];
+    }else
+    {
+        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"请先在设置界面开启实时定位功能" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
+        alert.tag = 1000;
+        [alert show];
+    }
+}
+
+- (void)sureAction:(UIButton *)button
+{
+   
     
+    if ([UserInfo shareUserInfo].isOpenthebackgroundposition) {
+        NSDictionary * jsonDic = @{
+                                   @"Command":@7,
+                                   @"UserId":[UserInfo shareUserInfo].userId,
+                                   @"OrderId":self.orderID,
+                                   @"SendStateType":@2
+                                   };
+        [self playPostWithDictionary:jsonDic];
+    }else
+    {
+        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"请先在设置界面开启实时定位功能" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
+        alert.tag = 1000;
+        [alert show];
+    }
+}
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == 0) {
+        ;
+    }else
+    {
+        UserCenterViewController * userVC = [[UserCenterViewController alloc]init];
+        [self.navigationController pushViewController:userVC animated:YES];
+    }
 }
 
 #pragma mark - 查看地图
 - (void)mapAction:(UIButton *)button
 {
     Mapcontroller * mapVC = [[Mapcontroller alloc]init];
+    
+    __weak OrderDetailController * orderVC = self;
+    
     if (button.tag == CUSTOM_ADDRESS_BT_TAG) {
-        mapVC.name = self.nameLabel.text;
-        mapVC.phone = self.phoneLabel.text;
-        mapVC.address = self.addressLabel.text;
+        
+        
+//        self.addressLabel.text = @"郑州大学新区南门";
+        [[AMapSearchm shareSearch] getCoordinateWithAddress:self.addressLabel.text complate:^(CLLocationCoordinate2D coordinate) {
+            [UserLocation shareLocation].searchCoordinate = coordinate;
+            mapVC.name = self.nameLabel.text;
+            mapVC.phone = self.phoneLabel.text;
+            mapVC.address = self.addressLabel.text;
+             NSLog(@"address = %@", mapVC.address);
+            
+            NSLog(@"%f, %f, %f, %f", [UserLocation shareLocation].searchCoordinate.latitude, [UserLocation shareLocation].searchCoordinate.longitude, [UserLocation shareLocation].coordinate2D.latitude, [UserLocation shareLocation].coordinate2D.longitude);
+            
+            
+            [orderVC.navigationController pushViewController:mapVC animated:YES];
+        } failed:^{
+            UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"获取位置信息失败，请从新点击获取" delegate:nil cancelButtonTitle:nil otherButtonTitles:nil, nil];
+            [alert show];
+            [alert performSelector:@selector(dismiss) withObject:nil afterDelay:2];
+        }];
+        
     }else
     {
-        mapVC.name = self.nameLabelshop.text;
-        mapVC.phone = self.phoneLabelshop.text;
-        mapVC.address = self.addressLabelshop.text;
+        [[AMapSearchm shareSearch] getCoordinateWithAddress:self.addressLabelshop.text complate:^(CLLocationCoordinate2D coordinate) {
+            [UserLocation shareLocation].searchCoordinate = coordinate;
+            mapVC.name = self.nameLabelshop.text;
+            mapVC.phone = self.phoneLabelshop.text;
+            mapVC.address = self.addressLabelshop.text;
+            NSLog(@"address = %@", mapVC.address);
+            [orderVC.navigationController pushViewController:mapVC animated:YES];
+        } failed:^{
+            UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"获取位置信息失败，请从新点击获取" delegate:nil cancelButtonTitle:nil otherButtonTitles:nil, nil];
+            [alert show];
+            [alert performSelector:@selector(dismiss) withObject:nil afterDelay:2];
+        }];
+        
+        
     }
-    NSLog(@"address = %@", mapVC.address);
-    [self.navigationController pushViewController:mapVC animated:YES];
+    
+//    [self.navigationController pushViewController:mapVC animated:YES];
 }
 
 #pragma mark - 拨打电话
@@ -704,6 +826,11 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)refreshData:(RefreshBlock)block
+{
+    self.myblock = [block copy];
 }
 
 /*

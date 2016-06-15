@@ -17,5 +17,8 @@
 @property (nonatomic, strong)NSNumber * BusiId;
 //@property (nonatomic, copy)NSString * registrationID;
 
+// 是否开启后台定位
+@property (nonatomic, assign)BOOL isOpenthebackgroundposition;
+
 - (void)setUserInfoWithDictionary:(NSDictionary *)dic;
 @end

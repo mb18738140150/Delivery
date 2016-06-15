@@ -11,13 +11,14 @@
 
 @interface CCLocationManager  ()
 {
-    CLLocationManager * _manager;
+//    CLLocationManager * _manager;
 }
+
+@property (nonatomic, strong)CLLocationManager * manager;
 @property (nonatomic, copy)LocationBlock locationBlock;
 @property (nonatomic, copy)NSStringBlock cityBlock;
 @property (nonatomic, copy)NSStringBlock addressblock;
 @property (nonatomic, copy)LocationErrorBlock errorBlock;
-
 @end
 
 
@@ -46,7 +47,8 @@
         self.lastCoordinate = CLLocationCoordinate2DMake(latitude, longitude);
         self.lastCity = [standard objectForKey:CCLastCity];
         self.lastAddress = [standard objectForKey:CCLastAddress];
-    }
+        
+        }
     return self;
 }
 // 获取经纬度
@@ -78,16 +80,16 @@
 - (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray<CLLocation *> *)locations
 {
     for (CLLocation * location in locations) {
-        NSLog(@"****latitude = %f***longitude = %f", location.coordinate.latitude, location.coordinate.longitude);
+//        NSLog(@"****latitude = %f***longitude = %f", location.coordinate.latitude, location.coordinate.longitude);
     }
-
+//NSLog(@"定位成功");
     CLLocation * newLocation = [locations objectAtIndex:0];
     NSUserDefaults *standard = [NSUserDefaults standardUserDefaults];
     CLLocation * location = [[CLLocation alloc]initWithLatitude:newLocation.coordinate.latitude longitude:newLocation.coordinate.longitude];
 //    CLLocation * marsLoction =   [location locationMarsFromEarth];
 //    marsLoction = [marsLoction locationBaiduFromMars];
-    CLLocation * marsLoction = location;// 百度地图有自带坐标转换功能，在此不需要做变换
-    
+    CLLocation * marsLoction = [location locationMarsFromEarth];// 转化为高德坐标
+//    CLLocation * marsLoction = location;
     CLGeocoder * geoCoder = [[CLGeocoder alloc]init];
     [geoCoder reverseGeocodeLocation:marsLoction completionHandler:^(NSArray<CLPlacemark *> * _Nullable placemarks, NSError * _Nullable error) {
         if (placemarks.count > 0) {
@@ -116,19 +118,27 @@
     [standard setObject:@(marsLoction.coordinate.latitude) forKey:CCLastLatitude];
     [standard setObject:@(marsLoction.coordinate.longitude) forKey:CCLastLongitude];
     
-    [manager stopUpdatingLocation];
+    [_manager stopUpdatingLocation];
     
 }
 
 - (void)startLocation
 {
     if ([CLLocationManager locationServicesEnabled] && [CLLocationManager authorizationStatus] != kCLAuthorizationStatusDenied) {
-        _manager = [[CLLocationManager alloc]init];
-        _manager.delegate = self;
-        _manager.desiredAccuracy = kCLLocationAccuracyBest;
-        [_manager requestAlwaysAuthorization];
-        _manager.distanceFilter = 100;
-        [_manager startUpdatingLocation];
+        if (_manager != nil) {
+            _manager.delegate = self;
+            [_manager startUpdatingLocation];
+//            NSLog(@"开始定位");
+        }else
+        {
+            self.manager = [[CLLocationManager alloc]init];
+            _manager.delegate = self;
+            _manager.desiredAccuracy = kCLLocationAccuracyBest;
+            [_manager requestAlwaysAuthorization];
+            _manager.distanceFilter = 100;
+            [_manager startUpdatingLocation];
+//            NSLog(@"重新生成了 manager");
+        }
     }else
     {
         UIAlertView *alvertView=[[UIAlertView alloc]initWithTitle:@"提示" message:@"需要开启定位服务,请到设置->隐私,打开定位服务" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil];
@@ -138,6 +148,7 @@
 - (void)locationManager:(CLLocationManager *)manager
        didFailWithError:(NSError *)error{
     [self stopLocation];
+    NSLog(@"定位失败");
     
 }
 -(void)stopLocation

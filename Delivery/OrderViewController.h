@@ -15,5 +15,6 @@
 @property (nonatomic, strong)UILabel *label;
 @property (nonatomic, strong)UISegmentedControl * segment;
 @property (nonatomic, strong)UITableView * tableView;
+@property (nonatomic, assign)int isfromLoginVC;
 
 @end

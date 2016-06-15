@@ -8,8 +8,14 @@
 
 #import <UIKit/UIKit.h>
 #import "CenterViewController.h"
-#import <QMapKit/QMapKit.h>
-#import <QMapSearchKit/QMapSearchKit.h>
+//#import <QMapKit/QMapKit.h>
+//#import <QMapSearchKit/QMapSearchKit.h>
+
+
+static NSString *JPappKey = @"7b1b53d9f0f4d4a8b498320c";
+static NSString *JPchannel = @"App Store";
+static BOOL isProductionJP = YES;
+//extern NSString * const LoginAndStartUDP;
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
@@ -17,6 +23,8 @@
 
 @property (nonatomic, strong)CenterViewController * centerVC;
 @property (nonatomic, strong)UINavigationController * mainNavigationController;
+
+@property (nonatomic, assign)__block    UIBackgroundTaskIdentifier bgTask;
 
 @end
 

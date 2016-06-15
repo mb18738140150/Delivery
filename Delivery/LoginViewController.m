@@ -180,6 +180,7 @@
                     @"RegistrationID":[NSNull null],
                     @"DeviceType":@1
                     };
+//        @"121c83f760245838a75"
     }
     NSString * jsonStr = [jsonDic JSONString];
     NSString * str = [NSString stringWithFormat:@"%@131139", jsonStr];
@@ -200,10 +201,11 @@
     NSLog(@"data = %@", [dataDic description]);
     if ([[dataDic objectForKey:@"Result"] isEqual:@1]) {
         [self registerRemoteNotification];
-        NSString * registrationID = [APService registrationID];
+        NSString * registrationID = [JPUSHService registrationID];
         
         NSLog(@"********registrationID = %@", registrationID);
         [UserInfo shareUserInfo].userId = [dataDic objectForKey:@"UserId"];
+//        [[NSNotificationCenter defaultCenter]postNotificationName:LoginAndStartUDP object:nil userInfo:nil];
         [UserInfo shareUserInfo].userName = self.nameTextFiled.text;
         [UserInfo shareUserInfo].BusiId =[dataDic objectForKey:@"BusiId"];
         [UserInfo shareUserInfo].isAgent = [[dataDic objectForKey:@"IsAgent"] intValue];
@@ -214,6 +216,7 @@
             [[NSUserDefaults standardUserDefaults] setValue:@YES forKey:@"haveLogin"];//记录已经登录过
         }
         OrderViewController * orderVC = [[OrderViewController alloc]init];
+        orderVC.isfromLoginVC = 1;
         [self.navigationController pushViewController:orderVC animated:YES];
     }else
     {
@@ -255,21 +258,21 @@
 #if __IPHONE_OS_VERSION_MAX_ALLOWED > __IPHONE_7_1
     if ([[UIDevice currentDevice].systemVersion floatValue] >= 8.0) {
         //categories
-        [APService
+        [JPUSHService
          registerForRemoteNotificationTypes:(UIUserNotificationTypeBadge |
                                              UIUserNotificationTypeSound |
                                              UIUserNotificationTypeAlert)
          categories:nil];
     } else {
         //categories nil
-        [APService
+        [JPUSHService
          registerForRemoteNotificationTypes:(UIRemoteNotificationTypeBadge |
                                              UIRemoteNotificationTypeSound |
                                              UIRemoteNotificationTypeAlert)
 #else
          //categories nil
          categories:nil];
-        [APService
+        [JPUSHService
          registerForRemoteNotificationTypes:(UIRemoteNotificationTypeBadge |
                                              UIRemoteNotificationTypeSound |
                                              UIRemoteNotificationTypeAlert)

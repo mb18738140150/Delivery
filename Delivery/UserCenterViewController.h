@@ -19,5 +19,6 @@
 @property (nonatomic, strong)OtherView * totalOrderview;
 @property (nonatomic, strong)OtherView * massegeView;
 @property (nonatomic, strong)OtherView * todayOrderview;
+@property (nonatomic, strong)OtherView * positionView;
 
 @end

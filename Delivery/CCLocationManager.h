@@ -44,5 +44,4 @@ typedef void (^NSStringBlock)(NSString * addressString);
 - (void)getCity:(NSStringBlock)cityBlock;
 
 
-
 @end

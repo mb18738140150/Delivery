@@ -120,6 +120,7 @@ static int shopHeight = 0;
 //    [self addSubview:_linePrice];
     
     self.totlePriceView = [[TotlePriceView alloc]initWithFrame:CGRectMake(0, _linePrice.bottom, self.width, TOTLEPRICEVIEW_HEIGHT)];
+    self.totlePriceView.nullityButton.hidden = YES;
     self.totlePriceView.detailsButton.frame = CGRectMake(self.totlePriceView.width - self.totlePriceView.detailsButton.width , 0, self.totlePriceView.detailsButton.width, self.totlePriceView.detailsButton.height);
 //    [self addSubview:_totlePriceView];
     

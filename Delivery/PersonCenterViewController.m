@@ -319,7 +319,7 @@
 
 - (void)uploadImageWithUrlString
 {
-    NSString * urlstr = @"http://p3o1r7t.vlifee.com/delivery_getdata.ashx?savetype=100";
+    NSString * urlstr = @"http://p3o1r7t.vlifee.com/uploadimg.aspx?savetype=100";
     NSString * url = [urlstr stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
     NSData * imageData = UIImageJPEGRepresentation(self.iconImageView.image, 0.5);
     NSString * imageName = [self imageName];
@@ -332,6 +332,7 @@
     [manager POST:url parameters:nil constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
         [formData appendPartWithFileData:imageData name:imageName fileName:imagePath mimeType:@"image/jpg/file"];
     } success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
+        NSLog(@"responseObject = %@", responseObject);
         NSDictionary * jsonDic = nil;
         jsonDic = @{
                     @"Command":@10,
@@ -430,6 +431,9 @@
     NSLog(@"退出登录");
     
     [self.navigationController popToViewController:[self.navigationController.viewControllers objectAtIndex:0] animated:YES];
+    [UserInfo shareUserInfo].userId = nil;
+    [UserInfo shareUserInfo].isOpenthebackgroundposition = NO;
+    [[NSNotificationCenter defaultCenter]postNotificationName:LoginAndStartUDP object:nil userInfo:nil];
     [[NSUserDefaults standardUserDefaults] setValue:@NO forKey:@"haveLogin"];
     [[NSUserDefaults standardUserDefaults] setValue:@"" forKey:@"Pwd"];
 }

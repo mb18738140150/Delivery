@@ -12,18 +12,23 @@
 /**
  *  测试库接口
  */
-#define POST_URL @"http://test.p3o1r7t.vlifee.com/delivery_getdata.ashx?md5="
+//#define POST_URL @"http://test.p3o1r7t.vlifee.com/delivery_getdata.ashx?md5="
 
 /**
  *  正式库接口
  *
  *  @return urlString
  */
-//#define POST_URL @"http://p3o1r7t.vlifee.com/delivery_getdata.ashx?md5="
+#define POST_URL @"http://p3o1r7t.vlifee.com/delivery_getdata.ashx?md5="
+
+#define LoginAndStartUDP @"LoginAndStartUDP"
+
+#define HOST_UDP @"120.26.131.140"
+#define PORT_UDP 11145
 
 #import "UIViewAdditions.h"
 #import "HTTPPost.h"
-#import <APService.h>
+#import "JPUSHService.h"
 #import "JSONKit.h"
 #import "NSString+MD5.h"
 #import "UserInfo.h"
@@ -33,6 +38,16 @@
 #import <UIImageView+WebCache.h>
 #import "MJRefresh.h"
 #import <SVProgressHUD.h>
+#import "GCDAsyncUdpSocket.h"
+#import "UserLocation.h"
+#import "CCLocationManager.h"
+#import "NavPointAnnotation.h"
+#import "AMapSearchm.h"
+
+#import <AMapNaviKit/MAMapKit.h>
+#import <AMapSearchKit/AMapSearchKit.h>
+#import <AMapNaviKit/AMapNaviKit.h>
+
 
 
 #import "AFAppDotNetAPIClient.h"
@@ -53,7 +68,8 @@
 
 #import <BaiduMapAPI_Map/BMKMapView.h>//只引入所需的单个头文件
 
-
+// 高德 appkey
+#define gaodeAppKey @"11ce5c3cc2c7353240532288a5f63425"
 
 #define MAIN_COLORE [UIColor colorWithRed:249 / 255.0 green:72 / 255.0 blue:47 / 255.0 alpha:1]
 #define UIColorFromRGBA(rgbValue, alphaValue) \

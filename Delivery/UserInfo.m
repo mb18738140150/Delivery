@@ -19,6 +19,14 @@
     return userInfo;
 }
 
+- (instancetype)init
+{
+    self = [super init];
+    if (self) {
+        self.isOpenthebackgroundposition = NO;
+    }
+    return self;
+}
 
 - (void)setUserInfoWithDictionary:(NSDictionary *)dic
 {

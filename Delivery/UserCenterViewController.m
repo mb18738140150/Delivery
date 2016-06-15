@@ -94,6 +94,21 @@
     [_massegeView.detailButton addTarget:self action:@selector(openOrCloseAction:) forControlEvents:UIControlEventValueChanged];
     [self.view addSubview:_massegeView];
     
+    self.positionView = [[OtherView alloc]initWithFrame:CGRectMake(0, _massegeView.bottom + TOP_SPACE, self.view.width , 45)];
+    _positionView.iconImageView.image = [UIImage imageNamed:@"positionIcon.png"];
+    _positionView.titleLabel.text = @"实时定位";
+    _positionView.detailButton.hidden = NO;
+    [_positionView.detailButton addTarget:self action:@selector(positionAction:) forControlEvents:UIControlEventValueChanged];
+    [self.view addSubview:_positionView];
+    
+    if ([UserInfo shareUserInfo].isOpenthebackgroundposition) {
+        _positionView.detailButton.on = YES;
+    }else
+    {
+        _positionView.detailButton.on = NO;
+    }
+    
+    
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:@"back_black.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:self action:@selector(backLastVC:)];
     
     NSDictionary * jsonDic = nil;
@@ -109,6 +124,17 @@
 - (void)backLastVC:(UIBarButtonItem * )sender
 {
     [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    NSDictionary * jsonDic = nil;
+    jsonDic = @{
+                @"Command":@2,
+                @"UserId":[UserInfo shareUserInfo].userId
+                };
+    
+    [self playPostWithDictionary:jsonDic];
 }
 
 - (void)personCenterAction:(UITapGestureRecognizer *)sender
@@ -133,6 +159,17 @@
     [self.navigationController pushViewController:personVC animated:YES];
 }
 
+#pragma mark - 实时定位
+- (void)positionAction:(UISwitch *)aswitch
+{
+    if (aswitch.isOn) {
+        [UserInfo shareUserInfo].isOpenthebackgroundposition = YES;
+    }else
+    {
+        [UserInfo shareUserInfo].isOpenthebackgroundposition = NO;
+    }
+    [[NSNotificationCenter defaultCenter]postNotificationName:LoginAndStartUDP object:nil userInfo:nil];
+}
 
 - (void)allowAction:(UIButton *)button
 {

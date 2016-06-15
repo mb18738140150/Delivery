@@ -60,7 +60,7 @@
     
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"完成" style:UIBarButtonItemStylePlain target:self action:@selector(complateAction:)];
     NSDictionary * titleAttributes = @{NSFontAttributeName:[UIFont boldSystemFontOfSize:16],
-                                       NSForegroundColorAttributeName:[UIColor whiteColor]
+                                       NSForegroundColorAttributeName:[UIColor blackColor]
                                        };
     [self.navigationItem.rightBarButtonItem setTitleTextAttributes:titleAttributes forState:UIControlStateNormal];
     

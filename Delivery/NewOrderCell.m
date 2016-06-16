@@ -277,7 +277,11 @@ static int shopHeight = 0;
 
 - (NSString *)cutLengthWith:(NSNumber *)number
 {
-    NSString * str = [NSString stringWithFormat:@"%@", number];
+    CGFloat num = number.floatValue;
+    CGFloat num1 = num / 1000;
+    NSNumber * number1 = [NSNumber numberWithFloat:num1];
+    
+    NSString * str = [NSString stringWithFormat:@"%@", number1];
     if ([str containsString:@"."]) {
         NSArray *strARR = [str componentsSeparatedByString:@"."];
         NSString * str1 = strARR[0];

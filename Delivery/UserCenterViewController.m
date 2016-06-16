@@ -16,7 +16,7 @@
 #define ICONIMAGE_WIDTH 65
 #define label_height 15
 
-@interface UserCenterViewController ()<HTTPPostDelegate>
+@interface UserCenterViewController ()<HTTPPostDelegate, UIAlertViewDelegate>
 
 
 
@@ -162,13 +162,34 @@
 #pragma mark - 实时定位
 - (void)positionAction:(UISwitch *)aswitch
 {
+    
+    
     if (aswitch.isOn) {
-        [UserInfo shareUserInfo].isOpenthebackgroundposition = YES;
+        
+        CLAuthorizationStatus status = [CLLocationManager authorizationStatus];
+        if (kCLAuthorizationStatusDenied == status || kCLAuthorizationStatusRestricted == status) {
+            UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"需要开启定位服务,请到设置->隐私,打开定位服务" delegate:self cancelButtonTitle:nil otherButtonTitles:@"确定", nil];
+            
+            [alert show];
+//            NSLog(@"需要开启定位服务，青岛设置 - >隐私，打开定位服务");
+            aswitch.on = NO;
+            [UserInfo shareUserInfo].isOpenthebackgroundposition = NO;
+        }else
+        {
+            [UserInfo shareUserInfo].isOpenthebackgroundposition = YES;
+        }
+        
     }else
     {
         [UserInfo shareUserInfo].isOpenthebackgroundposition = NO;
     }
     [[NSNotificationCenter defaultCenter]postNotificationName:LoginAndStartUDP object:nil userInfo:nil];
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    NSURL*url=[NSURL URLWithString:@"prefs:root=LOCATION_SERVICES"];
+    [[UIApplication sharedApplication] openURL:url];
 }
 
 - (void)allowAction:(UIButton *)button

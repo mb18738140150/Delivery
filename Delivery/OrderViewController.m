@@ -43,7 +43,7 @@
 
 NSString *const QAnnotationViewDragStateCHange = @"QAnnotationViewDragState";
 
-@interface OrderViewController ()<UITableViewDataSource, UITableViewDelegate, HTTPPostDelegate, UIAlertViewDelegate, MAMapViewDelegate, AVAudioPlayerDelegate>
+@interface OrderViewController ()<UITableViewDataSource, UITableViewDelegate, HTTPPostDelegate, UIAlertViewDelegate, MAMapViewDelegate, AVAudioPlayerDelegate, UIAlertViewDelegate>
 
 {
     AVAudioPlayer * _player;
@@ -266,7 +266,6 @@ NSString *const QAnnotationViewDragStateCHange = @"QAnnotationViewDragState";
     self.navigationItem.titleView = _segment;
     
 }
-
 
 - (void)deliveryState:(UISegmentedControl *)segment
 {
@@ -1053,8 +1052,22 @@ static SystemSoundID shake_sound_male_id = 0;
             ;
         }else
         {
-            [UserInfo shareUserInfo].isOpenthebackgroundposition = YES;
-            [[NSNotificationCenter defaultCenter]postNotificationName:LoginAndStartUDP object:nil userInfo:nil];
+//            CLAuthorizationStatus status = [CLLocationManager authorizationStatus];
+//            if (kCLAuthorizationStatusDenied == status || kCLAuthorizationStatusRestricted == status) {
+//                UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"需要开启定位服务,请到设置->隐私,打开定位服务" delegate:self cancelButtonTitle:nil otherButtonTitles:@"确定", nil];
+//                alert.tag = 4000;
+//                [alert show];
+//                [UserInfo shareUserInfo].isOpenthebackgroundposition = NO;
+//            }else
+//            {
+//                [UserInfo shareUserInfo].isOpenthebackgroundposition = YES;
+//            }
+//            
+//            [[NSNotificationCenter defaultCenter]postNotificationName:LoginAndStartUDP object:nil userInfo:nil];
+            
+            
+            UserCenterViewController * userVC = [[UserCenterViewController alloc]init];
+            [self.navigationController pushViewController:userVC animated:YES];
         }
     }
     

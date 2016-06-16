@@ -314,7 +314,7 @@ static SystemSoundID shake_sound_male_id = 0;
             
             NSData *data = [msg dataUsingEncoding:NSUTF8StringEncoding];
             
-            [sendUdpSocket sendData:data toHost:host port:port withTimeout:30 tag:100];
+            [sendUdpSocket sendData:data toHost:host port:port withTimeout:5 tag:100];
         }];
         
         
@@ -355,7 +355,7 @@ static SystemSoundID shake_sound_male_id = 0;
         
         NSData *data = [msg dataUsingEncoding:NSUTF8StringEncoding];
         
-        [sendUdpSocket sendData:data toHost:host port:port withTimeout:30 tag:200];
+        [sendUdpSocket sendData:data toHost:host port:port withTimeout:5 tag:200];
     }];
     
     
@@ -718,6 +718,7 @@ static SystemSoundID shake_sound_male_id = 0;
     
     
 }
+
 
 - (void)dealloc
 {

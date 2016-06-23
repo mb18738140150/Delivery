@@ -7,9 +7,10 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <AMapSearchKit/AMapSearchKit.h>
 
 typedef void (^LocationBlock1)(CLLocationCoordinate2D locationCorrrdinate);
-typedef void(^CoorDinateBlock)(CLLocationCoordinate2D coordinate);
+typedef void(^CoorDinateBlock)(AMapGeocodeSearchResponse * response);
 typedef void(^AddressBlock)(NSString * address);
 typedef void(^SearchFaileBlock)();
 

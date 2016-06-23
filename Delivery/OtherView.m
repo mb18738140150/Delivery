@@ -56,7 +56,7 @@
 {
     self.titleLabel.frame = CGRectMake(_iconImageView.right + TOP_SPACE, TOP_SPACE_1 , (self.frame.size.width - 2 * LEFT_SPACE) - IMAGE_HEIGHT , 14);
     self.detalsLabel.frame = CGRectMake(_titleLabel.left, _titleLabel.bottom + 8, _titleLabel.width, 12);
-    
+    self.detalsLabel.text = detailStr;
 }
 
 /*

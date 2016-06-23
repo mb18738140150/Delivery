@@ -232,6 +232,7 @@ typedef NS_ENUM(NSInteger, TravelTypes)
     [bottomView addSubview:phoneBT];
 }
 
+// 客户路径规划
 - (void)initNaviPoints
 {
     self.startPoint = [AMapNaviPoint locationWithLatitude:[UserLocation shareLocation].coordinate2D.latitude longitude:[UserLocation shareLocation].coordinate2D.longitude];
@@ -258,6 +259,34 @@ typedef NS_ENUM(NSInteger, TravelTypes)
     [self.mapview setCenterCoordinate:CLLocationCoordinate2DMake(_startPoint.latitude, _startPoint.longitude)];
     
 }
+// 商家路径规划
+- (void)initNaviPointsShop
+{
+    self.startPoint = [AMapNaviPoint locationWithLatitude:[UserLocation shareLocation].coordinate2D.latitude longitude:[UserLocation shareLocation].coordinate2D.longitude];
+    self.endPoint   = [AMapNaviPoint locationWithLatitude:[UserLocation shareLocation].shopSearchCoordinate.latitude longitude:[UserLocation shareLocation].shopSearchCoordinate.longitude];
+    
+    NSLog(@"JJJJJ");
+}
+- (void)initAnnotationsShop
+{
+    NavPointAnnotation *beginAnnotation = [[NavPointAnnotation alloc] init];
+    [beginAnnotation setCoordinate:CLLocationCoordinate2DMake(_startPoint.latitude, _startPoint.longitude)];
+    beginAnnotation.title        = @"起始点";
+    beginAnnotation.navPointType = NavPointAnnotationStart;
+    
+    [self.mapview addAnnotation:beginAnnotation];
+    
+    NavPointAnnotation *endAnnotation = [[NavPointAnnotation alloc] init];
+    [endAnnotation setCoordinate:CLLocationCoordinate2DMake(_endPoint.latitude, _endPoint.longitude)];
+    endAnnotation.title        = @"终点";
+    endAnnotation.navPointType = NavPointAnnotationEnd;
+    
+    [self.mapview addAnnotation:endAnnotation];
+    
+    [self.mapview setCenterCoordinate:CLLocationCoordinate2DMake(_startPoint.latitude, _startPoint.longitude)];
+    
+}
+
 - (void)viewWillAppear:(BOOL)animated
 {
 
@@ -283,7 +312,7 @@ typedef NS_ENUM(NSInteger, TravelTypes)
     }
     
     // 清除旧的overlays
-    [self.mapview removeOverlays:self.mapview.overlays];
+//    [self.mapview removeOverlays:self.mapview.overlays];
     
     NSUInteger coordianteCount = [naviRoute.routeCoordinates count];
     CLLocationCoordinate2D coordinates[coordianteCount];
@@ -299,11 +328,14 @@ typedef NS_ENUM(NSInteger, TravelTypes)
 #pragma mark - AMapNaviManager Delegate
 - (void)naviManagerOnCalculateRouteSuccess:(AMapNaviManager *)naviManager
 {
-    
     [self showRouteWithNaviRoute:[[naviManager naviRoute] copy]];
-    
     _calRouteSuccess = YES;
     
+    if (self.endPoint.latitude != [UserLocation shareLocation].shopSearchCoordinate.latitude) {
+        [self initNaviPointsShop];
+        [self initAnnotationsShop];
+        [self calculateWalkRout];
+    }
 }
 - (void)naviManager:(AMapNaviManager *)naviManager onCalculateRouteFailure:(NSError *)error;
 {
@@ -312,7 +344,6 @@ typedef NS_ENUM(NSInteger, TravelTypes)
     [self.view makeToast:@"路径规划失败"
                 duration:2.0
                 position:[NSValue valueWithCGPoint:CGPointMake(160, 240)]];
-    
 }
 - (void)naviManager:(AMapNaviManager *)naviManager error:(NSError *)error
 {
@@ -466,6 +497,9 @@ typedef NS_ENUM(NSInteger, TravelTypes)
         MAPolylineView * polylineView = [[MAPolylineView alloc]initWithPolyline:overlay];
         polylineView.lineWidth = 5.0f;
         polylineView.strokeColor = [UIColor redColor];
+        if (self.endPoint.latitude != [UserLocation shareLocation].shopSearchCoordinate.latitude) {
+            polylineView.strokeColor = [UIColor blueColor];
+        }
         return polylineView;
     }
     return nil;
@@ -793,7 +827,6 @@ typedef NS_ENUM(NSInteger, TravelTypes)
         NSLog(@"****%f, ****%f, ***%@, ******%@", _startPoint.latitude, _startPoint.longitude, [startPoints objectAtIndex:0], startPoints);
         
         NSLog(@"^^^^^^^lat%f^^^^^^lon%f", [UserLocation shareLocation].coordinate2D.latitude, [UserLocation shareLocation].coordinate2D.longitude);
-        
     }
 }
 
@@ -803,6 +836,7 @@ typedef NS_ENUM(NSInteger, TravelTypes)
         self.naviType = NavigationTypeGPS;
 //        self.naviType = NavigationTypeSimulator;
         AMapNaviViewController * naviViewController = [[AMapNaviViewController alloc]initWithDelegate:self];
+        
         [self.naviManager presentNaviViewController:naviViewController animated:YES];
         
     }else

@@ -16,6 +16,8 @@
 - (IBAction)loginAction:(id)sender;
 - (IBAction)registeraction:(id)sender;
 
+@property (nonatomic, strong)PositionDB * positionDb;
+
 @end
 
 @implementation LoginViewController
@@ -25,6 +27,8 @@
     
     self.navigationController.navigationBar.translucent = NO;
     [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor]}];
+    
+    self.positionDb = [[PositionDB alloc]init];
     
     self.nameTextFiled.layer.borderColor = [UIColor whiteColor].CGColor;
     self.nameTextFiled.layer.borderWidth = 1;
@@ -198,7 +202,7 @@
 - (void)refresh:(id)data
 {
     NSDictionary * dataDic = (NSDictionary *)data;
-    NSLog(@"data = %@", [dataDic description]);
+//    NSLog(@"data = %@", [dataDic description]);
     if ([[dataDic objectForKey:@"Result"] isEqual:@1]) {
         [self registerRemoteNotification];
         NSString * registrationID = [JPUSHService registrationID];
@@ -206,6 +210,18 @@
         NSLog(@"********registrationID = %@", registrationID);
         [UserInfo shareUserInfo].userId = [dataDic objectForKey:@"UserId"];
 //        [[NSNotificationCenter defaultCenter]postNotificationName:LoginAndStartUDP object:nil userInfo:nil];
+        
+        // 登录成功以后判断该userid是否已经在数据库中，没有的话创建positionModel讲userID信息存储进去
+        PositionModel * positionModel = [[PositionModel alloc]init];
+        positionModel.userId = [UserInfo shareUserInfo].userId.intValue;
+        positionModel.positionType = 2;
+        [UserInfo shareUserInfo].isOpenthebackgroundposition = NO;
+        if ([self.positionDb retrieveList:positionModel]) {
+        }else
+        {
+            [self.positionDb insert:positionModel];
+        }
+        
         [UserInfo shareUserInfo].userName = self.nameTextFiled.text;
         [UserInfo shareUserInfo].BusiId =[dataDic objectForKey:@"BusiId"];
         [UserInfo shareUserInfo].isAgent = [[dataDic objectForKey:@"IsAgent"] intValue];

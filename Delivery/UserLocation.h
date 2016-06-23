@@ -15,7 +15,9 @@
 @property (nonatomic, assign)CLLocationCoordinate2D coordinate2D;
 
 @property (nonatomic, assign)CLLocationCoordinate2D searchCoordinate;
+@property (nonatomic, assign)CLLocationCoordinate2D shopSearchCoordinate;
 @property (nonatomic, copy)NSString * searchAddress;
+@property (nonatomic, copy)NSString * city;
 
 +(UserLocation *)shareLocation;
 @end

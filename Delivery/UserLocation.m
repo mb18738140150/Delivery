@@ -28,7 +28,9 @@
         
         self.coordinate2D = (CLLocationCoordinate2D){0.0, 0.0};
         self.searchCoordinate = (CLLocationCoordinate2D){0.0, 0.0};
+        self.shopSearchCoordinate = (CLLocationCoordinate2D){0.0, 0.0};
         self.searchAddress = nil;
+        self.city = nil;
     }
     return self;
 }

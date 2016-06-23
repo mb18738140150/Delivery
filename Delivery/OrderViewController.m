@@ -82,6 +82,8 @@ NSString *const QAnnotationViewDragStateCHange = @"QAnnotationViewDragState";
 
 @property (nonatomic, strong)MAMapView * mapview;
 
+@property (nonatomic, strong)PositionDB * positionDb;
+
 @end
 
 @implementation OrderViewController
@@ -128,7 +130,7 @@ NSString *const QAnnotationViewDragStateCHange = @"QAnnotationViewDragState";
     self.toDetailsView = 0;
 //    self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:251 / 255.0 green:84 / 255.0 blue:8 / 255.0 alpha:1];
     self.navigationController.navigationBar.barTintColor = [UIColor whiteColor];
-    
+    self.positionDb = [[PositionDB alloc]init];
     
     // 新订单
     self.nOrderTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, self.view.width, self.view.height - 50)];
@@ -208,8 +210,14 @@ NSString *const QAnnotationViewDragStateCHange = @"QAnnotationViewDragState";
 - (void)mapView:(MAMapView *)mapView didUpdateUserLocation:(MAUserLocation *)userLocation updatingLocation:(BOOL)updatingLocation
 {
     [UserLocation shareLocation].coordinate2D = userLocation.coordinate;;
-    
+    self.mapview.showsUserLocation = NO;
 //    NSLog(@"userLocation = %@, %@, %f, %f", userLocation.title, userLocation.subtitle, userLocation.coordinate.latitude, userLocation.coordinate.longitude);
+    
+    [[AMapSearchm shareSearch] getaddressWithCoordinate:[UserLocation shareLocation].coordinate2D complate:^(NSString *address) {
+//        [UserLocation shareLocation].city = address;
+    } failed:^{
+        ;
+    }];
     
 }
 
@@ -400,7 +408,7 @@ NSString *const QAnnotationViewDragStateCHange = @"QAnnotationViewDragState";
 - (void)refresh:(id)data
 {
     [SVProgressHUD dismiss];
-    NSLog(@"data = %@", [data description]);
+//    NSLog(@"data = %@", [data description]);
     if ([[data objectForKey:@"Result"] isEqualToNumber:@1]) {
         NSNumber * command = [data objectForKey:@"Command"];
         if ([command isEqualToNumber:@10003]) {
@@ -847,7 +855,7 @@ static SystemSoundID shake_sound_male_id = 0;
 #pragma mark - 查看详情
 - (void)orderDetais:(UIButton *)button event:(UIEvent *)event
 {
-     OrderDetailController * pVC = [[UIStoryboard storyboardWithName:@"OrderDetailController" bundle:nil] instantiateInitialViewController];
+     OrderDetailController * pVC = [[OrderDetailController alloc]init];
 //    ViewController * VC = [[ViewController alloc]init];
 //    [self.navigationController pushViewController:VC animated:YES];
     __weak OrderViewController * orderVC = self;
@@ -1000,39 +1008,56 @@ static SystemSoundID shake_sound_male_id = 0;
      }
      */
     NSLog(@"***");
-//    [UIView animateWithDuration:2 animations:^{
-//        
-//    } completion:^(BOOL finished) {
-//        
-//        
-//        if (self.segment.selectedSegmentIndex == 0) {
-//            [self.nOrderTableView.header beginRefreshing];
-//        }else if (self.segment.selectedSegmentIndex == 1)
-//        {
-//            [self.deliveryingTableView.header beginRefreshing];
-//            
-//        }else
-//        {
-//            [self.deliveriedTableView.header beginRefreshing];
-//            
-//        }
-//        
-//    }];
+    //    [UIView animateWithDuration:2 animations:^{
+    //
+    //    } completion:^(BOOL finished) {
+    //
+    //
+    //        if (self.segment.selectedSegmentIndex == 0) {
+    //            [self.nOrderTableView.header beginRefreshing];
+    //        }else if (self.segment.selectedSegmentIndex == 1)
+    //        {
+    //            [self.deliveryingTableView.header beginRefreshing];
+    //
+    //        }else
+    //        {
+    //            [self.deliveriedTableView.header beginRefreshing];
+    //
+    //        }
+    //
+    //    }];
     if (self.toDetailsView == 1) {
         self.toDetailsView = 0;
     }else
     {
         [self performSelector:@selector(pullrefresh) withObject:nil afterDelay:.35];
     }
-    
-    
-    if (![UserInfo shareUserInfo].isOpenthebackgroundposition) {
-        if (self.isfromLoginVC == 1) {
-            UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"您尚未开启实时定位功能，是否开启" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
-            [alert show];
+    if (self.isfromLoginVC == 1) {
+        NSArray * array = [self.positionDb getPositionModels];
+        for (PositionModel * model in array) {
+            
+            if (model.userId == [UserInfo shareUserInfo].userId.intValue) {
+                if (model.positionType == 2) {
+                    UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"您尚未开启实时定位功能，是否开启" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
+                    [alert show];
+                    self.mapview.showsUserLocation = YES;
+                }else
+                {
+                    [UserInfo shareUserInfo].isOpenthebackgroundposition = YES;
+                
+                [[NSNotificationCenter defaultCenter]postNotificationName:LoginAndStartUDP object:nil userInfo:nil];
+                }
+            }
         }
-        
     }
+//    if (![UserInfo shareUserInfo].isOpenthebackgroundposition) {
+//        if (self.isfromLoginVC == 1) {
+//            UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"您尚未开启实时定位功能，是否开启" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
+//            [alert show];
+//            self.mapview.showsUserLocation = YES;
+//        }
+//        
+//    }
     
 }
 

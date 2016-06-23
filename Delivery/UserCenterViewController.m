@@ -15,10 +15,10 @@
 #define LEFT_SPACE 12
 #define ICONIMAGE_WIDTH 65
 #define label_height 15
-
+#define RGBCOLOR(r,g,b) [UIColor colorWithRed:(r)/255.0 green:(g)/255.0 blue:(b)/255.0 alpha:1]
 @interface UserCenterViewController ()<HTTPPostDelegate, UIAlertViewDelegate>
 
-
+@property (nonatomic, strong)PositionDB * positionDb;
 
 @end
 
@@ -36,6 +36,9 @@
                                                                     };
     
     self.navigationItem.title = @"设置";
+    
+    self.positionDb = [[PositionDB alloc]init];
+
     
     self.headView = [[UIView alloc]initWithFrame:CGRectMake(0,  TOP_SPACE , self.view.frame.size.width, 81)];
     _headView.backgroundColor = [UIColor whiteColor];
@@ -87,9 +90,24 @@
     _todayOrderview.detalsLabel.text = @"20";
     [self.view addSubview:_todayOrderview];
     
-    self.massegeView = [[OtherView alloc]initWithFrame:CGRectMake(0, _todayOrderview.bottom + TOP_SPACE, self.view.width , 45)];
+    self.totlaMoney = [[OtherView alloc]initWithFrame:CGRectMake(0, _totalOrderview.bottom + 1, self.view.width / 2, 66)];
+    _totlaMoney.iconImageView.image = [UIImage imageNamed:@"totoaMonry.png"];
+    _totlaMoney.titleLabel.text = @"总金额";
+    _totlaMoney.detalsLabel.text = @"20";
+    _totlaMoney.detalsLabel.textColor = RGBCOLOR(221, 15, 96);
+    [self.view addSubview:_totlaMoney];
+    
+    self.todayMoney = [[OtherView alloc]initWithFrame:CGRectMake(_totlaMoney.right + 1, _totlaMoney.top , self.view.width / 2, 66)];
+    _todayMoney.iconImageView.image = [UIImage imageNamed:@"todayMoney.png"];
+    _todayMoney.titleLabel.text = @"今日到账";
+    _todayMoney.detalsLabel.text = @"20";
+    _todayMoney.detalsLabel.textColor = RGBCOLOR(31, 195, 164);
+    [self.view addSubview:_todayMoney];
+    
+    
+    self.massegeView = [[OtherView alloc]initWithFrame:CGRectMake(0, _totlaMoney.bottom + TOP_SPACE, self.view.width , 45)];
     _massegeView.iconImageView.image = [UIImage imageNamed:@"icon_1.png"];
-    _massegeView.titleLabel.text = @"消息免打扰";
+    _massegeView.titleLabel.text = @"是否上班";
     _massegeView.detailButton.hidden = NO;
     [_massegeView.detailButton addTarget:self action:@selector(openOrCloseAction:) forControlEvents:UIControlEventValueChanged];
     [self.view addSubview:_massegeView];
@@ -101,11 +119,27 @@
     [_positionView.detailButton addTarget:self action:@selector(positionAction:) forControlEvents:UIControlEventValueChanged];
     [self.view addSubview:_positionView];
     
-    if ([UserInfo shareUserInfo].isOpenthebackgroundposition) {
-        _positionView.detailButton.on = YES;
-    }else
-    {
-        _positionView.detailButton.on = NO;
+    
+    
+//    if ([UserInfo shareUserInfo].isOpenthebackgroundposition) {
+//        _positionView.detailButton.on = YES;
+//    }else
+//    {
+//        _positionView.detailButton.on = NO;
+//    }
+    
+    NSArray * array = [self.positionDb getPositionModels];
+    for (PositionModel * model in array) {
+        
+        NSLog(@"%d, %d***", model.userId, model.positionType);
+        if (model.userId == [UserInfo shareUserInfo].userId.intValue) {
+            if (model.positionType == 2) {
+                _positionView.detailButton.on = NO;
+            }else
+            {
+                _positionView.detailButton.on = YES;
+            }
+        }
     }
     
     
@@ -176,11 +210,26 @@
             [UserInfo shareUserInfo].isOpenthebackgroundposition = NO;
         }else
         {
+            NSArray * array = [self.positionDb getPositionModels];
+            for (PositionModel * model in array) {
+                if (model.userId == [UserInfo shareUserInfo].userId.intValue) {
+                    model.positionType = 1;
+                    [self.positionDb updateModel:model];
+                }
+            }
             [UserInfo shareUserInfo].isOpenthebackgroundposition = YES;
         }
         
     }else
     {
+        NSArray * array = [self.positionDb getPositionModels];
+        for (PositionModel * model in array) {
+            if (model.userId == [UserInfo shareUserInfo].userId.intValue) {
+                model.positionType = 2;
+                [self.positionDb updateModel:model];
+            }
+        }
+        
         [UserInfo shareUserInfo].isOpenthebackgroundposition = NO;
     }
     [[NSNotificationCenter defaultCenter]postNotificationName:LoginAndStartUDP object:nil userInfo:nil];
@@ -258,7 +307,7 @@
 
 - (void)refresh:(id)data
 {
-    NSLog(@"data = %@", [data description]);
+//    NSLog(@"data = %@", [data description]);
     [SVProgressHUD dismiss];
     if ([[data objectForKey:@"Result"] isEqualToNumber:@1]) {
         NSNumber * command = [data objectForKey:@"Command"];
@@ -276,6 +325,8 @@
             self.phoneNumberLabel.text = [NSString stringWithFormat:@"%@", [dic objectForKey:@"Phone"]];
             _totalOrderview.detailStr = [NSString stringWithFormat:@"%@", [dic objectForKey:@"TotalOrderCount"]];
             _todayOrderview.detailStr = [NSString stringWithFormat:@"%@", [dic objectForKey:@"TodayOrderCount"]];
+            _totlaMoney.detailStr = @"20";
+            _todayMoney.detailStr = @"20";
             
         }else if ([command isEqualToNumber:@10008])
         {

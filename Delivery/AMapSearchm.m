@@ -7,6 +7,7 @@
 //
 
 #import "AMapSearchm.h"
+#import "UserLocation.h"
 
 @interface AMapSearchm()<AMapSearchDelegate, MAMapViewDelegate>
 
@@ -46,11 +47,9 @@
         self.mapView.showsUserLocation = NO;
         self.search = [[AMapSearchAPI alloc] init];
         self.search.delegate = self;
-        
     }
     return self;
 }
-
 
 - (void)getLocationCoordinate:(LocationBlock1)locationBlock
 {
@@ -63,6 +62,7 @@
     self.locationBlock(userLocation.coordinate);
     _locationBlock = nil;
     self.mapView.showsUserLocation = NO;
+    
 }
 
 #pragma mark - 地理编码
@@ -73,6 +73,7 @@
     
     AMapGeocodeSearchRequest *geo = [[AMapGeocodeSearchRequest alloc]init];
     geo.address = address;
+    geo.city = [UserLocation shareLocation].city;
     [self.search AMapGeocodeSearch:geo];
     
 }
@@ -94,8 +95,10 @@
         AMapGeocode * mapgeocode = [response.geocodes objectAtIndex:0];
         
         CLLocationCoordinate2D coor = CLLocationCoordinate2DMake(mapgeocode.location.latitude, mapgeocode.location.longitude);
-        _coordinateBlock(coor);
-        _coordinateBlock = nil;
+        
+        
+        _coordinateBlock(response);
+//        _coordinateBlock = nil;
     }
 }
 
@@ -103,13 +106,13 @@
 
 - (void)getaddressWithCoordinate:(CLLocationCoordinate2D)coordinate complate:(AddressBlock)addressBlock failed:(SearchFaileBlock)faile
 {
-    self.coordinateBlock = [addressBlock copy];
+    self.addressBlock = [addressBlock copy];
     self.searchFailedBlock = [faile copy];
     
     AMapReGeocodeSearchRequest * regeo = [[AMapReGeocodeSearchRequest alloc]init];
     regeo.location = [AMapGeoPoint locationWithLatitude:coordinate.latitude longitude:coordinate.longitude];
     regeo.requireExtension = YES;
-    
+    NSLog(@"%f, %f", coordinate.latitude, coordinate.longitude);
     [self.search AMapReGoecodeSearch:regeo];
 }
 
@@ -117,6 +120,9 @@
 {
     if (self.addressBlock) {
         if (response.regeocode != nil) {
+            
+//            NSLog(@"%@, %@", response, response.regeocode.formattedAddress);
+            [UserLocation shareLocation].city = response.regeocode.addressComponent.city;
             _addressBlock(response.regeocode.formattedAddress);
             _addressBlock = nil;
         }else

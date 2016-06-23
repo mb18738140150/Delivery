@@ -279,26 +279,8 @@ static SystemSoundID shake_sound_male_id = 0;
             [sendUdpSocket connectedHost];
         }
         
-//        [[CCLocationManager shareLocation]getLocationCoordinate:^(CLLocationCoordinate2D locationCorrrdinate) {
-//            [UserLocation shareLocation].coordinate2D = locationCorrrdinate;
-//            
-//            NSString *msg = @"我再发送消息";
-//            msg = [msg stringByAppendingFormat:@"lat%f**lon%f", [UserLocation shareLocation].coordinate2D.latitude, [UserLocation shareLocation].coordinate2D.longitude];
-//            
-//            NSDictionary * dic = @{
-//                                   @"UserId":[UserInfo shareUserInfo].userId,
-//                                   @"Longitude":@([UserLocation shareLocation].coordinate2D.longitude),
-//                                   @"Latitude":@([UserLocation shareLocation].coordinate2D.latitude)
-//                                   };
-//            
-//            msg = [dic JSONString];
-//            
-//            NSData *data = [msg dataUsingEncoding:NSUTF8StringEncoding];
-//            
-//            [sendUdpSocket sendData:data toHost:host port:port withTimeout:5 tag:100];
-//        }];
-        
         [[AMapSearchm shareSearch] getLocationCoordinate:^(CLLocationCoordinate2D locationCorrrdinate) {
+            
             [UserLocation shareLocation].coordinate2D = locationCorrrdinate;
             
             NSString *msg = @"我再发送消息";
@@ -314,11 +296,11 @@ static SystemSoundID shake_sound_male_id = 0;
             
             NSData *data = [msg dataUsingEncoding:NSUTF8StringEncoding];
             
-            [sendUdpSocket sendData:data toHost:host port:port withTimeout:5 tag:100];
+            [sendUdpSocket sendData:data toHost:host port:port withTimeout:30 tag:100];
         }];
         
         
-        self.timer = [NSTimer scheduledTimerWithTimeInterval:30 target:self selector:@selector(sendLocaion) userInfo:nil repeats:YES];
+        self.timer = [NSTimer scheduledTimerWithTimeInterval:2 target:self selector:@selector(sendLocaion) userInfo:nil repeats:YES];
         [self.timer fire];
        
     }else
@@ -351,11 +333,11 @@ static SystemSoundID shake_sound_male_id = 0;
         
         msg = [dic JSONString];
         
-        NSLog(@"lat%f**lon%f", [UserLocation shareLocation].coordinate2D.latitude, [UserLocation shareLocation].coordinate2D.longitude);
+//        NSLog(@"lat%f**lon%f", [UserLocation shareLocation].coordinate2D.latitude, [UserLocation shareLocation].coordinate2D.longitude);
         
         NSData *data = [msg dataUsingEncoding:NSUTF8StringEncoding];
         
-        [sendUdpSocket sendData:data toHost:host port:port withTimeout:5 tag:200];
+        [sendUdpSocket sendData:data toHost:host port:port withTimeout:30 tag:200];
     }];
     
     
@@ -596,7 +578,7 @@ static SystemSoundID shake_sound_male_id = 0;
 
 - (void)playSound
 {
-    NSString * path = [[NSBundle mainBundle] pathForResource:@"sound" ofType:@"caf"];
+    NSString * path = [[NSBundle mainBundle] pathForResource:@"deliverySound" ofType:@"caf"];
     
     NSLog(@"path = %@", path);
     

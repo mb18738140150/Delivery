@@ -17,4 +17,7 @@
 
 @property (nonatomic)CLLocationCoordinate2D coordinate2D;
 
+@property (nonatomic, strong)AMapGeocodeSearchResponse * shopRes;
+@property (nonatomic, strong)AMapGeocodeSearchResponse * customRes;
+
 @end

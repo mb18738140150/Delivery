@@ -21,4 +21,7 @@
 @property (nonatomic, strong)OtherView * todayOrderview;
 @property (nonatomic, strong)OtherView * positionView;
 
+@property (nonatomic, strong)OtherView * totlaMoney;
+@property (nonatomic, strong)OtherView * todayMoney;
+
 @end

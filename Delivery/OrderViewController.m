@@ -12,7 +12,7 @@
 #import "OrderDetailController.h"
 #import "AppDelegate.h"
 #import "Mapcontroller.h"
-
+#import "GiveupReasonView.h"
 #import <AVFoundation/AVFoundation.h>
 //#import <AudioToolbox/AudioToolbox.h>
 
@@ -33,8 +33,8 @@
 
 
 #define SEGMENT_HEIGHT 40
-#define SEGMENT_WIDTH 240
-#define SEGMENT_X self.view.width / 2 - SEGMENT_WIDTH / 2
+#define SEGMENT_WIDTH 260
+#define SEGMENT_X [UIScreen mainScreen].bounds.size.width / 2 - SEGMENT_WIDTH / 2
 #define TOP_SPACE 10
 #define HEARDERVIEW_HEIGHT 4 + SEGMENT_HEIGHT
 
@@ -52,8 +52,14 @@ NSString *const QAnnotationViewDragStateCHange = @"QAnnotationViewDragState";
 // 订单状态
 @property (nonatomic, assign)int orderState;
 
+// 导航条订单数量label
+@property (nonatomic, strong)UILabel * waitAcceptLB;
+@property (nonatomic, strong)UILabel * waiDeliveryLB;
+@property (nonatomic, strong)UILabel * deliveringLB;
+@property (nonatomic, strong)UILabel * deliveriedLB;
+
+
 // 新订单
-@property (nonatomic, strong)UITableView * nOrderTableView;
 @property (nonatomic, strong)NSMutableArray * nOrderArray;
 @property (nonatomic, assign)int nOrderCount;
 @property (nonatomic, assign)int nOrderPag;
@@ -83,13 +89,14 @@ NSString *const QAnnotationViewDragStateCHange = @"QAnnotationViewDragState";
 @property (nonatomic, strong)MAMapView * mapview;
 
 @property (nonatomic, strong)PositionDB * positionDb;
-
+@property (nonatomic, strong)GiveupReasonView * giupReasonView;// 放弃订单原因弹出框
 @end
 
 @implementation OrderViewController
 
 - (NSMutableArray *)nOrderArray
 {
+    
     if (!_nOrderArray) {
         self.nOrderArray = [NSMutableArray array];
     }
@@ -226,31 +233,6 @@ NSString *const QAnnotationViewDragStateCHange = @"QAnnotationViewDragState";
     NSLog(@"高德地图定位失败");
 }
 
-#pragma mark - 腾讯地图定位
-
-
-//- (void)mapView:(QMapView *)mapView didUpdateUserLocation:(QUserLocation *)userLocation updatingLocation:(BOOL)updatingLocation
-//{
-//    //    NSLog(@"刷新位置");
-//    
-//    
-//    self.Coordinate = userLocation.coordinate;
-//    [[NSNotificationCenter defaultCenter]postNotificationName:QAnnotationViewDragStateCHange object:nil];
-////    NSLog(@"lat = %f  ****  lon = %f", userLocation.coordinate.latitude, userLocation.coordinate.longitude);
-//}
-//- (void)mapView:(QMapView *)mapView didFailToLocateUserWithError:(NSError *)error
-//{
-//    NSLog(@"定位失败");
-//    UIAlertController * alertController = [UIAlertController alertControllerWithTitle:@"提示" message:@"对不起，定位失败" preferredStyle:UIAlertControllerStyleAlert];
-//    UIAlertAction * cancelAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleCancel handler:nil];
-//    [alertController addAction:cancelAction];
-//    
-//    [self presentViewController:alertController animated:YES completion:nil];
-//    self.Coordinate = (CLLocationCoordinate2D){0.0, 0.0};
-//    
-//    [[NSNotificationCenter defaultCenter]postNotificationName:QAnnotationViewDragStateCHange object:nil];
-//}
-
 - (void)qano:(NSNotification *)notification
 {
 //    [self downloadDataWithCommand:@3 page:_nOrderPag count:10 orderState:1];
@@ -258,9 +240,28 @@ NSString *const QAnnotationViewDragStateCHange = @"QAnnotationViewDragState";
 
 - (void)addHeaderView
 {
-    self.segment = [[UISegmentedControl alloc]initWithItems:@[@"新订单",@"待配送",@"配送中", @"已配送"]];
+    NSArray * strArr = [self.orderCount componentsSeparatedByString:@","];
+    NSString * waitAcceptStr = nil;
+    NSString * waitdeliceryStr = nil;
+    NSString * deliveringStr = nil;
+    NSString * deliveriedStr = nil;
+    
+    if (strArr.count > 3) {
+        waitAcceptStr = [strArr objectAtIndex:0];
+        waitdeliceryStr = [strArr objectAtIndex:1];
+        deliveringStr = [strArr objectAtIndex:2];
+        deliveriedStr = [strArr objectAtIndex:3];
+        if (deliveriedStr.length>= 3) {
+            deliveriedStr = @"99+";
+        }
+    }
+    
+    
+    CGSize sized = [deliveriedStr boundingRectWithSize:CGSizeMake(CGFLOAT_MAX, 18) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:11]} context:nil].size;
+    
+    self.segment = [[UISegmentedControl alloc]initWithItems:@[@"待接受",@"待配送",@"配送中", @"已配送"]];
     self.segment.tintColor = [UIColor colorWithRed:250 / 255.0 green:250 / 255.0 blue:250 / 255.0 alpha:1];
-    self.segment.frame = CGRectMake(SEGMENT_X, 2, SEGMENT_WIDTH, SEGMENT_HEIGHT);
+    self.segment.frame = CGRectMake(-30, 2, SEGMENT_WIDTH, SEGMENT_HEIGHT);
     NSDictionary* selectedTextAttributes = @{NSFontAttributeName:[UIFont boldSystemFontOfSize:16],
                                              NSForegroundColorAttributeName: MAIN_COLORE};
     [self.segment setTitleTextAttributes:selectedTextAttributes forState:UIControlStateSelected];//设置文字属性
@@ -271,7 +272,74 @@ NSString *const QAnnotationViewDragStateCHange = @"QAnnotationViewDragState";
     self.tableView.backgroundColor = [UIColor whiteColor];
     [_segment addTarget:self action:@selector(deliveryState:) forControlEvents:UIControlEventValueChanged];
     
-    self.navigationItem.titleView = _segment;
+    self.waitAcceptLB = [[UILabel alloc]initWithFrame:CGRectMake(24, 6, 14, 14)];
+    self.waitAcceptLB.backgroundColor = MAIN_COLORE;
+    self.waitAcceptLB.layer.cornerRadius = 7;
+    self.waitAcceptLB.layer.masksToBounds = YES;
+    self.waitAcceptLB.font = [UIFont systemFontOfSize:10];
+    self.waitAcceptLB.textColor = [UIColor whiteColor];
+    self.waitAcceptLB.text = waitAcceptStr;
+    if ([waitAcceptStr isEqualToString:@"0"]) {
+        self.waitAcceptLB.hidden = YES;
+    }
+    self.waitAcceptLB.textAlignment = NSTextAlignmentCenter;
+    
+    self.waiDeliveryLB = [[UILabel alloc]initWithFrame:CGRectMake(89, 6, 14, 14)];
+    self.waiDeliveryLB.backgroundColor = MAIN_COLORE;
+    self.waiDeliveryLB.layer.cornerRadius = 7;
+    self.waiDeliveryLB.layer.masksToBounds = YES;
+    self.waiDeliveryLB.font = [UIFont systemFontOfSize:10];
+    self.waiDeliveryLB.textColor = [UIColor whiteColor];
+    self.waiDeliveryLB.text = waitdeliceryStr;
+    if ([waitdeliceryStr isEqualToString:@"0"]) {
+        self.waiDeliveryLB.hidden = YES;
+    }
+    self.waiDeliveryLB.textAlignment = NSTextAlignmentCenter;
+    
+    self.deliveringLB = [[UILabel alloc]initWithFrame:CGRectMake(154, 6, 14, 14)];
+    self.deliveringLB.backgroundColor = MAIN_COLORE;
+    self.deliveringLB.layer.cornerRadius = 7;
+    self.deliveringLB.layer.masksToBounds = YES;
+    self.deliveringLB.font = [UIFont systemFontOfSize:10];
+    self.deliveringLB.textColor = [UIColor whiteColor];
+    self.deliveringLB.text = deliveringStr;
+    if ([deliveringStr isEqualToString:@"0"]) {
+        self.deliveringLB.hidden = YES;
+    }
+    self.deliveringLB.textAlignment = NSTextAlignmentCenter;
+    
+    self.deliveriedLB = [[UILabel alloc]initWithFrame:CGRectMake(219, 6, 14, 14)];
+    self.deliveriedLB.backgroundColor = MAIN_COLORE;
+    self.deliveriedLB.layer.cornerRadius = 7;
+    self.deliveriedLB.layer.masksToBounds = YES;
+    self.deliveriedLB.font = [UIFont systemFontOfSize:10];
+    self.deliveriedLB.textColor = [UIColor whiteColor];
+    self.deliveriedLB.text = deliveriedStr;
+    if ([deliveriedStr isEqualToString:@"0"]) {
+        self.deliveriedLB.hidden = YES;
+    }
+    self.deliveriedLB.textAlignment = NSTextAlignmentCenter;
+    if (sized.width > 14) {
+        self.deliveriedLB.width = sized.width;
+    }
+    
+    if ([UIScreen mainScreen].bounds.size.width > 320) {
+        self.segment.frame = CGRectMake(0, 2, SEGMENT_WIDTH, SEGMENT_HEIGHT);
+        self.waitAcceptLB.frame = CGRectMake(54, 6, 14, 14);
+        self.waiDeliveryLB.frame = CGRectMake(119, 6, 14, 14);
+        self.deliveringLB.frame = CGRectMake(184, 6, 14, 14);
+        self.deliveriedLB.frame = CGRectMake(249, 6, 14, 14);
+    }
+    
+    UIView * hearderView = [[UIView alloc] initWithFrame:CGRectMake(SEGMENT_X, 0, SEGMENT_WIDTH, HEARDERVIEW_HEIGHT)];
+    hearderView.backgroundColor = [UIColor clearColor];
+    [hearderView addSubview:_segment];
+    [hearderView addSubview:_waitAcceptLB];
+    [hearderView addSubview:_waiDeliveryLB];
+    [hearderView addSubview:_deliveringLB];
+    [hearderView addSubview:_deliveriedLB];
+    
+    self.navigationItem.titleView = hearderView;
     
 }
 
@@ -282,6 +350,7 @@ NSString *const QAnnotationViewDragStateCHange = @"QAnnotationViewDragState";
         self.waitOrderTableView.hidden = YES;
         self.deliveryingTableView.hidden = YES;
         self.deliveriedTableView.hidden = YES;
+        [self.nOrderTableView.header endRefreshing];
         [self.nOrderTableView.header beginRefreshing];
     }
     else if (segment.selectedSegmentIndex == 1)
@@ -290,6 +359,7 @@ NSString *const QAnnotationViewDragStateCHange = @"QAnnotationViewDragState";
         self.nOrderTableView.hidden = YES;
         self.deliveryingTableView.hidden = YES;
         self.deliveriedTableView.hidden = YES;
+        [self.waitOrderTableView.header endRefreshing];
         [self.waitOrderTableView.header beginRefreshing];
     }else if (segment.selectedSegmentIndex == 2)
     {
@@ -297,6 +367,7 @@ NSString *const QAnnotationViewDragStateCHange = @"QAnnotationViewDragState";
         self.waitOrderTableView.hidden = YES;
         self.deliveryingTableView.hidden = NO;
         self.deliveriedTableView.hidden = YES;
+        [self.deliveryingTableView.header endRefreshing];
         [self.deliveryingTableView.header beginRefreshing];
     }else
     {
@@ -304,6 +375,7 @@ NSString *const QAnnotationViewDragStateCHange = @"QAnnotationViewDragState";
         self.waitOrderTableView.hidden = YES;
         self.deliveryingTableView.hidden = YES;
         self.deliveriedTableView.hidden = NO;
+        [self.deliveriedTableView.header endRefreshing];
         [self.deliveriedTableView.header beginRefreshing];
     }
 }
@@ -401,6 +473,7 @@ NSString *const QAnnotationViewDragStateCHange = @"QAnnotationViewDragState";
     NSString * md5Str = [str md5];
     NSString * urlString = [NSString stringWithFormat:@"%@%@", POST_URL, md5Str];
     HTTPPost * httpPost = [HTTPPost shareHTTPPost];
+    httpPost.commend = [dic objectForKey:@"Command"];
     [httpPost post:urlString HTTPBody:[jsonStr dataUsingEncoding:NSUTF8StringEncoding]];
     httpPost.delegate = self;
 }
@@ -408,7 +481,7 @@ NSString *const QAnnotationViewDragStateCHange = @"QAnnotationViewDragState";
 - (void)refresh:(id)data
 {
     [SVProgressHUD dismiss];
-//    NSLog(@"data = %@", [data description]);
+    NSLog(@"data = %@", [data description]);
     if ([[data objectForKey:@"Result"] isEqualToNumber:@1]) {
         NSNumber * command = [data objectForKey:@"Command"];
         if ([command isEqualToNumber:@10003]) {
@@ -426,6 +499,15 @@ NSString *const QAnnotationViewDragStateCHange = @"QAnnotationViewDragState";
                     model.orderState = @1;
                     [self.nOrderArray addObject:model];
                 }
+//                [self.segment setTitle:[NSString stringWithFormat:@"待接受%@", [data objectForKey:@"AllCount"]] forSegmentAtIndex:0];
+                if ([[data objectForKey:@"AllCount"] intValue] == 0) {
+                    self.waitAcceptLB.hidden = YES;
+                }else
+                {
+                    self.waitAcceptLB.hidden = NO;
+                }
+                
+                self.waitAcceptLB.text = [NSString stringWithFormat:@"%@", [data objectForKey:@"AllCount"]];
                 [self.nOrderTableView reloadData];
             }else if (_orderState == 2)
             {
@@ -444,8 +526,15 @@ NSString *const QAnnotationViewDragStateCHange = @"QAnnotationViewDragState";
                     model.orderState = @2;
                     [self.waitOrderArray addObject:model];
                 }
+//                [self.segment setTitle:[NSString stringWithFormat:@"待配送%@", [data objectForKey:@"AllCount"]] forSegmentAtIndex:1];
+                if ([[data objectForKey:@"AllCount"] intValue] == 0) {
+                    self.waiDeliveryLB.hidden = YES;
+                }else
+                {
+                    self.waiDeliveryLB.hidden = NO;
+                }
+                self.waiDeliveryLB.text = [NSString stringWithFormat:@"%@", [data objectForKey:@"AllCount"]];
                 [self.waitOrderTableView reloadData];
-                
                 
             }
             else if (_orderState == 3)
@@ -464,6 +553,14 @@ NSString *const QAnnotationViewDragStateCHange = @"QAnnotationViewDragState";
                     model.orderState = @3;
                     [self.deliveryingArray addObject:model];
                 }
+//                [self.segment setTitle:[NSString stringWithFormat:@"配送中%@", [data objectForKey:@"AllCount"]] forSegmentAtIndex:2];
+                if ([[data objectForKey:@"AllCount"] intValue] == 0) {
+                    self.deliveringLB.hidden = YES;
+                }else
+                {
+                    self.deliveringLB.hidden = NO;
+                }
+                self.deliveringLB.text = [NSString stringWithFormat:@"%@", [data objectForKey:@"AllCount"]];
                 [self.deliveryingTableView reloadData];
                 
                 
@@ -481,12 +578,20 @@ NSString *const QAnnotationViewDragStateCHange = @"QAnnotationViewDragState";
                     model.orderState = @4;
                     [self.deliveriedArray addObject:model];
                 }
+//                [self.segment setTitle:[NSString stringWithFormat:@"已配送%@", [data objectForKey:@"AllCount"]] forSegmentAtIndex:3];
+                if ([[data objectForKey:@"AllCount"] intValue] == 0) {
+                    self.deliveriedLB.hidden = YES;
+                }else
+                {
+                    self.deliveriedLB.hidden = NO;
+                }
+                self.deliveriedLB.text = [NSString stringWithFormat:@"%@", [data objectForKey:@"AllCount"]];
                 [self.deliveriedTableView reloadData];
             }
             
-        }else if ([command isEqualToNumber:@10006])
+        }else if ([command isEqualToNumber:@10013])
         {
-            UIAlertView * alertView = [[UIAlertView alloc] initWithTitle:@"提示" message:@"抢单成功" delegate:self cancelButtonTitle:nil otherButtonTitles:nil, nil];
+            UIAlertView * alertView = [[UIAlertView alloc] initWithTitle:@"提示" message:@"接受订单成功" delegate:self cancelButtonTitle:nil otherButtonTitles:nil, nil];
             [alertView show];
             [alertView performSelector:@selector(dismissAnimated:) withObject:nil afterDelay:1.0];
                 _orderState = 1;
@@ -508,22 +613,29 @@ NSString *const QAnnotationViewDragStateCHange = @"QAnnotationViewDragState";
                 [self downloadDataWithCommand:@3 page:1 count:10 orderState:3];
             }
             
-            
         }else if ([command isEqualToNumber:@10011])
         {
-            if (self.segment.selectedSegmentIndex == 1) {
-                UIAlertView * alertView = [[UIAlertView alloc] initWithTitle:@"提示" message:@"拒绝接单成功" delegate:self cancelButtonTitle:nil otherButtonTitles:nil, nil];
+                UIAlertView * alertView = [[UIAlertView alloc] initWithTitle:@"提示" message:@"放弃订单成功" delegate:self cancelButtonTitle:nil otherButtonTitles:nil, nil];
                 [alertView show];
                 [alertView performSelector:@selector(dismissAnimated:) withObject:nil afterDelay:1.0];
                 
                 [self downloadDataWithCommand:@3 page:1 count:10 orderState:2];
-            }else if (self.segment.selectedSegmentIndex == 0){
+            
+        }else if ([command isEqualToNumber:@10014])
+        {
                 UIAlertView * alertView = [[UIAlertView alloc] initWithTitle:@"提示" message:@"拒绝接单成功" delegate:self cancelButtonTitle:nil otherButtonTitles:nil, nil];
                 [alertView show];
                 [alertView performSelector:@selector(dismissAnimated:) withObject:nil afterDelay:1.0];
                 
                 [self downloadDataWithCommand:@3 page:1 count:10 orderState:1];
-            }
+            
+        }else if ([command isEqualToNumber:@10012])
+        {
+            UIAlertView * alertView = [[UIAlertView alloc] initWithTitle:@"提示" message:@"取餐成功" delegate:self cancelButtonTitle:nil otherButtonTitles:nil, nil];
+            [alertView show];
+            [alertView performSelector:@selector(dismissAnimated:) withObject:nil afterDelay:1.0];
+            
+            [self downloadDataWithCommand:@3 page:1 count:10 orderState:2];
             
         }
     }else
@@ -540,9 +652,15 @@ NSString *const QAnnotationViewDragStateCHange = @"QAnnotationViewDragState";
     //    AccountViewCell * cell = (AccountViewCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
     //    cell.isBusinessSW.on = !cell.isBusinessSW.isOn;
     //    [self.tableView headerEndRefreshing];
-    UIAlertView * alertV = [[UIAlertView alloc] initWithTitle:@"提示" message:@"连接服务器失败" delegate:nil cancelButtonTitle:nil otherButtonTitles:nil, nil];
-    [alertV show];
-    [alertV performSelector:@selector(dismiss) withObject:nil afterDelay:1.5];
+    if ([[error.userInfo objectForKey:@"Reason"] isEqualToString:@"服务器处理失败"]) {
+        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"服务器处理失败" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil ];
+        [alert show];
+    }else
+    {
+        UIAlertView * alertV = [[UIAlertView alloc] initWithTitle:@"提示" message:@"连接服务器失败" delegate:nil cancelButtonTitle:nil otherButtonTitles:nil, nil];
+        [alertV show];
+        [alertV performSelector:@selector(dismiss) withObject:nil afterDelay:1.5];
+    }
     NSLog(@"%@", error);
 }
 
@@ -562,67 +680,6 @@ NSString *const QAnnotationViewDragStateCHange = @"QAnnotationViewDragState";
     
 }
 
-static SystemSoundID shake_sound_male_id = 0;
-
--(void) playSound
-
-{
-    NSString *path = nil;
-    
-    path = [[NSBundle mainBundle] pathForResource:@"sound" ofType:@"mp3"];
-    
-    if (path ) {
-        NSLog(@"path = %@", path);
-        NSURL * cafUrl = [[NSURL alloc]initFileURLWithPath:path];
-        _player = [[AVAudioPlayer alloc]initWithContentsOfURL:cafUrl error:nil];
-        _player.delegate = self;
-        _player.numberOfLoops = 1;
-        _player.volume = 5.0;
-        
-        
-        [_player prepareToPlay];
-        [_player play];
-    }
-    
-    
-//    if (path) {
-//        //注册声音到系统
-//        NSURL *url = [NSURL fileURLWithPath:path];
-//        CFURLRef inFileURL = (__bridge CFURLRef)url;
-//        OSStatus err =  AudioServicesCreateSystemSoundID((__bridge CFURLRef)url,&shake_sound_male_id);
-//        if (err != kAudioServicesNoError) {
-//            NSLog(@"Cound not load %@, error code %@", url, err);
-//        }
-//        
-//        NSLog(@"id = %u", shake_sound_male_id);
-//        
-//        AudioServicesPlaySystemSound(shake_sound_male_id);
-//        //        AudioServicesPlaySystemSound(shake_sound_male_id);//如果无法再下面播放，可以尝试在此播放
-//        NSLog(@"走了******");
-//    }
-//    
-//    AudioServicesPlaySystemSound(shake_sound_male_id);   //播放注册的声音，（此句代码，可以在本类中的任意位置调用，不限于本方法中）
-//    
-    AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);   //让手机震动
-    
-}
-
-- (void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag
-{
-    if (_player) {
-        _player.delegate = nil;
-        _player = nil;
-    }
-    NSLog(@"播放完了");
-}
-- (void)audioPlayerDecodeErrorDidOccur:(AVAudioPlayer *)player error:(NSError *)error
-{
-    if (_player) {
-        _player.delegate = nil;
-        _player = nil;
-    }
-    NSLog(@"播放失败error = %@", error);
-}
 #pragma mark - tableView delegate and datasource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
@@ -666,9 +723,10 @@ static SystemSoundID shake_sound_male_id = 0;
         
         __weak OrderViewController * orderVC = self;
         [newOrderCell.totlePriceView nulityOrderAction:^{
-            NSLog(@"取消订单");
+            NSLog(@"拒绝接单");
+            NSLog(@"%@", model.orderId);
             NSDictionary * jsonDic = @{
-                                       @"Command":@11,
+                                       @"Command":@14,
                                        @"UserId":[UserInfo shareUserInfo].userId,
                                        @"OrderId":model.orderId
                                        };
@@ -691,16 +749,12 @@ static SystemSoundID shake_sound_male_id = 0;
         
         [deliveryingCell.totlePriceView.detailsButton addTarget:self action:@selector(orderDetais:event:) forControlEvents:UIControlEventTouchUpInside];
         [deliveryingCell.totlePriceView.startDeliveryBT addTarget:self action:@selector(deliveryAction:event:) forControlEvents:UIControlEventTouchUpInside];
-        
         __weak OrderViewController * orderVC = self;
         [deliveryingCell.totlePriceView nulityOrderAction:^{
-            NSLog(@"取消订单");
-            NSDictionary * jsonDic = @{
-                                       @"Command":@11,
-                                       @"UserId":[UserInfo shareUserInfo].userId,
-                                       @"OrderId":model.orderId
-                                       };
-            [orderVC playPostWithDictionary:jsonDic];
+            NSLog(@"放弃订单");
+            
+            [self tanchuGiveupViewWithOrderId:model.orderId];
+            
         }];
         
         return deliveryingCell;
@@ -736,12 +790,16 @@ static SystemSoundID shake_sound_male_id = 0;
 //        [deliveriedCell.totlePriceView.detailsButton addTarget:self action:@selector(orderDetais:event:) forControlEvents:UIControlEventTouchUpInside];
         __weak OrderViewController * orderVC = self;
         [deliveriedCell orderDetailsBlock:^{
-            OrderDetailController * pVC = [[UIStoryboard storyboardWithName:@"OrderDetailController" bundle:nil] instantiateInitialViewController];
+            
+            OrderDetailController * pVC = [[OrderDetailController alloc]init];
+            
+//            OrderDetailController * pVC = [[UIStoryboard storyboardWithName:@"OrderDetailController" bundle:nil] instantiateInitialViewController];
             pVC.orderID = model.orderId;
             pVC.deliveried = 1;
             orderVC.toDetailsView = 1;
             pVC.title = @"餐单详情";
-            
+            [UserLocation shareLocation].searchCoordinate = (CLLocationCoordinate2D){0.0, 0.0};
+            [UserLocation shareLocation].shopSearchCoordinate = (CLLocationCoordinate2D){0.0, 0.0};
             [orderVC.navigationController pushViewController:pVC animated:YES];
         }];
         
@@ -916,6 +974,8 @@ static SystemSoundID shake_sound_male_id = 0;
     
 //    ViewController * vc = [[ViewController alloc]init];
     
+    [UserLocation shareLocation].searchCoordinate = (CLLocationCoordinate2D){0.0, 0.0};
+    [UserLocation shareLocation].shopSearchCoordinate = (CLLocationCoordinate2D){0.0, 0.0};
     
     [self.navigationController pushViewController:pVC animated:YES];
     
@@ -933,7 +993,7 @@ static SystemSoundID shake_sound_male_id = 0;
             NewOrderModel * model = [self.nOrderArray objectAtIndex:indepath.row];
             
             NSDictionary * jsonDic = @{
-                                       @"Command":@6,
+                                       @"Command":@13,
                                        @"UserId":[UserInfo shareUserInfo].userId,
                                        @"OrderId":model.orderId
                                        };
@@ -954,19 +1014,35 @@ static SystemSoundID shake_sound_male_id = 0;
     
     if ([UserInfo shareUserInfo].isOpenthebackgroundposition) {
         if (self.segment.selectedSegmentIndex == 1) {
+            
+            
+            
             NSSet * touches = [event allTouches];
             UITouch * touch = [touches anyObject];
             CGPoint currentTouchPoint = [touch locationInView:self.waitOrderTableView];
             NSIndexPath * indepath = [self.waitOrderTableView indexPathForRowAtPoint:currentTouchPoint];
             if (indepath != nil) {
                 NewOrderModel * model = [self.waitOrderArray objectAtIndex:indepath.row];
-                NSDictionary * jsonDic = @{
-                                           @"Command":@7,
-                                           @"UserId":[UserInfo shareUserInfo].userId,
-                                           @"OrderId":model.orderId,
-                                           @"SendStateType":@1
-                                           };
-                [self playPostWithDictionary:jsonDic];
+                
+                if ([button.titleLabel.text isEqualToString:@"到达商家处"]) {
+                    NSDictionary * jsonDic = @{
+                                               @"Command":@12,
+                                               @"UserId":[UserInfo shareUserInfo].userId,
+                                               @"OrderId":model.orderId,
+                                               };
+                    [self playPostWithDictionary:jsonDic];
+                }else
+                {
+                    
+                    NSDictionary * jsonDic = @{
+                                               @"Command":@7,
+                                               @"UserId":[UserInfo shareUserInfo].userId,
+                                               @"OrderId":model.orderId,
+                                               @"SendStateType":@1
+                                               };
+                    [self playPostWithDictionary:jsonDic];
+                }
+                
                 
             }
         }else if (self.segment.selectedSegmentIndex == 2)
@@ -1058,7 +1134,6 @@ static SystemSoundID shake_sound_male_id = 0;
 //        }
 //        
 //    }
-    
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
@@ -1131,6 +1206,84 @@ static SystemSoundID shake_sound_male_id = 0;
     self.isfromLoginVC = 0;
 }
 
+// 放弃订单原因弹出框
+- (void)tanchuGiveupViewWithOrderId:(NSString *)string
+{
+    if (self.giupReasonView) {
+        [self.giupReasonView show];
+    }else
+    {
+        NSBundle *bundle=[NSBundle mainBundle];
+        NSArray *objs=[bundle loadNibNamed:@"GiveupReasonView" owner:nil options:nil];
+        self.giupReasonView = [objs objectAtIndex:0];
+        self.giupReasonView.frame = CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height);
+        __block OrderViewController * orderVC = self;
+        [self.giupReasonView giveuporder:^(NSString *reasonStr) {
+            ;
+            NSDictionary * jsonDic = @{
+                                       @"Command":@11,
+                                       @"UserId":[UserInfo shareUserInfo].userId,
+                                       @"Reason":reasonStr,
+                                       @"OrderId":string
+                                       };
+            [orderVC playPostWithDictionary:jsonDic];
+            NSLog(@"***%@", reasonStr);
+        }];
+        [self.giupReasonView show];
+    }
+    
+}
+
+- (void)refreshOrderCountWith:(NSString *)string
+{
+    NSArray * strArr = [string componentsSeparatedByString:@","];
+    
+    NSString * waitAcceptStr = [strArr objectAtIndex:0];
+    NSString * waitdeliceryStr = [strArr objectAtIndex:1];
+    NSString * deliveringStr = [strArr objectAtIndex:2];
+    NSString * deliveriedStr = [strArr objectAtIndex:3];
+    
+    if (deliveriedStr.length>= 3) {
+        deliveriedStr = @"99+";
+    }
+    CGSize sized = [deliveriedStr boundingRectWithSize:CGSizeMake(CGFLOAT_MAX, 18) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:11]} context:nil].size;
+    self.waitAcceptLB.text = waitAcceptStr;
+    self.waiDeliveryLB.text = waitdeliceryStr;
+    self.deliveringLB.text = deliveringStr;
+    self.deliveriedLB.text = deliveriedStr;
+    if (sized.width > 18) {
+        self.deliveriedLB.width = sized.width;
+    }
+    
+    if ([waitAcceptStr isEqualToString:@"0"]) {
+        self.waitAcceptLB.hidden = YES;
+    }else
+    {
+        self.waitAcceptLB.hidden = NO;
+    }
+    
+    if ([waitdeliceryStr isEqualToString:@"0"]) {
+        self.waiDeliveryLB.hidden = YES;
+    }else
+    {
+        self.waiDeliveryLB.hidden = NO;
+    }
+    
+    if ([deliveringStr isEqualToString:@"0"]) {
+        self.deliveringLB.hidden = YES;
+    }else
+    {
+        self.deliveringLB.hidden = NO;
+    }
+    
+    if ([deliveriedStr isEqualToString:@"0"]) {
+        self.deliveriedLB.hidden = YES;
+    }else
+    {
+        self.deliveriedLB.hidden = NO;
+    }
+    
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

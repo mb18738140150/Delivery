@@ -41,7 +41,7 @@
     
     self.addressLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, _myScroll.width, 15)];
     _addressLabel.font = [UIFont systemFontOfSize:15];
-    _addressLabel.text = @"数据不发了刷卡机能否傻脸；看傻脸；看啥看法呢斯洛伐克你";
+    _addressLabel.text = @"地址加载失败";
     CGSize labelSize = [_addressLabel.text boundingRectWithSize:CGSizeMake(CGFLOAT_MAX, 15) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:15]} context:nil].size;
     [_myScroll addSubview:_addressLabel];
     _myScroll.contentSize = CGSizeMake(labelSize.width, 15);

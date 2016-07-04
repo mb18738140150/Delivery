@@ -131,7 +131,7 @@ static int shopHeight = 0;
     
     self.totlePriceView = [[TotlePriceView alloc]initWithFrame:CGRectMake(0, _linePrice.bottom, self.width, TOTLEPRICEVIEW_HEIGHT)];
     [self addSubview:_totlePriceView];
-    self.totlePriceView.nullityButton.hidden = YES;
+    self.totlePriceView.nullityButton.hidden = NO;
     
 }
 
@@ -269,7 +269,8 @@ static int shopHeight = 0;
 //    self.totlePriceView.detailsButton.frame = CGRectMake(self.totlePriceView.detailsButton.left, 0, self.totlePriceView.detailsButton.width, s elf.totlePriceView.detailsButton.height);
     self.totlePriceView.totalPrice = [NSString stringWithFormat:@"%@", orderModel.allMoney];
 //    self.totlePriceView.totlePriceLabel.text = [NSString stringWithFormat:@"%@", orderModel.allMoney];
-    [self.totlePriceView.startDeliveryBT setTitle:@"立即抢单" forState:UIControlStateNormal];
+    [self.totlePriceView.nullityButton setTitle:@"拒绝订单" forState:UIControlStateNormal];
+    [self.totlePriceView.startDeliveryBT setTitle:@"接受订单" forState:UIControlStateNormal];
     self.backView.frame = CGRectMake(0, 0, self.frame.size.width, [NewOrderCell cellHeightWithMealCount:orderModel.mealArray.count] - TOP_SPACE );
 //    self.totlePriceView.totlePriceLabel.frame = self.totlePriceView.detailsButton.frame;
 //    self.totlePriceView.detailsButton.hidden = YES;

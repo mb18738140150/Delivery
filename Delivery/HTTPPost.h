@@ -18,6 +18,7 @@
 
 @interface HTTPPost : NSObject<NSURLSessionDelegate>
 @property (nonatomic, assign) id<HTTPPostDelegate> delegate;
+@property (nonatomic, strong)NSNumber * commend;
 +(HTTPPost *)shareHTTPPost;
 - (void)post:(NSString *)urlString HTTPBody:(NSData *)body;
 

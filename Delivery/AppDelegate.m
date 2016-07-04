@@ -20,6 +20,9 @@
 #import "iflyMSC/IFlySpeechUtility.h"
 #import "iflyMSC/IFlySetting.h"
 
+
+#import "OrderDetailController.h"
+#import "OrderViewController.h"
 #import "Mapcontroller.h"
 
 #define MAPKEY   1IuetZKXAwIv8oGEGpVbzo6f
@@ -33,6 +36,7 @@
     GCDAsyncUdpSocket *sendUdpSocket;
 }
 @property (nonatomic, strong)NSTimer * timer;
+@property (nonatomic, strong)NSTimer * registIdTimer;
 @property (nonatomic, strong)LoginViewController * loginVC;
 @property (nonatomic, assign)int counter;
 @end
@@ -128,7 +132,6 @@ static SystemSoundID shake_sound_male_id = 0;
 //        }
 //    }
 
-    
     return YES;
 }
 
@@ -157,14 +160,25 @@ static SystemSoundID shake_sound_male_id = 0;
 - (void)networkDidReceiveMessage:(NSNotification *)notification {
     NSDictionary * userInfo = [notification userInfo];
     NSString *content = [userInfo valueForKey:@"content"];
-
+//    NSLog(@"content = %@", content);
     NSDictionary * dic = [self dictionaryWithJsonString:content];
     
     if ([[dic objectForKey:@"PushUseType"] intValue] == 4000) {
         [self playSound];
         UIAlertView * alert = [[UIAlertView alloc] initWithTitle:nil message:[NSString stringWithFormat:@"%@", [dic objectForKey:@"Contents"]] delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
-        [alert show];
-    }else if ([[dic objectForKey:@"PushUseType"] intValue] == 3000)
+//        [alert show];
+        
+        UINavigationController * nav = (UINavigationController *)self.window.rootViewController;
+        
+        if ([nav.viewControllers.lastObject isMemberOfClass:[OrderViewController class]]) {
+            OrderViewController * orderVc = nav.viewControllers.lastObject;
+            if (orderVc.segment.selectedSegmentIndex == 0) {
+                [orderVc.nOrderTableView.header beginRefreshing];
+            }
+        }
+        
+        
+    }else if ([[dic objectForKey:@"PushUseType"] intValue] == 3002)
     {
         UIAlertController * alertcontroller = [UIAlertController alertControllerWithTitle:@"提示" message:@"您的账号已在另一台设备登录" preferredStyle:UIAlertControllerStyleAlert];
         
@@ -209,6 +223,7 @@ static SystemSoundID shake_sound_male_id = 0;
             NSString * md5Str = [str md5];
             NSString * urlString = [NSString stringWithFormat:@"%@%@", POST_URL, md5Str];
             HTTPPost * httpPost = [HTTPPost shareHTTPPost];
+            httpPost.commend = [jsonDic objectForKey:@"Command"];
             [httpPost post:urlString HTTPBody:[jsonStr dataUsingEncoding:NSUTF8StringEncoding]];
             httpPost.delegate = self;
             
@@ -219,6 +234,33 @@ static SystemSoundID shake_sound_male_id = 0;
         [nav presentViewController:alertcontroller animated:YES completion:nil];
         
         
+    }else if ([[dic objectForKey:@"PushUseType"] intValue] == 4001) {
+        [self playSound1];
+        
+        UINavigationController * nav = (UINavigationController *)self.window.rootViewController;
+        
+        UIAlertController * nameController = [UIAlertController alertControllerWithTitle:[NSString stringWithFormat:@"%@", [dic objectForKey:@"Title"]] message:[NSString stringWithFormat:@"%@", [dic objectForKey:@"Contents"]] preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction * cancleAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            OrderDetailController * orderVc = [[OrderDetailController alloc]init];
+            orderVc.orderID = [dic objectForKey:@"OrderId"];
+            [nav pushViewController:orderVc animated:YES];
+        }];
+        [nameController addAction:cancleAction];
+        
+        [nav presentViewController:nameController animated:YES completion:nil];
+        
+    }else if ([[dic objectForKey:@"PushUseType"] intValue] == 4002) {
+        
+        UINavigationController * nav = (UINavigationController *)self.window.rootViewController;
+        
+        if (nav.viewControllers.count >1) {
+            OrderViewController * orderVc = [nav.viewControllers objectAtIndex:1];
+            [orderVc refreshOrderCountWith:[dic objectForKey:@"Contents"]];
+        }
+        
+//        UILongPressGestureRecognizer
+//        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:nil message:[NSString stringWithFormat:@"%@", [dic objectForKey:@"Contents"]] delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+//        [alert show];
     }
     
     NSDictionary *extras = [userInfo valueForKey:@"extras"];
@@ -227,6 +269,7 @@ static SystemSoundID shake_sound_male_id = 0;
 }
 
 - (NSDictionary *)dictionaryWithJsonString:(NSString *)jsonString {
+    
     if (jsonString == nil) {
         return nil;
     }
@@ -321,7 +364,6 @@ static SystemSoundID shake_sound_male_id = 0;
     [[AMapSearchm shareSearch]getLocationCoordinate:^(CLLocationCoordinate2D locationCorrrdinate) {
         [UserLocation shareLocation].coordinate2D = locationCorrrdinate;
         
-        
         NSString *msg = @"我再发送消息";
         msg = [msg stringByAppendingFormat:@"lat%f**lon%f", [UserLocation shareLocation].coordinate2D.latitude, [UserLocation shareLocation].coordinate2D.longitude];
         
@@ -375,8 +417,51 @@ static SystemSoundID shake_sound_male_id = 0;
     [JPUSHService registerDeviceToken:deviceToken];
     
     NSString * str = [JPUSHService registrationID];
+    
+    if (str.length != 0) {
+        [[NSUserDefaults standardUserDefaults]setObject:[JPUSHService registrationID] forKey:@"RegistrationID"];
+    }else
+    {
+        self.registIdTimer = [NSTimer scheduledTimerWithTimeInterval:.5 target:self selector:@selector(getRegistrationID) userInfo:nil repeats:YES];
+        [self.registIdTimer fire];
+    }
+    
+    
     NSLog(@"RegistrationID = %@", str);
-    [[NSUserDefaults standardUserDefaults]setObject:[JPUSHService registrationID] forKey:@"RegistrationID"];
+}
+
+- (void)getRegistrationID
+{
+    NSString * str = [JPUSHService registrationID];
+    if (str) {
+        [self.registIdTimer invalidate];
+        self.registIdTimer = nil;
+        [[NSUserDefaults standardUserDefaults]setObject:[JPUSHService registrationID] forKey:@"RegistrationID"];
+        
+        NSString * passtr = [[NSUserDefaults standardUserDefaults]objectForKey:@"Pwd"];
+        NSString * namestr = [[NSUserDefaults standardUserDefaults]objectForKey:@"UserName"];
+        
+        if (passtr.length!=0 && namestr.length!=0) {
+            NSDictionary * jsonDic = @{
+                                       @"Pwd":passtr,
+                                       @"UserName":namestr,
+                                       @"Command":@1,
+                                       @"RegistrationID":[[NSUserDefaults standardUserDefaults] objectForKey:@"RegistrationID"],
+                                       @"DeviceType":@1
+                                       };
+            NSString * jsonStr = [jsonDic JSONString];
+            NSString * str = [NSString stringWithFormat:@"%@131139", jsonStr];
+            NSLog(@"jsonStr = %@", str);
+            NSString * md5Str = [str md5];
+            NSString * urlString = [NSString stringWithFormat:@"%@%@", POST_URL, md5Str];
+            HTTPPost * httpPost = [HTTPPost shareHTTPPost];
+            httpPost.commend = [jsonDic objectForKey:@"Command"];
+            httpPost.delegate = self;
+            [httpPost post:urlString HTTPBody:[jsonStr dataUsingEncoding:NSUTF8StringEncoding]];
+        }
+        
+    }
+    
 }
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
@@ -439,6 +524,7 @@ static SystemSoundID shake_sound_male_id = 0;
             NSString * md5Str = [str md5];
             NSString * urlString = [NSString stringWithFormat:@"%@%@", POST_URL, md5Str];
             HTTPPost * httpPost = [HTTPPost shareHTTPPost];
+            httpPost.commend = [jsonDic objectForKey:@"Command"];
             [httpPost post:urlString HTTPBody:[jsonStr dataUsingEncoding:NSUTF8StringEncoding]];
             httpPost.delegate = self;
 
@@ -549,7 +635,7 @@ static SystemSoundID shake_sound_male_id = 0;
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         
         while (1) {
-            NSLog(@"counter:%d", _counter++);
+//            NSLog(@"counter:%d", _counter++);
             sleep(2);
         }
         
@@ -578,7 +664,7 @@ static SystemSoundID shake_sound_male_id = 0;
 
 - (void)playSound
 {
-    NSString * path = [[NSBundle mainBundle] pathForResource:@"deliverySound" ofType:@"caf"];
+    NSString * path = [[NSBundle mainBundle] pathForResource:@"newDelivery" ofType:@"caf"];
     
     NSLog(@"path = %@", path);
     
@@ -597,7 +683,27 @@ static SystemSoundID shake_sound_male_id = 0;
     AudioServicesPlaySystemSound(shake_sound_male_id);
     AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);// 让手机震动
 }
-
+- (void)playSound1
+{
+    NSString * path = [[NSBundle mainBundle] pathForResource:@"tipDelivery" ofType:@"caf"];
+    
+    NSLog(@"path = %@", path);
+    
+    if (path) {
+        //注册声音到系统
+        NSURL * url = [NSURL fileURLWithPath:path];
+        CFURLRef inFileURL = (__bridge CFURLRef)url;
+        //        AudioServicesCreateSystemSoundID(inFileURL, &shake_sound_male_id);
+        OSStatus err =  AudioServicesCreateSystemSoundID(inFileURL,&shake_sound_male_id);
+        if (err != kAudioServicesNoError) {
+            NSLog(@"Cound not load %@, error code %@", url, err);
+        }
+        
+        
+    }
+    AudioServicesPlaySystemSound(shake_sound_male_id);
+    AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);// 让手机震动
+}
 
 //-(void) playSound
 //
@@ -632,7 +738,7 @@ static SystemSoundID shake_sound_male_id = 0;
         NSLog(@"表示标记为100的数据发送完成了");
     }else
     {
-        NSLog(@"表示标记为200的数据发送完成了");
+//        NSLog(@"表示标记为200的数据发送完成了");
     }
 }
 -(void)udpSocket:(GCDAsyncUdpSocket *)sock didNotSendDataWithTag:(long)tag dueToError:(NSError *)error{

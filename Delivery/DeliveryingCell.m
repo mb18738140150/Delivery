@@ -148,6 +148,7 @@ static int shopHeight = 0;
     [self addSubview:self.customAddtrssLabel];
     
     self.totlePriceView = [[TotlePriceView alloc]initWithFrame:CGRectMake(0, self.customAddtrssLabel.bottom + 6, self.width, TOTLEPRICEVIEW_HEIGHT)];
+    self.totlePriceView.nullityButton.hidden = YES;
     [self addSubview:_totlePriceView];
     
     self.shopView = [[ShopView alloc]initWithFrame:CGRectMake(0, 0, self.width, SHOPVIEW_HEIGHT)];
@@ -317,7 +318,20 @@ static int shopHeight = 0;
     self.totlePriceView.totalPrice = [NSString stringWithFormat:@"%@", orderModel.allMoney];
 //    self.totlePriceView.totlePriceLabel.text = [NSString stringWithFormat:@"%@", orderModel.allMoney];
     if (orderModel.orderState.intValue == 2) {
-        [self.totlePriceView.startDeliveryBT setTitle:@"开始配送" forState:UIControlStateNormal];
+        if (orderModel.isTakeFood.intValue == 1) {
+            self.totlePriceView.nullityButton.hidden = YES;
+        }else
+        {
+            self.totlePriceView.nullityButton.hidden = NO;
+        }
+        [self.totlePriceView.nullityButton setTitle:@"放弃订单" forState:UIControlStateNormal];
+        if (orderModel.isTakeFood.intValue == 1) {
+            [self.totlePriceView.startDeliveryBT setTitle:@"开始配送" forState:UIControlStateNormal];
+        }else
+        {
+             [self.totlePriceView.startDeliveryBT setTitle:@"到达商家处" forState:UIControlStateNormal];
+        }
+        
     }else
     {
         [self.totlePriceView.startDeliveryBT setTitle:@"确认送达" forState:UIControlStateNormal];

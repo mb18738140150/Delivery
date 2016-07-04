@@ -10,6 +10,7 @@
 #import "PersonCenterViewController.h"
 
 #import "AppDelegate.h"
+#import "Delivery-Swift.h"
 
 #define TOP_SPACE 10
 #define LEFT_SPACE 12
@@ -76,13 +77,11 @@
     _phoneNumberLabel.userInteractionEnabled = YES;
     _headView.userInteractionEnabled = YES;
     
-    
     self.totalOrderview = [[OtherView alloc]initWithFrame:CGRectMake(0, _headView.bottom + TOP_SPACE, self.view.width / 2, 66)];
     _totalOrderview.iconImageView.image = [UIImage imageNamed:@"icon_2.png"];
     _totalOrderview.titleLabel.text = @"总订单数";
     _totalOrderview.detalsLabel.text = @"20";
     [self.view addSubview:_totalOrderview];
-    
     
     self.todayOrderview = [[OtherView alloc]initWithFrame:CGRectMake(_totalOrderview.right + 1, _totalOrderview.top , self.view.width / 2, 66)];
     _todayOrderview.iconImageView.image = [UIImage imageNamed:@"icon_3.png"];
@@ -96,6 +95,8 @@
     _totlaMoney.detalsLabel.text = @"20";
     _totlaMoney.detalsLabel.textColor = RGBCOLOR(221, 15, 96);
     [self.view addSubview:_totlaMoney];
+    UITapGestureRecognizer * totalTap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(detailAction:)];
+    [_totlaMoney addGestureRecognizer:totalTap];
     
     self.todayMoney = [[OtherView alloc]initWithFrame:CGRectMake(_totlaMoney.right + 1, _totlaMoney.top , self.view.width / 2, 66)];
     _todayMoney.iconImageView.image = [UIImage imageNamed:@"todayMoney.png"];
@@ -103,7 +104,8 @@
     _todayMoney.detalsLabel.text = @"20";
     _todayMoney.detalsLabel.textColor = RGBCOLOR(31, 195, 164);
     [self.view addSubview:_todayMoney];
-    
+    UITapGestureRecognizer * todayTap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(detailAction:)];
+    [_todayMoney addGestureRecognizer:todayTap];
     
     self.massegeView = [[OtherView alloc]initWithFrame:CGRectMake(0, _totlaMoney.bottom + TOP_SPACE, self.view.width , 45)];
     _massegeView.iconImageView.image = [UIImage imageNamed:@"icon_1.png"];
@@ -118,15 +120,6 @@
     _positionView.detailButton.hidden = NO;
     [_positionView.detailButton addTarget:self action:@selector(positionAction:) forControlEvents:UIControlEventValueChanged];
     [self.view addSubview:_positionView];
-    
-    
-    
-//    if ([UserInfo shareUserInfo].isOpenthebackgroundposition) {
-//        _positionView.detailButton.on = YES;
-//    }else
-//    {
-//        _positionView.detailButton.on = NO;
-//    }
     
     NSArray * array = [self.positionDb getPositionModels];
     for (PositionModel * model in array) {
@@ -192,12 +185,16 @@
     
     [self.navigationController pushViewController:personVC animated:YES];
 }
-
+#pragma mark - 收入明细
+- (void)detailAction:(UITapGestureRecognizer *)sender
+{
+    IncomDetailsViewController * incomVC = [[IncomDetailsViewController alloc]init];
+    
+    [self.navigationController pushViewController:incomVC animated:YES];
+}
 #pragma mark - 实时定位
 - (void)positionAction:(UISwitch *)aswitch
 {
-    
-    
     if (aswitch.isOn) {
         
         CLAuthorizationStatus status = [CLLocationManager authorizationStatus];
@@ -243,14 +240,14 @@
 
 - (void)allowAction:(UIButton *)button
 {
-    NSLog(@"允许接收订单");
+    NSLog(@"允许接受订单");
 }
 
 - (void)openOrCloseAction:(UISwitch *)aswitch
 {
-    NSLog(@"消息免打扰");
+    NSLog(@"上班");
     if (aswitch.isOn) {
-        UIAlertController * Controller = [UIAlertController alertControllerWithTitle:@"提示" message:@"是否开启消息免打扰" preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertController * Controller = [UIAlertController alertControllerWithTitle:@"提示" message:@"是否上班" preferredStyle:UIAlertControllerStyleAlert];
         UIAlertAction * cancleAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
             UISwitch * isopen = aswitch;
             [isopen setOn:!isopen.isOn animated:YES];
@@ -270,7 +267,7 @@
         [self presentViewController:Controller animated:YES completion:nil];
     }else
     {
-        UIAlertController * Controller = [UIAlertController alertControllerWithTitle:@"提示" message:@"是否关闭消息免打扰" preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertController * Controller = [UIAlertController alertControllerWithTitle:@"提示" message:@"是否下班" preferredStyle:UIAlertControllerStyleAlert];
         UIAlertAction * cancleAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
             UISwitch * isopen = aswitch;
             [isopen setOn:!isopen.isOn animated:YES];
@@ -301,13 +298,14 @@
     NSString * md5Str = [str md5];
     NSString * urlString = [NSString stringWithFormat:@"%@%@", POST_URL, md5Str];
     HTTPPost * httpPost = [HTTPPost shareHTTPPost];
+    httpPost.commend = [dic objectForKey:@"Command"];
     [httpPost post:urlString HTTPBody:[jsonStr dataUsingEncoding:NSUTF8StringEncoding]];
     httpPost.delegate = self;
 }
 
 - (void)refresh:(id)data
 {
-//    NSLog(@"data = %@", [data description]);
+    NSLog(@"data = %@", [data description]);
     [SVProgressHUD dismiss];
     if ([[data objectForKey:@"Result"] isEqualToNumber:@1]) {
         NSNumber * command = [data objectForKey:@"Command"];
@@ -321,19 +319,58 @@
                 }
             }];
             
-            self.nameLabel.text = [NSString stringWithFormat:@"%@", [dic objectForKey:@"UserName"]];
+            if ([[dic objectForKey:@"UserType"] intValue] == 1) {
+                // 全职
+                NSString * nameS = [dic objectForKey:@"UserName"];
+                NSString * str = [NSString stringWithFormat:@"%@[%@]" ,[dic objectForKey:@"UserName"], @"全职"];
+                NSMutableAttributedString * quanzhiStr = [[NSMutableAttributedString alloc]initWithString:str];
+                [quanzhiStr setAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:12], NSForegroundColorAttributeName:[UIColor colorWithRed:0/ 255.0 green:196/ 255.0 blue:164/ 255.0 alpha:1]} range:NSMakeRange(nameS.length, str.length - nameS.length)];
+                self.nameLabel.attributedText = quanzhiStr;
+                
+            }else if ([[dic objectForKey:@"UserType"] intValue] == 2  )
+            {
+                // 兼职
+                NSString * nameS = [dic objectForKey:@"UserName"];
+                NSString * str = [NSString stringWithFormat:@"%@[%@]" ,[dic objectForKey:@"UserName"], @"兼职"];
+                NSMutableAttributedString * jianzhiStr = [[NSMutableAttributedString alloc]initWithString:str];
+                [jianzhiStr setAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:12], NSForegroundColorAttributeName:[UIColor colorWithRed:252/ 255.0 green:80/ 255.0 blue:53/ 255.0 alpha:1]} range:NSMakeRange(nameS.length, str.length - nameS.length)];
+                self.nameLabel.attributedText = jianzhiStr;
+            }else
+            {
+                
+                self.nameLabel.text = [NSString stringWithFormat:@"%@", [dic objectForKey:@"UserName"]];
+            }
+            
+            
             self.phoneNumberLabel.text = [NSString stringWithFormat:@"%@", [dic objectForKey:@"Phone"]];
             _totalOrderview.detailStr = [NSString stringWithFormat:@"%@", [dic objectForKey:@"TotalOrderCount"]];
             _todayOrderview.detailStr = [NSString stringWithFormat:@"%@", [dic objectForKey:@"TodayOrderCount"]];
-            _totlaMoney.detailStr = @"20";
-            _todayMoney.detailStr = @"20";
+            _totlaMoney.detailStr = [NSString stringWithFormat:@"%@", [dic objectForKey:@"TotalMoney"]];
+            _todayMoney.detailStr = [NSString stringWithFormat:@"%@", [dic objectForKey:@"TodayMoney"]];
+            
+            if ([[dic objectForKey:@"Remind"] intValue] == 1) {
+                _massegeView.detailButton.on = YES;
+                _massegeView.titleLabel.text = @"上班";
+            }else
+            {
+                _massegeView.detailButton.on = NO;
+                _massegeView.titleLabel.text = @"下班";
+            }
             
         }else if ([command isEqualToNumber:@10008])
         {
             UIAlertView * alertView = [[UIAlertView alloc] initWithTitle:@"提示" message:@"设置成功" delegate:self cancelButtonTitle:nil otherButtonTitles:nil, nil];
             [alertView show];
             [alertView performSelector:@selector(dismissAnimated:) withObject:nil afterDelay:1.0];
-
+            
+            UISwitch * isopen = _massegeView.detailButton;
+            if (isopen.isOn) {
+                _massegeView.titleLabel.text = @"上班";
+            }else
+            {
+                _massegeView.titleLabel.text = @"下班";
+            }
+            
         }
     }else
     {
@@ -355,9 +392,16 @@
     //    AccountViewCell * cell = (AccountViewCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
     //    cell.isBusinessSW.on = !cell.isBusinessSW.isOn;
     //    [self.tableView headerEndRefreshing];
-    UIAlertView * alertV = [[UIAlertView alloc] initWithTitle:@"提示" message:@"连接服务器失败" delegate:nil cancelButtonTitle:nil otherButtonTitles:nil, nil];
-    [alertV show];
-    [alertV performSelector:@selector(dismiss) withObject:nil afterDelay:1.5];
+    if ([[error.userInfo objectForKey:@"Reason"] isEqualToString:@"服务器处理失败"]) {
+        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"服务器处理失败" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil ];
+        [alert show];
+    }else
+    {
+        UIAlertView * alertV = [[UIAlertView alloc] initWithTitle:@"提示" message:@"连接服务器失败" delegate:nil cancelButtonTitle:nil otherButtonTitles:nil, nil];
+        [alertV show];
+        [alertV performSelector:@selector(dismiss) withObject:nil afterDelay:1.5];
+    }
+
     NSLog(@"%@", error);
 }
 - (void)didReceiveMemoryWarning {

@@ -15,6 +15,8 @@
 @property (nonatomic, strong)UILabel *label;
 @property (nonatomic, strong)UISegmentedControl * segment;
 @property (nonatomic, strong)UITableView * tableView;
+@property (nonatomic, strong)UITableView * nOrderTableView;
 @property (nonatomic, assign)int isfromLoginVC;
-
+@property (nonatomic, copy)NSString * orderCount;
+- (void)refreshOrderCountWith:(NSString *)string;
 @end

@@ -184,7 +184,6 @@
                     @"RegistrationID":[NSNull null],
                     @"DeviceType":@1
                     };
-//        @"121c83f760245838a75"
     }
     NSString * jsonStr = [jsonDic JSONString];
     NSString * str = [NSString stringWithFormat:@"%@131139", jsonStr];
@@ -192,6 +191,7 @@
     NSString * md5Str = [str md5];
     NSString * urlString = [NSString stringWithFormat:@"%@%@", POST_URL, md5Str];
     HTTPPost * httpPost = [HTTPPost shareHTTPPost];
+    httpPost.commend = [jsonDic objectForKey:@"Command"];
     [httpPost post:urlString HTTPBody:[jsonStr dataUsingEncoding:NSUTF8StringEncoding]];
     httpPost.delegate = self;
     [self.nameTextFiled resignFirstResponder];
@@ -225,6 +225,7 @@
         [UserInfo shareUserInfo].userName = self.nameTextFiled.text;
         [UserInfo shareUserInfo].BusiId =[dataDic objectForKey:@"BusiId"];
         [UserInfo shareUserInfo].isAgent = [[dataDic objectForKey:@"IsAgent"] intValue];
+        [UserInfo shareUserInfo].orderCount = [NSString stringWithFormat:@"%@", [dataDic objectForKey:@"OrderCount"]];
         [[NSUserDefaults standardUserDefaults] setValue:self.passwordTextfiled.text forKey:@"Pwd"];//记录登录密码
         [[NSUserDefaults standardUserDefaults] setValue:self.nameTextFiled.text forKey:@"UserName"];
         
@@ -233,6 +234,7 @@
         }
         OrderViewController * orderVC = [[OrderViewController alloc]init];
         orderVC.isfromLoginVC = 1;
+        orderVC.orderCount = [UserInfo shareUserInfo].orderCount;
         [self.navigationController pushViewController:orderVC animated:YES];
     }else
     {
@@ -263,9 +265,16 @@
     //    AccountViewCell * cell = (AccountViewCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
     //    cell.isBusinessSW.on = !cell.isBusinessSW.isOn;
     //    [self.tableView headerEndRefreshing];
-    UIAlertView * alertV = [[UIAlertView alloc] initWithTitle:@"提示" message:@"连接服务器失败" delegate:nil cancelButtonTitle:nil otherButtonTitles:nil, nil];
-    [alertV show];
-    [alertV performSelector:@selector(dismiss) withObject:nil afterDelay:1.5];
+    if ([[error.userInfo objectForKey:@"Reason"] isEqualToString:@"服务器处理失败"]) {
+        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"服务器处理失败" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil ];
+        [alert show];
+    }else
+    {
+        UIAlertView * alertV = [[UIAlertView alloc] initWithTitle:@"提示" message:@"连接服务器失败" delegate:nil cancelButtonTitle:nil otherButtonTitles:nil, nil];
+        [alertV show];
+        [alertV performSelector:@selector(dismiss) withObject:nil afterDelay:1.5];
+    }
+
     NSLog(@"%@", error);
 }
 

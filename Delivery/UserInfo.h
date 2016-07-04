@@ -13,6 +13,7 @@
 @property (nonatomic, strong)NSNumber * userId;
 @property (nonatomic, copy)NSString * userName;
 @property (nonatomic, assign)int isAgent ;
+@property (nonatomic, copy)NSString * orderCount;
 // 商家ID
 @property (nonatomic, strong)NSNumber * BusiId;
 //@property (nonatomic, copy)NSString * registrationID;

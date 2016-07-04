@@ -107,6 +107,8 @@
     {
         self.totlePriceLabel.text = [NSString stringWithFormat:@"%@", moneystr];
     }
+    CGSize priceSize = [self.totlePriceLabel.text boundingRectWithSize:CGSizeMake(CGFLOAT_MAX, self.totlePriceLabel.height) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:24]} context:nil].size;
+    self.totlePriceLabel.width = priceSize.width;
 }
 
 - (void)nulityOrderAction:(NullityBlock)block
@@ -117,7 +119,9 @@
 - (void)nullityOrderAction:(UIButton *)button
 {
     if ([UserInfo shareUserInfo].isOpenthebackgroundposition) {
-        self.nullityBlock();
+        if (self.nullityBlock) {
+            self.nullityBlock();
+        }
     }else
     {
         UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"请先在设置界面开启实时定位功能" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];

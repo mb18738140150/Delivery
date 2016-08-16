@@ -99,13 +99,22 @@ class IncomDetailsViewController: UITableViewController , HTTPPostDelegate{
             {
                 self.tableView.footer.endRefreshing()
             }
-            
-            let arr = dic["AmountList"] as! NSArray
-            for  useDic in arr {
-                let model = INcomDetailesModel(dic:useDic as! NSDictionary)
-                self.dataSource.addObject(model)
+            if self.allCount == 0{
+                let alert = UIAlertView()
+                alert.title = "提示"
+                alert.message = "暂无数据"
+                alert.addButtonWithTitle("确定")
+                alert.show()
+            }else
+            {
+                
+                let arr = dic["AmountList"] as! NSArray
+                for  useDic in arr {
+                    let model = INcomDetailesModel(dic:useDic as! NSDictionary)
+                    self.dataSource.addObject(model)
+                }
+                self.tableView.reloadData()
             }
-            self.tableView.reloadData()
         }else
         {
             if self.pageIndex == 1 {
@@ -154,15 +163,15 @@ class IncomDetailsViewController: UITableViewController , HTTPPostDelegate{
         cell.storeNameLB?.text = model.storeName
         cell.orderIDLabel?.text = model.orderId
         cell.transationAcountLabel?.text = model.transactionAmount.stringValue
-        cell.incomeAcountLabel?.text = model.incomAmont.stringValue
+        cell.incomeAcountLabel?.text = "￥ " + model.incomAmont.stringValue
         cell.commissionRatioLabel?.text = model.commissionRatio.stringValue + "%"
-        
+        cell.deliveryFeeLabel?.text = model.deliveryFee.stringValue + " 元/单"
         return cell
         
     }
     
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return 180
+        return 210
     }
     
     override func didReceiveMemoryWarning() {

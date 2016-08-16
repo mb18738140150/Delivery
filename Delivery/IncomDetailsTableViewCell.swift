@@ -15,10 +15,12 @@ class IncomDetailsTableViewCell: UITableViewCell {
     var orderIDLabel:UILabel!
     var transationAcountLB:UILabel!
     var transationAcountLabel:UILabel!
-    var inComAcountLB:UILabel!
-    var incomeAcountLabel:UILabel!
     var commissionRatioLB:UILabel!
     var commissionRatioLabel:UILabel!
+    var deliveryFeeLB:UILabel!
+    var deliveryFeeLabel:UILabel!
+    var inComAcountLB:UILabel!
+    var incomeAcountLabel:UILabel!
     
     
     func RGBA (r:CGFloat, g:CGFloat, b:CGFloat, a:CGFloat)->UIColor { return UIColor (red: r/255.0, green: g/255.0, blue: b/255.0, alpha: a) }
@@ -64,20 +66,7 @@ class IncomDetailsTableViewCell: UITableViewCell {
         transationAcountLabel.textColor = UIColor.init(colorLiteralRed: 0.2, green: 0.2, blue: 0.2, alpha: 1)
         self.addSubview(transationAcountLabel)
         
-        
-        inComAcountLB = UILabel(frame: CGRectMake(15, CGRectGetMaxY(transationAcountLB!.frame) + 15, 65, 14))
-        inComAcountLB.text = "到账金额:"
-        inComAcountLB.font = UIFont.systemFontOfSize(14)
-        inComAcountLB.textColor = UIColor.init(colorLiteralRed: 0.6, green: 0.6, blue: 0.6, alpha: 1)
-        self.addSubview(inComAcountLB)
-        
-        incomeAcountLabel = UILabel(frame: CGRectMake(CGRectGetMaxX(inComAcountLB!.frame) + 20, CGRectGetMinY(inComAcountLB!.frame), 200, 14))
-        incomeAcountLabel.text = "￥20.00"
-        incomeAcountLabel.font = UIFont.systemFontOfSize(14)
-        incomeAcountLabel.textColor = UIColor.init(colorLiteralRed: 253.0 / 255, green: 91.0 / 255, blue: 53.0 / 255, alpha: 1)
-        self.addSubview(incomeAcountLabel)
-        
-        commissionRatioLB = UILabel(frame: CGRectMake(15, CGRectGetMaxY(inComAcountLB!.frame) + 15, 65, 14))
+        commissionRatioLB = UILabel(frame: CGRectMake(15, CGRectGetMaxY(transationAcountLB!.frame) + 15, 65, 14))
         commissionRatioLB.text = "提成比例:"
         commissionRatioLB.font = UIFont.systemFontOfSize(14)
         commissionRatioLB.textColor = UIColor.init(colorLiteralRed: 0.6, green: 0.6, blue: 0.6, alpha: 1)
@@ -88,6 +77,31 @@ class IncomDetailsTableViewCell: UITableViewCell {
         commissionRatioLabel.font = UIFont.systemFontOfSize(14)
         commissionRatioLabel.textColor = UIColor.init(colorLiteralRed: 0.2, green: 0.2, blue: 0.2, alpha: 1)
         self.addSubview(commissionRatioLabel)
+        
+        
+        deliveryFeeLB = UILabel(frame: CGRectMake(15, CGRectGetMaxY(commissionRatioLabel!.frame) + 15, 65, 14))
+        deliveryFeeLB.text = "配送费:"
+        deliveryFeeLB.font = UIFont.systemFontOfSize(14)
+        deliveryFeeLB.textColor = UIColor.init(colorLiteralRed: 0.6, green: 0.6, blue: 0.6, alpha: 1)
+        self.addSubview(deliveryFeeLB)
+        
+        deliveryFeeLabel = UILabel(frame: CGRectMake(CGRectGetMaxX(deliveryFeeLB!.frame) + 20, CGRectGetMinY(deliveryFeeLB!.frame), 200, 14))
+        deliveryFeeLabel.text = "20 / 单"
+        deliveryFeeLabel.font = UIFont.systemFontOfSize(14)
+        deliveryFeeLabel.textColor = UIColor.init(colorLiteralRed: 0.2, green: 0.2, blue: 0.2, alpha: 1)
+        self.addSubview(deliveryFeeLabel)
+        
+        inComAcountLB = UILabel(frame: CGRectMake(15, CGRectGetMaxY(deliveryFeeLabel!.frame) + 15, 65, 14))
+        inComAcountLB.text = "到账金额:"
+        inComAcountLB.font = UIFont.systemFontOfSize(14)
+        inComAcountLB.textColor = UIColor.init(colorLiteralRed: 0.6, green: 0.6, blue: 0.6, alpha: 1)
+        self.addSubview(inComAcountLB)
+        
+        incomeAcountLabel = UILabel(frame: CGRectMake(CGRectGetMaxX(inComAcountLB!.frame) + 20, CGRectGetMinY(inComAcountLB!.frame), 200, 14))
+        incomeAcountLabel.text = "￥20.00"
+        incomeAcountLabel.font = UIFont.systemFontOfSize(14)
+        incomeAcountLabel.textColor = UIColor.init(colorLiteralRed: 253.0 / 255, green: 91.0 / 255, blue: 53.0 / 255, alpha: 1)
+        self.addSubview(incomeAcountLabel)
         
         
     }

@@ -14,7 +14,7 @@
 
 static NSString *JPappKey = @"7b1b53d9f0f4d4a8b498320c";
 static NSString *JPchannel = @"App Store";
-static BOOL isProductionJP = YES;
+static BOOL isProductionJP = true;
 //extern NSString * const LoginAndStartUDP;
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>

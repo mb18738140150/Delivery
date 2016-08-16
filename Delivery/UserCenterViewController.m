@@ -135,7 +135,6 @@
         }
     }
     
-    
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:@"back_black.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:self action:@selector(backLastVC:)];
     
     NSDictionary * jsonDic = nil;
@@ -146,6 +145,8 @@
     
     [self playPostWithDictionary:jsonDic];
     [SVProgressHUD showWithStatus:@"正在加载..." maskType:SVProgressHUDMaskTypeBlack];
+    
+    
 }
 
 - (void)backLastVC:(UIBarButtonItem * )sender
@@ -294,18 +295,20 @@
 {
     NSString * jsonStr = [dic JSONString];
     NSString * str = [NSString stringWithFormat:@"%@131139", jsonStr];
-    NSLog(@"jsonStr = %@", str);
+//    NSLog(@"jsonStr = %@", str);
     NSString * md5Str = [str md5];
     NSString * urlString = [NSString stringWithFormat:@"%@%@", POST_URL, md5Str];
     HTTPPost * httpPost = [HTTPPost shareHTTPPost];
     httpPost.commend = [dic objectForKey:@"Command"];
     [httpPost post:urlString HTTPBody:[jsonStr dataUsingEncoding:NSUTF8StringEncoding]];
     httpPost.delegate = self;
+    
+    
 }
 
 - (void)refresh:(id)data
 {
-    NSLog(@"data = %@", [data description]);
+//    NSLog(@"data = %@", [data description]);
     [SVProgressHUD dismiss];
     if ([[data objectForKey:@"Result"] isEqualToNumber:@1]) {
         NSNumber * command = [data objectForKey:@"Command"];

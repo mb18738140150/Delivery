@@ -136,7 +136,7 @@ static int shopHeight = 0;
     self.cusaddressimageview.image = [UIImage imageNamed:@"colect_s.png"];
     
     self.customaddressLB = [[UILabel alloc]initWithFrame:CGRectMake(self.cusaddressimageview.right + 10, self.customLabel.bottom + 9, 85, 13)];
-    self.customaddressLB.text = @"送餐地址:";
+    self.customaddressLB.text = @"送货地址:";
     self.customaddressLB.font = [UIFont systemFontOfSize:13];
     self.customaddressLB.textColor = [UIColor colorWithWhite:.4 alpha:1];
     [self addSubview:self.customaddressLB];

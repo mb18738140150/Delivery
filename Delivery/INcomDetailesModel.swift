@@ -15,6 +15,7 @@ class INcomDetailesModel: NSObject {
     var transactionAmount:NSNumber!
     var incomAmont:NSNumber!
     var commissionRatio:NSNumber!
+    var deliveryFee:NSNumber!
     
     
     init(dic:NSDictionary) {
@@ -23,6 +24,8 @@ class INcomDetailesModel: NSObject {
         transactionAmount = dic["TransactionAmount"] as! NSNumber
         incomAmont = dic["IncomeAmount"] as! NSNumber
         commissionRatio = dic["CommissionRatio"] as! NSNumber
+        deliveryFee = dic["DeliveryFee"] as! NSNumber
+        
     }
     
 }

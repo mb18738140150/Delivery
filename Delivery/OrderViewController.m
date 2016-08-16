@@ -493,6 +493,11 @@ NSString *const QAnnotationViewDragStateCHange = @"QAnnotationViewDragState";
                 [self.nOrderTableView.header endRefreshing];
                 [self.nOrderTableView.footer endRefreshing];
                 self.nOrderCount = [[data objectForKey:@"AllCount"] intValue];
+                if (self.nOrderCount == 0) {
+                    UIAlertView * alert = [[UIAlertView alloc] initWithTitle:nil message:@"暂无数据" delegate:nil cancelButtonTitle:nil otherButtonTitles:nil, nil];
+                    [alert show];
+                    [alert performSelector:@selector(dismiss) withObject:nil afterDelay:1.0];
+                }
                 NSArray * array = [data objectForKey:@"OrderList"];
                 for (NSDictionary * dic in array) {
                     NewOrderModel * model = [[NewOrderModel alloc]initWithDictionary:dic];
@@ -520,6 +525,11 @@ NSString *const QAnnotationViewDragStateCHange = @"QAnnotationViewDragState";
                     [self.waitOrderTableView.footer endRefreshing];
                 }
                 self.waitOrderCount = [[data objectForKey:@"AllCount"] intValue];
+                if (self.waitOrderCount == 0) {
+                    UIAlertView * alert = [[UIAlertView alloc] initWithTitle:nil message:@"暂无数据" delegate:nil cancelButtonTitle:nil otherButtonTitles:nil, nil];
+                    [alert show];
+                    [alert performSelector:@selector(dismiss) withObject:nil afterDelay:1.0];
+                }
                 NSArray * array1 = [data objectForKey:@"OrderList"];
                 for (NSDictionary * dic in array1) {
                     NewOrderModel * model = [[NewOrderModel alloc]initWithDictionary:dic];
@@ -547,6 +557,11 @@ NSString *const QAnnotationViewDragStateCHange = @"QAnnotationViewDragState";
                     [self.deliveryingTableView.footer endRefreshing];
                 }
                 self.deliveryingCount = [[data objectForKey:@"AllCount"] intValue];
+                if (self.deliveryingCount == 0) {
+                    UIAlertView * alert = [[UIAlertView alloc] initWithTitle:nil message:@"暂无数据" delegate:nil cancelButtonTitle:nil otherButtonTitles:nil, nil];
+                    [alert show];
+                    [alert performSelector:@selector(dismiss) withObject:nil afterDelay:1.0];
+                }
                 NSArray * array = [data objectForKey:@"OrderList"];
                 for (NSDictionary * dic in array) {
                     NewOrderModel * model = [[NewOrderModel alloc]initWithDictionary:dic];
@@ -572,6 +587,11 @@ NSString *const QAnnotationViewDragStateCHange = @"QAnnotationViewDragState";
                 [self.deliveriedTableView.header endRefreshing];
                 [self.deliveriedTableView.footer endRefreshing];
                 self.deliveriedCount = [[data objectForKey:@"AllCount"] intValue];
+                if (self.deliveriedCount == 0) {
+                    UIAlertView * alert = [[UIAlertView alloc] initWithTitle:nil message:@"暂无数据" delegate:nil cancelButtonTitle:nil otherButtonTitles:nil, nil];
+                    [alert show];
+                    [alert performSelector:@selector(dismiss) withObject:nil afterDelay:1.0];
+                }
                 NSArray * array = [data objectForKey:@"OrderList"];
                 for (NSDictionary * dic in array) {
                     NewOrderModel * model = [[NewOrderModel alloc]initWithDictionary:dic];
@@ -631,7 +651,7 @@ NSString *const QAnnotationViewDragStateCHange = @"QAnnotationViewDragState";
             
         }else if ([command isEqualToNumber:@10012])
         {
-            UIAlertView * alertView = [[UIAlertView alloc] initWithTitle:@"提示" message:@"取餐成功" delegate:self cancelButtonTitle:nil otherButtonTitles:nil, nil];
+            UIAlertView * alertView = [[UIAlertView alloc] initWithTitle:@"提示" message:@"取货成功" delegate:self cancelButtonTitle:nil otherButtonTitles:nil, nil];
             [alertView show];
             [alertView performSelector:@selector(dismissAnimated:) withObject:nil afterDelay:1.0];
             
@@ -797,7 +817,7 @@ NSString *const QAnnotationViewDragStateCHange = @"QAnnotationViewDragState";
             pVC.orderID = model.orderId;
             pVC.deliveried = 1;
             orderVC.toDetailsView = 1;
-            pVC.title = @"餐单详情";
+            pVC.title = @"订单详情";
             [UserLocation shareLocation].searchCoordinate = (CLLocationCoordinate2D){0.0, 0.0};
             [UserLocation shareLocation].shopSearchCoordinate = (CLLocationCoordinate2D){0.0, 0.0};
             [orderVC.navigationController pushViewController:pVC animated:YES];
@@ -970,7 +990,7 @@ NSString *const QAnnotationViewDragStateCHange = @"QAnnotationViewDragState";
         
     }
     self.toDetailsView = 1;
-    pVC.title = @"餐单详情";
+    pVC.title = @"订单详情";
     
 //    ViewController * vc = [[ViewController alloc]init];
     

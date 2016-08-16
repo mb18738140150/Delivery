@@ -27,7 +27,7 @@
 @property (nonatomic, strong)NSNumber * allMoney;
 @property (nonatomic, strong)NSMutableArray * mealArray;
 
-@property (nonatomic, strong)NSNumber * isTakeFood;// 1、已取餐 2、未取餐
+@property (nonatomic, strong)NSNumber * isTakeFood;// 1、已取货 2、未取货
 
 @property (nonatomic, strong)NSNumber * distanceToStore;
 @property (nonatomic, strong)NSNumber * distanceToCustom;

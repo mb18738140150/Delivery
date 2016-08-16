@@ -19,8 +19,6 @@
 #define TEXT_COLOR [UIColor colorWithWhite:0.3 alpha:1]
 @implementation OrderMenuVIew
 
-
-
 - (instancetype)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
@@ -50,10 +48,6 @@
     }
     return self;
 }
-
-
-
-
 
 /*
 // Only override drawRect: if you perform custom drawing.

@@ -80,8 +80,7 @@ static HTTPPost * httpPost = nil;
                 if (self.commend.intValue == 9 || self.commend.intValue == 3 || self.commend.intValue == 2) {
                     [self showLoadFailImage];
                 }
-                
-                
+                 
             });
                 NSLog(@"++++++=%@", error);
             

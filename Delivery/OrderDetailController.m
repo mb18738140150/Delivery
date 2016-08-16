@@ -107,6 +107,12 @@ typedef NS_ENUM(NSInteger, TravelTypes)
 @property (nonatomic, strong) AnimatedAnnotation *animatedCustomAnnotation;
 @property (nonatomic, strong) AnimatedAnnotation *animatedShopAnnotation;
 
+// 商家版用户版经纬度
+@property (nonatomic, assign)CGFloat BusinessLat;
+@property (nonatomic, assign)CGFloat BusinessLon;
+@property (nonatomic, assign)CGFloat CustomeLat;
+@property (nonatomic, assign)CGFloat CustomeLon;
+
 
 @property (nonatomic, strong)UIView * loadFileView;
 
@@ -138,7 +144,6 @@ typedef NS_ENUM(NSInteger, TravelTypes)
     [MAMapServices sharedServices].apiKey = @"11ce5c3cc2c7353240532288a5f63425";
     [AMapSearchServices sharedServices].apiKey = @"11ce5c3cc2c7353240532288a5f63425";
     [AMapNaviServices sharedServices].apiKey =@"11ce5c3cc2c7353240532288a5f63425";
-    
     
     [self createSubViews];
     
@@ -318,7 +323,7 @@ typedef NS_ENUM(NSInteger, TravelTypes)
             if (self.myblock) {
                 self.myblock();
             }
-            NSLog(@"取餐成功");
+            NSLog(@"取货成功");
             [self updateWithOrderState:[data objectForKey:@"OrderState"] IsTakeFood:[data objectForKey:@"IsTakeFood"]];
         }else if ([command isEqualToNumber:@10014])
         {
@@ -412,7 +417,7 @@ typedef NS_ENUM(NSInteger, TravelTypes)
                 [self.rightBT setTitle:@"确认送达" forState:UIControlStateNormal];
                 [self.rightBT addTarget:self action:@selector(sureAction:) forControlEvents:UIControlEventTouchUpInside];
                 
-                NSString * str = [NSString stringWithFormat:@"去%@送餐", self.customLabelView.addressLabel.text];
+                NSString * str = [NSString stringWithFormat:@"去%@送货", self.customLabelView.addressLabel.text];
                 NSMutableAttributedString * strATT = [[NSMutableAttributedString alloc]initWithString:str];
                 [strATT setAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:15], NSForegroundColorAttributeName:MAIN_COLORE} range:NSMakeRange(1, str.length - 3)];
                 self.takeFoodLabel.attributedText = strATT;
@@ -429,7 +434,7 @@ typedef NS_ENUM(NSInteger, TravelTypes)
             break;
         case 4:
         {
-            NSString * str = [NSString stringWithFormat:@"去%@送餐(已完成)", self.customLabelView.addressLabel.text];
+            NSString * str = [NSString stringWithFormat:@"去%@送货(已完成)", self.customLabelView.addressLabel.text];
             NSMutableAttributedString * strATT = [[NSMutableAttributedString alloc]initWithString:str];
             [strATT setAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:15], NSForegroundColorAttributeName:MAIN_COLORE} range:NSMakeRange(1, str.length - 8)];
             self.takeFoodLabel.attributedText = strATT;
@@ -463,7 +468,7 @@ typedef NS_ENUM(NSInteger, TravelTypes)
     self.customLabelView.addressStr = [NSString stringWithFormat:@"%@", [dic objectForKey:@"CustomerAddress"]];
     self.shopLabelView.addressStr = [NSString stringWithFormat:@"%@", [dic objectForKey:@"BusiAddress"]];
     
-    NSString * str = [NSString stringWithFormat:@"去%@取餐", [dic objectForKey:@"BusiName"]];
+    NSString * str = [NSString stringWithFormat:@"去%@取货", [dic objectForKey:@"BusiName"]];
     NSMutableAttributedString * strATT = [[NSMutableAttributedString alloc]initWithString:str];
     [strATT setAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:15], NSForegroundColorAttributeName:MAIN_COLORE} range:NSMakeRange(1, str.length - 3)];
     self.takeFoodLabel.attributedText = strATT;
@@ -496,7 +501,7 @@ typedef NS_ENUM(NSInteger, TravelTypes)
                 if (self.deliveried == 1) {
 //                    self.sendState.text = @"已配送";
                     
-                    NSString * str = [NSString stringWithFormat:@"去%@送餐(已完成)", [dic objectForKey:@"CustomerAddress"]];
+                    NSString * str = [NSString stringWithFormat:@"去%@送货(已完成)", [dic objectForKey:@"CustomerAddress"]];
                     NSMutableAttributedString * strATT = [[NSMutableAttributedString alloc]initWithString:str];
                     [strATT setAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:15], NSForegroundColorAttributeName:MAIN_COLORE} range:NSMakeRange(1, str.length - 8)];
                     self.takeFoodLabel.attributedText = strATT;
@@ -521,7 +526,7 @@ typedef NS_ENUM(NSInteger, TravelTypes)
                     [self.rightBT setTitle:@"确认送达" forState:UIControlStateNormal];
                     [self.rightBT addTarget:self action:@selector(sureAction:) forControlEvents:UIControlEventTouchUpInside];
                     
-                    NSString * str = [NSString stringWithFormat:@"去%@送餐", [dic objectForKey:@"CustomerAddress"]];
+                    NSString * str = [NSString stringWithFormat:@"去%@送货", [dic objectForKey:@"CustomerAddress"]];
                     NSMutableAttributedString * strATT = [[NSMutableAttributedString alloc]initWithString:str];
                     [strATT setAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:15], NSForegroundColorAttributeName:MAIN_COLORE} range:NSMakeRange(1, str.length - 3)];
                     self.takeFoodLabel.attributedText = strATT;
@@ -538,7 +543,7 @@ typedef NS_ENUM(NSInteger, TravelTypes)
                 break;
                 case 4:
             {
-                NSString * str = [NSString stringWithFormat:@"去%@送餐(已完成)", [dic objectForKey:@"CustomerAddress"]];
+                NSString * str = [NSString stringWithFormat:@"去%@送货(已完成)", [dic objectForKey:@"CustomerAddress"]];
                 NSMutableAttributedString * strATT = [[NSMutableAttributedString alloc]initWithString:str];
                 [strATT setAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:15], NSForegroundColorAttributeName:MAIN_COLORE} range:NSMakeRange(1, str.length - 8)];
                 self.takeFoodLabel.attributedText = strATT;
@@ -558,6 +563,11 @@ typedef NS_ENUM(NSInteger, TravelTypes)
             default:
                 break;
         }
+    
+    self.BusinessLat = [[dic objectForKey:@"BusinessLat"] floatValue];
+    self.BusinessLon = [[dic objectForKey:@"BusinessLon"] floatValue];
+    self.CustomeLat = [[dic objectForKey:@"CustomeLat"] floatValue];
+    self.CustomeLon = [[dic objectForKey:@"CustomeLon"] floatValue];
     
     // 更新地图
     [self getCoorDinate];
@@ -795,42 +805,59 @@ typedef NS_ENUM(NSInteger, TravelTypes)
 #pragma mark - 获取地图数据信息
 - (void)getCoorDinate
 {
-    
-    __weak OrderDetailController * orderVC = self;
-    [[AMapSearchm shareSearch]getCoordinateWithAddress:orderVC.customLabelView.addressLabel.text complate:^(AMapGeocodeSearchResponse *response) {
-        AMapGeocode * geoCode = [response.geocodes objectAtIndex:0];
-        [UserLocation shareLocation].searchCoordinate = CLLocationCoordinate2DMake(geoCode.location.latitude, geoCode.location.longitude);
-        
-        NSLog(@"用户获取成功");
-        orderVC.customRes = response;
-        [orderVC getShopCoordinate];
-    } failed:^{
-        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"获取用户位置信息失败，请从新点击获取" delegate:nil cancelButtonTitle:nil otherButtonTitles:nil, nil];
-        [alert show];
-        [alert performSelector:@selector(dismiss) withObject:nil afterDelay:2];
-        [orderVC getShopCoordinate];
-    }];
+    if (self.CustomeLon != 0.0 && self.CustomeLat != 0.0) {
+        [UserLocation shareLocation].searchCoordinate = CLLocationCoordinate2DMake(self.CustomeLat, self.CustomeLon);
+        [self getShopCoordinate];
+    }else
+    {
+        __weak OrderDetailController * orderVC = self;
+        [[AMapSearchm shareSearch]getCoordinateWithAddress:orderVC.customLabelView.addressLabel.text complate:^(AMapGeocodeSearchResponse *response) {
+            AMapGeocode * geoCode = [response.geocodes objectAtIndex:0];
+            [UserLocation shareLocation].searchCoordinate = CLLocationCoordinate2DMake(geoCode.location.latitude, geoCode.location.longitude);
+            
+            NSLog(@"用户获取成功");
+            orderVC.customRes = response;
+            [orderVC getShopCoordinate];
+        } failed:^{
+            UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"获取用户位置信息失败，请从新点击获取" delegate:nil cancelButtonTitle:nil otherButtonTitles:nil, nil];
+            [alert show];
+            [alert performSelector:@selector(dismiss) withObject:nil afterDelay:2];
+            [orderVC getShopCoordinate];
+        }];
+    }
     
 }
 - (void)getShopCoordinate
 {
-    __weak OrderDetailController * orderVC = self;
-    [[AMapSearchm shareSearch] getCoordinateWithAddress:self.shopLabelView.addressLabel.text complate:^(AMapGeocodeSearchResponse *response) {
-        AMapGeocode * geoCode = [response.geocodes objectAtIndex:0];
-        [UserLocation shareLocation].shopSearchCoordinate = CLLocationCoordinate2DMake(geoCode.location.latitude, geoCode.location.longitude);
-        NSLog(@"商家获取成功");
-        orderVC.shopRes = response;
-        [orderVC initNaviPoints];
-        [orderVC initAnnotations];
-        [orderVC calculateWalkRout];
+    if (self.BusinessLon != 0.0 && self.BusinessLat != 0.0) {
+        [UserLocation shareLocation].shopSearchCoordinate = CLLocationCoordinate2DMake(self.BusinessLat, self.BusinessLon);
         
-        [orderVC addAnimateAnnotation];
+        [self initNaviPoints];
+        [self initAnnotations];
+        [self calculateWalkRout];
         
-    } failed:^{
-        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"获取商家位置信息失败，请从新点击获取" delegate:nil cancelButtonTitle:nil otherButtonTitles:nil, nil];
-        [alert show];
-        [alert performSelector:@selector(dismiss) withObject:nil afterDelay:2];
-    }];
+        [self addAnimateAnnotation];
+        
+    }else
+    {
+        __weak OrderDetailController * orderVC = self;
+        [[AMapSearchm shareSearch] getCoordinateWithAddress:self.shopLabelView.addressLabel.text complate:^(AMapGeocodeSearchResponse *response) {
+            AMapGeocode * geoCode = [response.geocodes objectAtIndex:0];
+            [UserLocation shareLocation].shopSearchCoordinate = CLLocationCoordinate2DMake(geoCode.location.latitude, geoCode.location.longitude);
+            NSLog(@"商家获取成功");
+            orderVC.shopRes = response;
+            [orderVC initNaviPoints];
+            [orderVC initAnnotations];
+            [orderVC calculateWalkRout];
+            
+            [orderVC addAnimateAnnotation];
+            
+        } failed:^{
+            UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"获取商家位置信息失败，请从新点击获取" delegate:nil cancelButtonTitle:nil otherButtonTitles:nil, nil];
+            [alert show];
+            [alert performSelector:@selector(dismiss) withObject:nil afterDelay:2];
+        }];
+    }
 }
 
 #pragma mark - 添加位置图片
@@ -911,8 +938,8 @@ typedef NS_ENUM(NSInteger, TravelTypes)
 {
     self.startPoint = [AMapNaviPoint locationWithLatitude:[UserLocation shareLocation].coordinate2D.latitude longitude:[UserLocation shareLocation].coordinate2D.longitude];
     self.endPoint   = [AMapNaviPoint locationWithLatitude:[UserLocation shareLocation].shopSearchCoordinate.latitude longitude:[UserLocation shareLocation].shopSearchCoordinate.longitude];
-    
-    NSLog(@"JJJJJ");
+    NSLog(@"%f***%f",self.endPoint.latitude,  [UserLocation shareLocation].shopSearchCoordinate.latitude);
+    NSLog(@"商家 *** JJJJJ");
 }
 - (void)initAnnotationsShop
 {
@@ -961,6 +988,9 @@ typedef NS_ENUM(NSInteger, TravelTypes)
 {
     [self showRouteWithNaviRoute:[[naviManager naviRoute] copy]];
     _calRouteSuccess = YES;
+    
+//    NSLog(@"%f***%f",self.endPoint.latitude,  [UserLocation shareLocation].shopSearchCoordinate.latitude);
+    
     if (self.endPoint.latitude != [UserLocation shareLocation].shopSearchCoordinate.latitude) {
         if (self.gotoCustom && self.isnavi) {
             ;

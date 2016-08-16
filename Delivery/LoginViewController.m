@@ -186,8 +186,9 @@
                     };
     }
     NSString * jsonStr = [jsonDic JSONString];
+    
     NSString * str = [NSString stringWithFormat:@"%@131139", jsonStr];
-    NSLog(@"jsonStr = %@", str);
+//    NSLog(@"jsonStr = %@*****postStr = %@", str, jsonStr);
     NSString * md5Str = [str md5];
     NSString * urlString = [NSString stringWithFormat:@"%@%@", POST_URL, md5Str];
     HTTPPost * httpPost = [HTTPPost shareHTTPPost];
@@ -196,6 +197,20 @@
     httpPost.delegate = self;
     [self.nameTextFiled resignFirstResponder];
     [self.passwordTextfiled resignFirstResponder];
+    
+//    AFHTTPSessionManager * sessionmanager = [AFHTTPSessionManager manager];
+//    NSMutableSet * contentTypes = [[NSMutableSet alloc]initWithSet:sessionmanager.responseSerializer.acceptableContentTypes];
+//    [contentTypes addObject:@"text/html"];
+//    [contentTypes addObject:@"text/plain"];
+//    sessionmanager.responseSerializer.acceptableContentTypes = contentTypes;
+//    
+//    [sessionmanager POST:urlString parameters:jsonDic success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
+//        [SVProgressHUD dismiss];
+//        NSLog( @"请求成功………………%@", responseObject);
+//        NSLog(@"%@", [responseObject objectForKey:@"ErrorMsg"]);
+//    } failure:^(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error) {
+//        NSLog(@"请求失败");
+//    }];
     
 }
 

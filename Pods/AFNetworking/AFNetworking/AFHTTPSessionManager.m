@@ -242,6 +242,9 @@
     }
 
     __block NSURLSessionDataTask *dataTask = nil;
+    
+    NSLog(@"****%@****%@", request.URL, request.HTTPBody);
+    
     dataTask = [self dataTaskWithRequest:request completionHandler:^(NSURLResponse * __unused response, id responseObject, NSError *error) {
         if (error) {
             if (failure) {

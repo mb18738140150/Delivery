@@ -158,120 +158,120 @@ static SystemSoundID shake_sound_male_id = 0;
 
 #pragma mark - 极光推送自定义消息
 - (void)networkDidReceiveMessage:(NSNotification *)notification {
-    NSDictionary * userInfo = [notification userInfo];
-    NSString *content = [userInfo valueForKey:@"content"];
-//    NSLog(@"content = %@", content);
-    NSDictionary * dic = [self dictionaryWithJsonString:content];
-    
-    if ([[dic objectForKey:@"PushUseType"] intValue] == 4000) {
-        [self playSound];
-        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:nil message:[NSString stringWithFormat:@"%@", [dic objectForKey:@"Contents"]] delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
-//        [alert show];
-        
-        UINavigationController * nav = (UINavigationController *)self.window.rootViewController;
-        
-        if ([nav.viewControllers.lastObject isMemberOfClass:[OrderViewController class]]) {
-            OrderViewController * orderVc = nav.viewControllers.lastObject;
-            if (orderVc.segment.selectedSegmentIndex == 0) {
-                [orderVc.nOrderTableView.header beginRefreshing];
-            }
-        }
-        
-    }else if ([[dic objectForKey:@"PushUseType"] intValue] == 3002)
-    {
-        UIAlertController * alertcontroller = [UIAlertController alertControllerWithTitle:@"提示" message:@"您的账号已在另一台设备登录" preferredStyle:UIAlertControllerStyleAlert];
-        
-        UINavigationController * nav = (UINavigationController *)self.window.rootViewController;
-        
-        UIAlertAction * cameraAction = [UIAlertAction actionWithTitle:@"退出登录" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-            NSLog(@"你点击了退出登录");
-            [[NSUserDefaults standardUserDefaults] setValue:@NO forKey:@"haveLogin"];
-            [[NSUserDefaults standardUserDefaults] setValue:@"" forKey:@"Pwd"];
-            [nav popToRootViewControllerAnimated:YES];
-            
-        }];
-        
-        UIAlertAction * libraryAction = [UIAlertAction actionWithTitle:@"重新登录" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-            
-            NSString * passWord = [[NSUserDefaults standardUserDefaults] objectForKey:@"Pwd"];
-            NSString * name = [[NSUserDefaults standardUserDefaults] objectForKey:@"UserName"];
-            NSLog(@"你点击了重新登录");
-            
-            NSDictionary * jsonDic = nil;
-            if ([[NSUserDefaults standardUserDefaults] objectForKey:@"RegistrationID"]) {
-                jsonDic = @{
-                            @"Pwd":passWord,
-                            @"UserName":name,
-                            @"Command":@1,
-                            @"RegistrationID":[[NSUserDefaults standardUserDefaults] objectForKey:@"RegistrationID"],
-                            @"DeviceType":@1
-                            };
-            }else
-            {
-                jsonDic = @{
-                            @"Pwd":passWord,
-                            @"UserName":name,
-                            @"Command":@1,
-                            @"RegistrationID":[NSNull null],
-                            @"DeviceType":@1
-                            };
-            }
-            NSString * jsonStr = [jsonDic JSONString];
-            NSString * str = [NSString stringWithFormat:@"%@131139", jsonStr];
-            NSLog(@"jsonStr = %@", str);
-            NSString * md5Str = [str md5];
-            NSString * urlString = [NSString stringWithFormat:@"%@%@", POST_URL, md5Str];
-            HTTPPost * httpPost = [HTTPPost shareHTTPPost];
-            httpPost.commend = [jsonDic objectForKey:@"Command"];
-            [httpPost post:urlString HTTPBody:[jsonStr dataUsingEncoding:NSUTF8StringEncoding]];
-            httpPost.delegate = self;
-            
-        }];
-        
-        [alertcontroller addAction:cameraAction];
-        [alertcontroller addAction:libraryAction];
-        [nav presentViewController:alertcontroller animated:YES completion:nil];
-        
-        
-    }else if ([[dic objectForKey:@"PushUseType"] intValue] == 4001) {
-        [self playSound1];
-        
-        UINavigationController * nav = (UINavigationController *)self.window.rootViewController;
-        
-        UIAlertController * nameController = [UIAlertController alertControllerWithTitle:[NSString stringWithFormat:@"%@", [dic objectForKey:@"Title"]] message:[NSString stringWithFormat:@"%@", [dic objectForKey:@"Contents"]] preferredStyle:UIAlertControllerStyleAlert];
-        UIAlertAction * cancleAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-            OrderDetailController * orderVc = [[OrderDetailController alloc]init];
-            orderVc.orderID = [dic objectForKey:@"OrderId"];
-            [nav pushViewController:orderVc animated:YES];
-        }];
-        [nameController addAction:cancleAction];
-        
-        [nav presentViewController:nameController animated:YES completion:nil];
-        
-    }else if ([[dic objectForKey:@"PushUseType"] intValue] == 4002) {
-        
-        UINavigationController * nav = (UINavigationController *)self.window.rootViewController;
-        
-        UIAlertController * nameController = [UIAlertController alertControllerWithTitle:[NSString stringWithFormat:@"%@", [dic objectForKey:@"Title"]] message:[NSString stringWithFormat:@"%@", [dic objectForKey:@"Contents"]] preferredStyle:UIAlertControllerStyleAlert];
-        
-        UIAlertAction * cancleAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleCancel handler:nil];
-        [nameController addAction:cancleAction];
-        
-        [nav presentViewController:nameController animated:YES completion:nil];
-        
-        if (nav.viewControllers.count >1) {
-            OrderViewController * orderVc = [nav.viewControllers objectAtIndex:1];
-            [orderVc refreshOrderCountWith:[dic objectForKey:@"Contents"]];
-        }
-        
-//        UILongPressGestureRecognizer
+//    NSDictionary * userInfo = [notification userInfo];
+//    NSString *content = [userInfo valueForKey:@"content"];
+////    NSLog(@"content = %@", content);
+//    NSDictionary * dic = [self dictionaryWithJsonString:content];
+//    
+//    if ([[dic objectForKey:@"PushUseType"] intValue] == 4000) {
+//        [self playSound];
 //        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:nil message:[NSString stringWithFormat:@"%@", [dic objectForKey:@"Contents"]] delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
-//        [alert show];
-    }
-    
-    NSDictionary *extras = [userInfo valueForKey:@"extras"];
-    NSString *customizeField1 = [extras valueForKey:@"customizeField1"]; //服务端传递的Extras附加字段，key是自己定义的
-    NSLog(@"………………***%@, &&&%@, ^^^%@", [dic description], extras, customizeField1);
+////        [alert show];
+//        
+//        UINavigationController * nav = (UINavigationController *)self.window.rootViewController;
+//        
+//        if ([nav.viewControllers.lastObject isMemberOfClass:[OrderViewController class]]) {
+//            OrderViewController * orderVc = nav.viewControllers.lastObject;
+//            if (orderVc.segment.selectedSegmentIndex == 0) {
+//                [orderVc.nOrderTableView.header beginRefreshing];
+//            }
+//        }
+//        
+//    }else if ([[dic objectForKey:@"PushUseType"] intValue] == 3002)
+//    {
+//        UIAlertController * alertcontroller = [UIAlertController alertControllerWithTitle:@"提示" message:@"您的账号已在另一台设备登录" preferredStyle:UIAlertControllerStyleAlert];
+//        
+//        UINavigationController * nav = (UINavigationController *)self.window.rootViewController;
+//        
+//        UIAlertAction * cameraAction = [UIAlertAction actionWithTitle:@"退出登录" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+//            NSLog(@"你点击了退出登录");
+//            [[NSUserDefaults standardUserDefaults] setValue:@NO forKey:@"haveLogin"];
+//            [[NSUserDefaults standardUserDefaults] setValue:@"" forKey:@"Pwd"];
+//            [nav popToRootViewControllerAnimated:YES];
+//            
+//        }];
+//        
+//        UIAlertAction * libraryAction = [UIAlertAction actionWithTitle:@"重新登录" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+//            
+//            NSString * passWord = [[NSUserDefaults standardUserDefaults] objectForKey:@"Pwd"];
+//            NSString * name = [[NSUserDefaults standardUserDefaults] objectForKey:@"UserName"];
+//            NSLog(@"你点击了重新登录");
+//            
+//            NSDictionary * jsonDic = nil;
+//            if ([[NSUserDefaults standardUserDefaults] objectForKey:@"RegistrationID"]) {
+//                jsonDic = @{
+//                            @"Pwd":passWord,
+//                            @"UserName":name,
+//                            @"Command":@1,
+//                            @"RegistrationID":[[NSUserDefaults standardUserDefaults] objectForKey:@"RegistrationID"],
+//                            @"DeviceType":@1
+//                            };
+//            }else
+//            {
+//                jsonDic = @{
+//                            @"Pwd":passWord,
+//                            @"UserName":name,
+//                            @"Command":@1,
+//                            @"RegistrationID":[NSNull null],
+//                            @"DeviceType":@1
+//                            };
+//            }
+//            NSString * jsonStr = [jsonDic JSONString];
+//            NSString * str = [NSString stringWithFormat:@"%@131139", jsonStr];
+//            NSLog(@"jsonStr = %@", str);
+//            NSString * md5Str = [str md5];
+//            NSString * urlString = [NSString stringWithFormat:@"%@%@", POST_URL, md5Str];
+//            HTTPPost * httpPost = [HTTPPost shareHTTPPost];
+//            httpPost.commend = [jsonDic objectForKey:@"Command"];
+//            [httpPost post:urlString HTTPBody:[jsonStr dataUsingEncoding:NSUTF8StringEncoding]];
+//            httpPost.delegate = self;
+//            
+//        }];
+//        
+//        [alertcontroller addAction:cameraAction];
+//        [alertcontroller addAction:libraryAction];
+//        [nav presentViewController:alertcontroller animated:YES completion:nil];
+//        
+//        
+//    }else if ([[dic objectForKey:@"PushUseType"] intValue] == 4001) {
+//        [self playSound1];
+//        
+//        UINavigationController * nav = (UINavigationController *)self.window.rootViewController;
+//        
+//        UIAlertController * nameController = [UIAlertController alertControllerWithTitle:[NSString stringWithFormat:@"%@", [dic objectForKey:@"Title"]] message:[NSString stringWithFormat:@"%@", [dic objectForKey:@"Contents"]] preferredStyle:UIAlertControllerStyleAlert];
+//        UIAlertAction * cancleAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+//            OrderDetailController * orderVc = [[OrderDetailController alloc]init];
+//            orderVc.orderID = [dic objectForKey:@"OrderId"];
+//            [nav pushViewController:orderVc animated:YES];
+//        }];
+//        [nameController addAction:cancleAction];
+//        
+//        [nav presentViewController:nameController animated:YES completion:nil];
+//        
+//    }else if ([[dic objectForKey:@"PushUseType"] intValue] == 4002) {
+//        
+//        UINavigationController * nav = (UINavigationController *)self.window.rootViewController;
+//        
+//        UIAlertController * nameController = [UIAlertController alertControllerWithTitle:[NSString stringWithFormat:@"%@", [dic objectForKey:@"Title"]] message:[NSString stringWithFormat:@"%@", [dic objectForKey:@"Contents"]] preferredStyle:UIAlertControllerStyleAlert];
+//        
+//        UIAlertAction * cancleAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleCancel handler:nil];
+//        [nameController addAction:cancleAction];
+//        
+//        [nav presentViewController:nameController animated:YES completion:nil];
+//        
+//        if (nav.viewControllers.count >1) {
+//            OrderViewController * orderVc = [nav.viewControllers objectAtIndex:1];
+//            [orderVc refreshOrderCountWith:[dic objectForKey:@"Contents"]];
+//        }
+//        
+////        UILongPressGestureRecognizer
+////        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:nil message:[NSString stringWithFormat:@"%@", [dic objectForKey:@"Contents"]] delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+////        [alert show];
+//    }
+//    
+//    NSDictionary *extras = [userInfo valueForKey:@"extras"];
+//    NSString *customizeField1 = [extras valueForKey:@"customizeField1"]; //服务端传递的Extras附加字段，key是自己定义的
+//    NSLog(@"………………***%@, &&&%@, ^^^%@", [dic description], extras, customizeField1);
 }
 
 - (NSDictionary *)dictionaryWithJsonString:(NSString *)jsonString {
@@ -483,72 +483,108 @@ static SystemSoundID shake_sound_male_id = 0;
     
     [JPUSHService handleRemoteNotification:userInfo];
     completionHandler(UIBackgroundFetchResultNewData);
+    NSDictionary * aps = [userInfo objectForKey:@"aps"];
+    NSDictionary * dic = userInfo;
+    NSLog(@"dic = %@", [dic description]);
+    NSLog(@"aps = %@", [aps description]);
+    int pushUseType = [[dic objectForKey:@"pushusetype"] intValue];
     
-    NSLog(@"*******%@", [userInfo description]);
-//    
-//    if ([[[userInfo objectForKey:@"aps"] objectForKey:@"alert"] containsString:@"你的帐号在别的设备登录"]) {
-//        UIAlertController * alertcontroller = [UIAlertController alertControllerWithTitle:@"提示" message:@"您的账号已在另一台设备登录" preferredStyle:UIAlertControllerStyleAlert];
-//        
-//        UINavigationController * nav = (UINavigationController *)self.window.rootViewController;
-//        
-//        UIAlertAction * cameraAction = [UIAlertAction actionWithTitle:@"退出登录" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-//            NSLog(@"你点击了退出登录");
-//            [[NSUserDefaults standardUserDefaults] setValue:@NO forKey:@"haveLogin"];
-//            [[NSUserDefaults standardUserDefaults] setValue:@"" forKey:@"Pwd"];
-//            [nav popToRootViewControllerAnimated:YES];
-//            
-//        }];
-//        
-//        UIAlertAction * libraryAction = [UIAlertAction actionWithTitle:@"重新登录" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-//            
-//            NSString * passWord = [[NSUserDefaults standardUserDefaults] objectForKey:@"Pwd"];
-//            NSString * name = [[NSUserDefaults standardUserDefaults] objectForKey:@"UserName"];
-//            NSLog(@"你点击了重新登录");
-//            
-//            NSDictionary * jsonDic = nil;
-//            if ([[NSUserDefaults standardUserDefaults] objectForKey:@"RegistrationID"]) {
-//                jsonDic = @{
-//                            @"Pwd":passWord,
-//                            @"UserName":name,
-//                            @"Command":@1,
-//                            @"RegistrationID":[[NSUserDefaults standardUserDefaults] objectForKey:@"RegistrationID"],
-//                            @"DeviceType":@1
-//                            };
-//            }else
-//            {
-//                jsonDic = @{
-//                            @"Pwd":passWord,
-//                            @"UserName":name,
-//                            @"Command":@1,
-//                            @"RegistrationID":[NSNull null],
-//                            @"DeviceType":@1
-//                            };
-//            }
-//            NSString * jsonStr = [jsonDic JSONString];
-//            NSString * str = [NSString stringWithFormat:@"%@131139", jsonStr];
-//            NSLog(@"jsonStr = %@", str);
-//            NSString * md5Str = [str md5];
-//            NSString * urlString = [NSString stringWithFormat:@"%@%@", POST_URL, md5Str];
-//            HTTPPost * httpPost = [HTTPPost shareHTTPPost];
-//            httpPost.commend = [jsonDic objectForKey:@"Command"];
-//            [httpPost post:urlString HTTPBody:[jsonStr dataUsingEncoding:NSUTF8StringEncoding]];
-//            httpPost.delegate = self;
-//
-//        }];
-//        
-//        [alertcontroller addAction:cameraAction];
-//        [alertcontroller addAction:libraryAction];
-//        [nav presentViewController:alertcontroller animated:YES completion:nil];
-//
-//        
-//    }else
-//    {
-//        [self playSound];
-//        
-//    }
+    if ([[dic objectForKey:@"pushusetype"] intValue] == 4000) {
+        [self playSound];
+//        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:nil message:[NSString stringWithFormat:@"%@", [dic objectForKey:@"Contents"]] delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+        //        [alert show];
+        
+        UINavigationController * nav = (UINavigationController *)self.window.rootViewController;
+        
+        if ([nav.viewControllers.lastObject isMemberOfClass:[OrderViewController class]]) {
+            OrderViewController * orderVc = nav.viewControllers.lastObject;
+            if (orderVc.segment.selectedSegmentIndex == 0) {
+                [orderVc.nOrderTableView.header beginRefreshing];
+            }
+        }
+        
+    }else if ([[dic objectForKey:@"pushusetype"] intValue] == 3002)
+    {
+        UIAlertController * alertcontroller = [UIAlertController alertControllerWithTitle:@"提示" message:@"您的账号已在另一台设备登录" preferredStyle:UIAlertControllerStyleAlert];
+        
+        UINavigationController * nav = (UINavigationController *)self.window.rootViewController;
+        
+        UIAlertAction * cameraAction = [UIAlertAction actionWithTitle:@"退出登录" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            NSLog(@"你点击了退出登录");
+            [[NSUserDefaults standardUserDefaults] setValue:@NO forKey:@"haveLogin"];
+            [[NSUserDefaults standardUserDefaults] setValue:@"" forKey:@"Pwd"];
+            [nav popToRootViewControllerAnimated:YES];
+            
+        }];
+        
+        UIAlertAction * libraryAction = [UIAlertAction actionWithTitle:@"重新登录" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            
+            NSString * passWord = [[NSUserDefaults standardUserDefaults] objectForKey:@"Pwd"];
+            NSString * name = [[NSUserDefaults standardUserDefaults] objectForKey:@"UserName"];
+            NSLog(@"你点击了重新登录");
+            
+            NSDictionary * jsonDic = nil;
+            if ([[NSUserDefaults standardUserDefaults] objectForKey:@"RegistrationID"]) {
+                jsonDic = @{
+                            @"Pwd":passWord,
+                            @"UserName":name,
+                            @"Command":@1,
+                            @"RegistrationID":[[NSUserDefaults standardUserDefaults] objectForKey:@"RegistrationID"],
+                            @"DeviceType":@1
+                            };
+            }else
+            {
+                jsonDic = @{
+                            @"Pwd":passWord,
+                            @"UserName":name,
+                            @"Command":@1,
+                            @"RegistrationID":[NSNull null],
+                            @"DeviceType":@1
+                            };
+            }
+            NSString * jsonStr = [jsonDic JSONString];
+            NSString * str = [NSString stringWithFormat:@"%@131139", jsonStr];
+            NSLog(@"jsonStr = %@", str);
+            NSString * md5Str = [str md5];
+            NSString * urlString = [NSString stringWithFormat:@"%@%@", POST_URL, md5Str];
+            HTTPPost * httpPost = [HTTPPost shareHTTPPost];
+            httpPost.commend = [jsonDic objectForKey:@"Command"];
+            [httpPost post:urlString HTTPBody:[jsonStr dataUsingEncoding:NSUTF8StringEncoding]];
+            httpPost.delegate = self;
+            
+        }];
+        
+        [alertcontroller addAction:cameraAction];
+        [alertcontroller addAction:libraryAction];
+        [nav presentViewController:alertcontroller animated:YES completion:nil];
+        
+        
+    }else if ([[dic objectForKey:@"pushusetype"] intValue] == 4001) {
+        [self playSound1];
+        
+        UINavigationController * nav = (UINavigationController *)self.window.rootViewController;
+        
+        UIAlertController * nameController = [UIAlertController alertControllerWithTitle:[NSString stringWithFormat:@"%@", [dic objectForKey:@"title"]] message:[NSString stringWithFormat:@"%@", [aps objectForKey:@"alert"]] preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction * cancleAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            OrderDetailController * orderVc = [[OrderDetailController alloc]init];
+            orderVc.orderID = [dic objectForKey:@"ordersn"];
+            [nav pushViewController:orderVc animated:YES];
+        }];
+        [nameController addAction:cancleAction];
+        
+        [nav presentViewController:nameController animated:YES completion:nil];
+        
+    }else if ([[dic objectForKey:@"pushusetype"] intValue] == 4002) {
+        
+        UINavigationController * nav = (UINavigationController *)self.window.rootViewController;
+        
+        if (nav.viewControllers.count >1) {
+            OrderViewController * orderVc = [nav.viewControllers objectAtIndex:1];
+            [orderVc refreshOrderCountWith:[aps objectForKey:@"alert"]];
+        }
+        
+    }
     
-    NSLog(@"completionHandler = %@", [userInfo description]);
-    NSLog(@"__FUNC__ = %s", __func__);
     application.applicationIconBadgeNumber = 0;
 }
 

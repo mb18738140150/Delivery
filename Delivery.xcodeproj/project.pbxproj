@@ -29,7 +29,6 @@
 		73253B891D210BA800E6AE7F /* Shut.png in Resources */ = {isa = PBXBuildFile; fileRef = 73253B861D210BA800E6AE7F /* Shut.png */; };
 		73253B8D1D210DD900E6AE7F /* reasonTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 73253B8C1D210DD900E6AE7F /* reasonTableViewCell.m */; };
 		73253B951D211D2300E6AE7F /* reasonTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73253B941D211D2300E6AE7F /* reasonTableViewCell.xib */; };
-		732CFEEF1CFC1849000B19DD /* jpush-ios-2.1.7.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 732CFEED1CFC1849000B19DD /* jpush-ios-2.1.7.a */; };
 		733090641D17DF1B00339847 /* SDBManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 733090631D17DF1B00339847 /* SDBManager.m */; };
 		733090671D17DF7000339847 /* PositionDB.m in Sources */ = {isa = PBXBuildFile; fileRef = 733090661D17DF7000339847 /* PositionDB.m */; };
 		7330906A1D17DF8B00339847 /* PositionModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 733090691D17DF8B00339847 /* PositionModel.m */; };
@@ -70,6 +69,7 @@
 		735AB3B11BDA306800075477 /* OrderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 735AB3B01BDA306800075477 /* OrderViewController.m */; };
 		735AB3BC1BDA30FB00075477 /* UserCenterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 735AB3BB1BDA30FB00075477 /* UserCenterViewController.m */; };
 		735AB3BF1BDA320800075477 /* OtherView.m in Sources */ = {isa = PBXBuildFile; fileRef = 735AB3BE1BDA320800075477 /* OtherView.m */; };
+		7364D01E1DA8D027003D7B5D /* jpush-ios-2.1.9.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7364D01C1DA8D027003D7B5D /* jpush-ios-2.1.9.a */; };
 		7365872A1C47664F00DFB6AE /* PushConfig.plist in Resources */ = {isa = PBXBuildFile; fileRef = 736587291C47664F00DFB6AE /* PushConfig.plist */; };
 		7365872D1C476EC300DFB6AE /* JSONKit.m in Sources */ = {isa = PBXBuildFile; fileRef = 7365872C1C476EC300DFB6AE /* JSONKit.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		736587301C4778A500DFB6AE /* NSDictionary+Unicode.m in Sources */ = {isa = PBXBuildFile; fileRef = 7365872F1C4778A500DFB6AE /* NSDictionary+Unicode.m */; };
@@ -204,8 +204,6 @@
 		73253B8B1D210DD900E6AE7F /* reasonTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = reasonTableViewCell.h; sourceTree = "<group>"; };
 		73253B8C1D210DD900E6AE7F /* reasonTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = reasonTableViewCell.m; sourceTree = "<group>"; };
 		73253B941D211D2300E6AE7F /* reasonTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = reasonTableViewCell.xib; sourceTree = "<group>"; };
-		732CFEED1CFC1849000B19DD /* jpush-ios-2.1.7.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "jpush-ios-2.1.7.a"; sourceTree = "<group>"; };
-		732CFEEE1CFC1849000B19DD /* JPUSHService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JPUSHService.h; sourceTree = "<group>"; };
 		733090621D17DF1B00339847 /* SDBManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDBManager.h; sourceTree = "<group>"; };
 		733090631D17DF1B00339847 /* SDBManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDBManager.m; sourceTree = "<group>"; };
 		733090651D17DF7000339847 /* PositionDB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PositionDB.h; sourceTree = "<group>"; };
@@ -272,6 +270,9 @@
 		735AB3BB1BDA30FB00075477 /* UserCenterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserCenterViewController.m; sourceTree = "<group>"; };
 		735AB3BD1BDA320800075477 /* OtherView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OtherView.h; sourceTree = "<group>"; };
 		735AB3BE1BDA320800075477 /* OtherView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OtherView.m; sourceTree = "<group>"; };
+		7364D01A1DA8CDF6003D7B5D /* Delivery.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Delivery.entitlements; sourceTree = "<group>"; };
+		7364D01C1DA8D027003D7B5D /* jpush-ios-2.1.9.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "jpush-ios-2.1.9.a"; sourceTree = "<group>"; };
+		7364D01D1DA8D027003D7B5D /* JPUSHService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JPUSHService.h; sourceTree = "<group>"; };
 		736587291C47664F00DFB6AE /* PushConfig.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = PushConfig.plist; sourceTree = "<group>"; };
 		7365872B1C476EC300DFB6AE /* JSONKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JSONKit.h; path = "../../微生活_配送员/未命名文件夹/JSONKit.h"; sourceTree = "<group>"; };
 		7365872C1C476EC300DFB6AE /* JSONKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JSONKit.m; path = "../../微生活_配送员/未命名文件夹/JSONKit.m"; sourceTree = "<group>"; };
@@ -404,6 +405,7 @@
 				736A12181C4E001B00549177 /* QuartzCore.framework in Frameworks */,
 				736A12161C4E000800549177 /* CoreLocation.framework in Frameworks */,
 				730821001D02CE6B00ACE5C6 /* AMapNaviKit.framework in Frameworks */,
+				7364D01E1DA8D027003D7B5D /* jpush-ios-2.1.9.a in Frameworks */,
 				736A120B1C4DFCDB00549177 /* BaiduMapAPI_Base.framework in Frameworks */,
 				73792F521C4C763200E4BD58 /* AudioToolbox.framework in Frameworks */,
 				7342873F1C4651EE0093D133 /* libz.tbd in Frameworks */,
@@ -424,7 +426,6 @@
 				736A12111C4DFCDB00549177 /* BaiduMapAPI_Utils.framework in Frameworks */,
 				736A120D1C4DFCDB00549177 /* BaiduMapAPI_Location.framework in Frameworks */,
 				736A120E1C4DFCDB00549177 /* BaiduMapAPI_Map.framework in Frameworks */,
-				732CFEEF1CFC1849000B19DD /* jpush-ios-2.1.7.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -454,7 +455,7 @@
 				730820FF1D02CE6B00ACE5C6 /* AMapNaviKit.framework */,
 				730820FB1D02CE6100ACE5C6 /* AMapSearchKit.framework */,
 				738416B81CFD79B500EC7405 /* AVFoundation.framework */,
-				732CFEEC1CFC1849000B19DD /* lib */,
+				7364D01B1DA8D027003D7B5D /* Lib */,
 				736A121D1C4E007600549177 /* libstdc++.6.0.9.tbd */,
 				736A121B1C4E005D00549177 /* libsqlite3.0.tbd */,
 				7342873E1C4651EE0093D133 /* libz.tbd */,
@@ -509,15 +510,6 @@
 				73253B941D211D2300E6AE7F /* reasonTableViewCell.xib */,
 			);
 			name = "放弃订单弹出框";
-			sourceTree = "<group>";
-		};
-		732CFEEC1CFC1849000B19DD /* lib */ = {
-			isa = PBXGroup;
-			children = (
-				732CFEED1CFC1849000B19DD /* jpush-ios-2.1.7.a */,
-				732CFEEE1CFC1849000B19DD /* JPUSHService.h */,
-			);
-			path = lib;
 			sourceTree = "<group>";
 		};
 		733090611D17DEB600339847 /* DB */ = {
@@ -587,6 +579,7 @@
 		735AB3791BD9FA9200075477 /* Delivery */ = {
 			isa = PBXGroup;
 			children = (
+				7364D01A1DA8CDF6003D7B5D /* Delivery.entitlements */,
 				735AB3A71BDA2FCC00075477 /* RootVC */,
 				735AB3A91BDA2FEA00075477 /* General */,
 				735AB3AA1BDA2FEB00075477 /* Helps */,
@@ -844,6 +837,15 @@
 			name = Controller;
 			sourceTree = "<group>";
 		};
+		7364D01B1DA8D027003D7B5D /* Lib */ = {
+			isa = PBXGroup;
+			children = (
+				7364D01C1DA8D027003D7B5D /* jpush-ios-2.1.9.a */,
+				7364D01D1DA8D027003D7B5D /* JPUSHService.h */,
+			);
+			path = Lib;
+			sourceTree = "<group>";
+		};
 		736A12031C4DFCC100549177 /* 百度地图 */ = {
 			isa = PBXGroup;
 			children = (
@@ -1026,8 +1028,13 @@
 					735AB3761BD9FA9200075477 = {
 						CreatedOnToolsVersion = 7.0.1;
 						DevelopmentTeam = 26NQNZ7FXL;
+						LastSwiftMigration = 0800;
+						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+							com.apple.Push = {
 								enabled = 1;
 							};
 						};
@@ -1386,8 +1393,10 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = Delivery/Delivery.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer: fuqian yu (X7Q7RAWEB7)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: fuqian yu (X7Q7RAWEB7)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = "";
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1413,12 +1422,15 @@
 					"$(PROJECT_DIR)/lib-2.1.7",
 					"$(SRCROOT)/lib",
 					"$(PROJECT_DIR)/lib",
+					"$(PROJECT_DIR)/Lib",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "78409e0a-1947-4c1a-9a52-a7385084db7f";
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Delivery/Delivery-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -1429,8 +1441,10 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = Delivery/Delivery.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: fuqian yu (26NQNZ7FXL)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: fuqian yu (26NQNZ7FXL)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = "";
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1456,11 +1470,14 @@
 					"$(PROJECT_DIR)/lib-2.1.7",
 					"$(SRCROOT)/lib",
 					"$(PROJECT_DIR)/lib",
+					"$(PROJECT_DIR)/Lib",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "78409e0a-1947-4c1a-9a52-a7385084db7f";
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Delivery/Delivery-Bridging-Header.h";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};

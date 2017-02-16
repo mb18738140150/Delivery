@@ -18,6 +18,6 @@
 @property (nonatomic, strong)CustomerView * customerView;
 @property (nonatomic, strong)ShopView * shopView;
 
-- (void)createSubView:(CGRect)frame mealCoutn:(int)mealCount;
-+ (CGFloat)cellHeightWithMealCount:(int)mealCount;
+- (void)createSubView:(CGRect)frame mealCoutn:(NewOrderModel *)mealModel;
++ (CGFloat)cellHeightWithMealCount:(NewOrderModel *)mealModel;
 @end

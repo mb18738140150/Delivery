@@ -53,21 +53,21 @@ static int shopHeight = 0;
     self.storenameLabel.textColor = [UIColor colorWithWhite:.2 alpha:1];
     [self addSubview:self.storenameLabel];
     
-    self.sendStateLabel = [[UILabel alloc]initWithFrame:CGRectMake(frame.size.width - 75, 15, 60, 15)];
+    self.sendStateLabel = [[UILabel alloc]initWithFrame:CGRectMake(frame.size.width - 75, 15, 75, 15)];
     self.sendStateLabel.textColor = MAIN_COLORE;
     self.sendStateLabel.font = [UIFont systemFontOfSize:15];
     [self addSubview:self.sendStateLabel];
     
-    UIView * line2View = [[UIView alloc]initWithFrame:CGRectMake(self.sendStateLabel.left - 11, 10, 1, 25)];
+    UIView * line2View = [[UIView alloc]initWithFrame:CGRectMake(self.sendStateLabel.left - 6, 10, 1, 25)];
     line2View.backgroundColor = [UIColor colorWithWhite:.9 alpha:1];
     [self addSubview:line2View];
     
-    self.payStateLabel = [[UILabel alloc]initWithFrame:CGRectMake(line2View.left - 70, 15, 60, 15)];
+    self.payStateLabel = [[UILabel alloc]initWithFrame:CGRectMake(line2View.left - 75, 15, 70, 15)];
     self.payStateLabel.font = [UIFont systemFontOfSize:15];
     self.payStateLabel.textColor = [UIColor colorWithWhite:.2 alpha:1];
     [self addSubview:self.payStateLabel];
     
-    UIView * lineView3view = [[UIView alloc]initWithFrame:CGRectMake(self.payStateLabel.left - 11, 10, 1, 25)];
+    UIView * lineView3view = [[UIView alloc]initWithFrame:CGRectMake(self.payStateLabel.left - 6, 10, 1, 25)];
     lineView3view.backgroundColor = [UIColor colorWithWhite:.9 alpha:1];
     [self addSubview:lineView3view];
     

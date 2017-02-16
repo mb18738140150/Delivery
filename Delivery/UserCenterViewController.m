@@ -308,12 +308,14 @@
 
 - (void)refresh:(id)data
 {
-//    NSLog(@"data = %@", [data description]);
+    NSLog(@"data = %@", [data description]);
     [SVProgressHUD dismiss];
     if ([[data objectForKey:@"Result"] isEqualToNumber:@1]) {
         NSNumber * command = [data objectForKey:@"Command"];
         if ([command isEqualToNumber:@10002]) {
             NSDictionary * dic = [data objectForKey:@"UserInfo"];
+            
+            NSLog(@" --- TotalMoney = %@", [dic objectForKey:@"TotalMoney"]);
             
             __weak UserCenterViewController * userVC = self;
             [self.iconImage sd_setImageWithURL:[dic objectForKey:@"Icon"] placeholderImage:[UIImage imageNamed:@"PHOTO.png"] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
@@ -348,8 +350,8 @@
             self.phoneNumberLabel.text = [NSString stringWithFormat:@"%@", [dic objectForKey:@"Phone"]];
             _totalOrderview.detailStr = [NSString stringWithFormat:@"%@", [dic objectForKey:@"TotalOrderCount"]];
             _todayOrderview.detailStr = [NSString stringWithFormat:@"%@", [dic objectForKey:@"TodayOrderCount"]];
-            _totlaMoney.detailStr = [NSString stringWithFormat:@"%@", [dic objectForKey:@"TotalMoney"]];
-            _todayMoney.detailStr = [NSString stringWithFormat:@"%@", [dic objectForKey:@"TodayMoney"]];
+            _totlaMoney.detailStr = [NSString stringWithFormat:@"%.2f", [[dic objectForKey:@"TotalMoney"] doubleValue]];
+            _todayMoney.detailStr = [NSString stringWithFormat:@"%.2f", [[dic objectForKey:@"TodayMoney"] doubleValue]];
             
             if ([[dic objectForKey:@"Remind"] intValue] == 1) {
                 _massegeView.detailButton.on = YES;

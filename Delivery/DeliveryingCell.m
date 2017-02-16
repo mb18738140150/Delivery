@@ -40,6 +40,10 @@ static int shopHeight = 0;
 @property (nonatomic, strong)UILabel * customaddressLB;
 @property (nonatomic, strong)UIButton * phoneBt;
 
+@property (nonatomic, strong)UIImageView * remarkImageView;
+@property (nonatomic, strong)UILabel * remarkLabel;
+
+
 @end
 @implementation DeliveryingCell
 
@@ -64,16 +68,16 @@ static int shopHeight = 0;
     self.sendtimeLabel.textAlignment = NSTextAlignmentCenter;
     [self addSubview:self.sendtimeLabel];
     
-    UIView * line2View = [[UIView alloc]initWithFrame:CGRectMake(self.sendtimeLabel.left - 11, 10, 1, 25)];
+    UIView * line2View = [[UIView alloc]initWithFrame:CGRectMake(self.sendtimeLabel.left - 6, 10, 1, 25)];
     line2View.backgroundColor = [UIColor colorWithWhite:.9 alpha:1];
     [self addSubview:line2View];
     
-    self.payStateLabel = [[UILabel alloc]initWithFrame:CGRectMake(line2View.left - 70, 15, 60, 15)];
+    self.payStateLabel = [[UILabel alloc]initWithFrame:CGRectMake(line2View.left - 75, 15, 70, 15)];
     self.payStateLabel.font = [UIFont systemFontOfSize:15];
     self.payStateLabel.textColor = [UIColor colorWithWhite:.2 alpha:1];
     [self addSubview:self.payStateLabel];
     
-    UIView * lineView3view = [[UIView alloc]initWithFrame:CGRectMake(self.payStateLabel.left - 11, 10, 1, 25)];
+    UIView * lineView3view = [[UIView alloc]initWithFrame:CGRectMake(self.payStateLabel.left - 6, 10, 1, 25)];
     lineView3view.backgroundColor = [UIColor colorWithWhite:.9 alpha:1];
     [self addSubview:lineView3view];
     
@@ -141,13 +145,26 @@ static int shopHeight = 0;
     self.customaddressLB.textColor = [UIColor colorWithWhite:.4 alpha:1];
     [self addSubview:self.customaddressLB];
     
-    self.customAddtrssLabel = [[UILabel alloc]initWithFrame:CGRectMake(31, self.customAddtrssLabel.bottom + 7, frame.size.width - 40, 26)];
+    self.customAddtrssLabel = [[UILabel alloc]initWithFrame:CGRectMake(31, self.customaddressLB.bottom + 7, frame.size.width - 40, 26)];
     self.customAddtrssLabel.font = [UIFont systemFontOfSize:12];
     self.customAddtrssLabel.textColor = [UIColor colorWithWhite:.6 alpha:1];
     self.customAddtrssLabel.numberOfLines = 0;
     [self addSubview:self.customAddtrssLabel];
     
-    self.totlePriceView = [[TotlePriceView alloc]initWithFrame:CGRectMake(0, self.customAddtrssLabel.bottom + 6, self.width, TOTLEPRICEVIEW_HEIGHT)];
+    
+    self.remarkImageView = [[UIImageView alloc]initWithFrame:CGRectMake(15, self.customAddtrssLabel.bottom + 10, 7, 7)];
+    _remarkImageView.backgroundColor = [UIColor whiteColor];
+    [self addSubview:_remarkImageView];
+    _remarkImageView.image = [UIImage imageNamed:@"colect_s.png"];
+    
+    self.remarkLabel = [[UILabel alloc]initWithFrame:CGRectMake(self.remarkImageView.right + 10, self.customAddtrssLabel.bottom + 9, frame.size.width - 40, 13)];
+    self.remarkLabel.text = @"订单备注: ";
+    self.remarkLabel.font = [UIFont systemFontOfSize:13];
+    self.remarkLabel.numberOfLines = 0;
+    self.remarkLabel.textColor = [UIColor colorWithWhite:.4 alpha:1];
+    [self addSubview:self.remarkLabel];
+    
+    self.totlePriceView = [[TotlePriceView alloc]initWithFrame:CGRectMake(0, self.remarkLabel.bottom + 6, self.width, TOTLEPRICEVIEW_HEIGHT)];
     self.totlePriceView.nullityButton.hidden = YES;
     [self addSubview:_totlePriceView];
     
@@ -181,78 +198,27 @@ static int shopHeight = 0;
 //    return SHOPVIEW_HEIGHT  + MENUVIEW_HEIGHT * ((mealCount - 1)/ 2 + 1 ) + (mealCount - 1) / 2 * 10  + 30  + CUSTOMERVIEW_HEIGHT + TOTLEPRICEVIEW_HEIGHT + TOP_SPACE + height + shopHeight;
     //    return SHOPVIEW_HEIGHT  + num * 30 + 10 * (num - 1) + 30  + CUSTOMERVIEW_HEIGHT + TOTLEPRICEVIEW_HEIGHT + TOP_SPACE ;
     
+    CGFloat height1 ;
     
-    return 253 - 28 + height + shopHeight + 15;
+    if (model.remark.length > 0) {
+        NSString * remark = model.remark;
+        CGSize remarkSize = [remark boundingRectWithSize:CGSizeMake([UIScreen mainScreen].bounds.size.width - 40, MAXFLOAT) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14]} context:nil].size;
+        if (remarkSize.height > 22) {
+            height1 = remarkSize.height;
+        }else
+        {
+            height1 = 22;
+        }
+    }else
+    {
+        height1 = 0;
+    }
+    
+    return 253 - 28 + height + shopHeight + 15 + height1;
 }
 - (void)setOrderModel:(NewOrderModel *)orderModel
 {
-//    self.shopView.name = orderModel.busiName;
-//    self.shopView.phone = orderModel.busiPhone;
-//    self.shopView.addressLabel.text = orderModel.busiAddress;
-//    
-//    NSString * shopaddress =  self.shopView.addressLabel.text;
-//    CGSize size = CGSizeMake(self.shopView.addressLabel.width, 1000);
-//    CGRect shopRect = [shopaddress boundingRectWithSize:size options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:17]} context:nil];
-//    
-//    if (shopRect.size.height + 5 < 30) {
-//        ;
-//    }else
-//    {
-//        shopHeight = shopRect.size.height + 5 - 30;
-//        self.shopView.addressLabel.height = shopRect.size.height + 5;
-//        self.shopView.orderTimeLB.top = self.shopView.addressLabel.bottom;
-//        self.shopView.payStateLabel.top = self.shopView.orderTimeLB.top;
-//        self.shopView.height = SHOPVIEW_HEIGHT + shopHeight;
-//        UIView * line = [self viewWithTag:LINE_tag];
-//        line.top = self.shopView.bottom;
-//        self.customerView.top = line.bottom;
-//    }
-//    
-//    
-//    self.shopView.orderTimeLB.text = orderModel.orderTime;
-//    
-//    if (orderModel.payType == 1) {
-//        self.shopView.payStateLabel.text = @"在线支付";
-//    }else
-//    {
-//        self.shopView.payStateLabel.text = @"现金支付";
-//    }
-//    
-//    self.customerView.name = orderModel.customerName;
-//    self.customerView.phone = orderModel.customerPhone;
-//    self.customerView.addressLabel.text = orderModel.customerAddress;
-//    self.customerView.arriveTimeLabel.text = orderModel.hopeTime;
-//    if (orderModel.remark.length == 0) {
-//        self.customerView.remarkLabel.text = @"暂无备注!";
-//    }else
-//    {
-//        self.customerView.remarkLabel.text = orderModel.remark;
-//    }
-//    if (orderModel.gift.length == 0) {
-//        self.customerView.giftLabel.text = @"赠品:无";
-//    }else
-//    {
-//        self.customerView.giftLabel.text = [NSString stringWithFormat:@"赠品:%@", orderModel.remark];
-//    }
-//    // 计算字符串高度
-//    NSString * contentText = orderModel.customerAddress;
-//    CGSize maxSize = CGSizeMake(self.customerView.addressLabel.width, 1000);
-//    CGRect textRect = [contentText boundingRectWithSize:maxSize options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:17]} context:nil];
-//    
-//    if (textRect.size.height + 10 < 30) {
-//        ;
-//    }else
-//    {
-//        height = textRect.size.height + 10 - 30;
-//        self.customerView.addressLabel.height = textRect.size.height + 10;
-//        self.customerView.mealsView.top = self.customerView.addressLabel.bottom;
-//    }
-//    
-//    [self.customerView creatMealViewWithArray:orderModel.mealArray];
-//    
-//    self.customerView.height = CUSTOMERVIEW_HEIGHT + height + MENUVIEW_HEIGHT * ((orderModel.mealArray.count - 1)/ 2 + 1 ) + (orderModel.mealArray.count - 1) / 2 * 10 + 30;
-//    self.linePrice.top = self.customerView.bottom ;
-    
+
     self.storenameLabel.text = orderModel.busiName;
     if (orderModel.payType == 1) {
         self.payStateLabel.text = @"在线支付";
@@ -288,8 +254,12 @@ static int shopHeight = 0;
             self.phoneBt.frame = CGRectMake(self.phoneBt.left, self.addressLabel.bottom + 9, 28, 28);
             self.cusaddressimageview.frame = CGRectMake(15, self.customLabel.bottom + 13, 7, 7);
             self.customaddressLB.frame = CGRectMake(self.cusaddressimageview.right + 10, self.customLabel.bottom + 9, 85, 13);
+            self.customAddtrssLabel.frame = CGRectMake(31, self.customaddressLB.bottom + 7, self.customAddtrssLabel.size.width - 40, 26);
+            
+            self.remarkImageView.frame = CGRectMake(15, self.customAddtrssLabel.bottom + 10, 7, 7);
+            self.remarkLabel.frame = CGRectMake(self.remarkImageView.right + 10, self.customAddtrssLabel.bottom + 9, self.remarkLabel.width, 13);
+            
         }
-    
     
     self.customLabel.text = orderModel.customerName;
     NSDictionary * attributes = @{NSFontAttributeName:[UIFont systemFontOfSize:12]};
@@ -307,14 +277,38 @@ static int shopHeight = 0;
     
         if (textRect.size.height  <= 12) {
             self.customAddtrssLabel.frame = CGRectMake(31, self.customaddressLB.bottom + 7, self.customAddtrssLabel.width , 12);
+            self.remarkImageView.frame = CGRectMake(15, self.customAddtrssLabel.bottom + 10 + textRect.size.height - 12, 7, 7);
+            self.remarkLabel.frame = CGRectMake(self.remarkImageView.right + 10, self.customAddtrssLabel.bottom + 7 + textRect.size.height - 12, self.remarkLabel.width, 13);
         }else
         {
             
             height = textRect.size.height - 12;
             self.customAddtrssLabel.frame = CGRectMake(31, self.customaddressLB.bottom + 7, self.customAddtrssLabel.width , textRect.size.height);
+            self.remarkImageView.frame = CGRectMake(15, self.customAddtrssLabel.bottom + 10 + textRect.size.height - 12, 7, 7);
+            self.remarkLabel.frame = CGRectMake(self.remarkImageView.right + 10, self.customAddtrssLabel.bottom + 7 + textRect.size.height - 12, self.remarkLabel.width, 13);
         }
     
-    self.totlePriceView.top = self.customAddtrssLabel.bottom + 6;
+    if (orderModel.remark.length == 0) {
+        self.remarkImageView.hidden = YES;
+        self.remarkLabel.hidden = YES;
+        self.totlePriceView.top = self.customAddtrssLabel.bottom + 6;
+    }else
+    {
+        NSString * remark = orderModel.remark;
+        CGSize remarkSize = [remark boundingRectWithSize:CGSizeMake([UIScreen mainScreen].bounds.size.width - 40, MAXFLOAT) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14]} context:nil].size;
+        self.remarkImageView.hidden = NO;
+        self.remarkLabel.hidden = NO;
+        self.remarkLabel.height = remarkSize.height;
+        self.remarkLabel.text = [NSString stringWithFormat:@"订单备注: %@", remark];
+        
+        if (remarkSize.height > 22) {
+            self.totlePriceView.top = self.customAddtrssLabel.bottom + 6 + remarkSize.height;
+        }else
+        {
+            self.totlePriceView.top = self.customAddtrssLabel.bottom + 6 + 22;
+        }
+    }
+    
     self.totlePriceView.totalPrice = [NSString stringWithFormat:@"%@", orderModel.allMoney];
 //    self.totlePriceView.totlePriceLabel.text = [NSString stringWithFormat:@"%@", orderModel.allMoney];
     if (orderModel.orderState.intValue == 2) {

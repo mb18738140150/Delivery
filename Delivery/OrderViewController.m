@@ -502,6 +502,7 @@ NSString *const QAnnotationViewDragStateCHange = @"QAnnotationViewDragState";
                 for (NSDictionary * dic in array) {
                     NewOrderModel * model = [[NewOrderModel alloc]initWithDictionary:dic];
                     model.orderState = @1;
+                    
                     [self.nOrderArray addObject:model];
                 }
 //                [self.segment setTitle:[NSString stringWithFormat:@"待接受%@", [data objectForKey:@"AllCount"]] forSegmentAtIndex:0];
@@ -566,6 +567,7 @@ NSString *const QAnnotationViewDragStateCHange = @"QAnnotationViewDragState";
                 for (NSDictionary * dic in array) {
                     NewOrderModel * model = [[NewOrderModel alloc]initWithDictionary:dic];
                     model.orderState = @3;
+                    
                     [self.deliveryingArray addObject:model];
                 }
 //                [self.segment setTitle:[NSString stringWithFormat:@"配送中%@", [data objectForKey:@"AllCount"]] forSegmentAtIndex:2];
@@ -729,7 +731,7 @@ NSString *const QAnnotationViewDragStateCHange = @"QAnnotationViewDragState";
         
         NewOrderModel * model = [self.nOrderArray objectAtIndex:indexPath.row];
         NewOrderCell * newOrderCell = [tableView dequeueReusableCellWithIdentifier:NORDERCELL_IDENTIFIER forIndexPath:indexPath];
-        [newOrderCell createSubView:tableView.bounds mealCoutn:(int)model.mealArray.count];
+        [newOrderCell createSubView:tableView.bounds mealCoutn:model];
         newOrderCell.orderModel = model;
         
         [newOrderCell.shopView.addressBT addTarget:self action:@selector(mapAction:event:) forControlEvents:UIControlEventTouchUpInside];
@@ -832,7 +834,7 @@ NSString *const QAnnotationViewDragStateCHange = @"QAnnotationViewDragState";
 {
     if ([tableView isEqual:_nOrderTableView]) {
         NewOrderModel * model = [self.nOrderArray objectAtIndex:indexPath.row];
-        return [NewOrderCell cellHeightWithMealCount:(int)model.mealArray.count];
+        return [NewOrderCell cellHeightWithMealCount:model];
     }
     else if ([tableView isEqual:_waitOrderTableView])
     {

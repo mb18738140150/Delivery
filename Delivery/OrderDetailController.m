@@ -188,7 +188,6 @@ typedef NS_ENUM(NSInteger, TravelTypes)
     [orderDetailesBT addTarget:self action:@selector(orderDetailsAction:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:orderDetailesBT];
     
-    
     NSBundle *bundle=[NSBundle mainBundle];
     NSArray *objs=[bundle loadNibNamed:@"orderDetailspopView" owner:nil options:nil];
     self.orderDetailsView = [objs objectAtIndex:0];

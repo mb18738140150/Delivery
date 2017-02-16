@@ -27,6 +27,7 @@
 @property (strong, nonatomic) IBOutlet UIButton *shopPhoneBT;
 
 // 用户
+@property (strong, nonatomic) IBOutlet UIView *customView;
 @property (strong, nonatomic) IBOutlet UILabel *customNameLB;
 @property (strong, nonatomic) IBOutlet UILabel *customPhoneLB;
 @property (strong, nonatomic) IBOutlet UILabel *customAddressLB;
@@ -36,6 +37,9 @@
 @property (strong, nonatomic) IBOutlet UIView *meallistView;
 
 @property (nonatomic, strong)TotlePriceView * totalPriceView;
+@property (strong, nonatomic) IBOutlet UILabel *orderNumberLabel;
+@property (strong, nonatomic) IBOutlet UILabel *remarkLB;
+@property (strong, nonatomic) IBOutlet UILabel *remarkLabel;
 
 @property (nonatomic, strong)NSDictionary * dic;
 
@@ -64,7 +68,6 @@
     [self.shopPhoneBT addTarget:self action:@selector(phoneAction:) forControlEvents:UIControlEventTouchUpInside];
     [self.customPhoneBT addTarget:self action:@selector(phoneAction:) forControlEvents:UIControlEventTouchUpInside];
     
-    
 }
 - (void)createWithDic:(NSDictionary *)dic
 {
@@ -89,6 +92,32 @@
     CGRect addressRect = [self.customAddressLB.text boundingRectWithSize:CGSizeMake(self.customAddressLB.width, MAXFLOAT) options:NSStringDrawingUsesLineFragmentOrigin attributes:attributes context:nil];
     _customAddressLB.frame = CGRectMake(self.customAddressLB.left, self.customAddressLB.top , self.customAddressLB.width, addressRect.size.height);
     
+    if ([[dic objectForKey:@"Remark"] length] > 0) {
+        NSString * remark = [dic objectForKey:@"Remark"];
+        CGSize remarkSize = [remark boundingRectWithSize:CGSizeMake(self.width - 110, MAXFLOAT) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:13]} context:nil].size;
+        NSLog(@" **** %.2f", remarkSize.height);
+        self.remarkLabel.hidden = NO;
+        self.remarkLB.hidden = NO;
+        self.remarkLabel.text = [NSString stringWithFormat:@"%@", remark];
+        self.remarkLabel.height = remarkSize.height ;
+        
+        if (remarkSize.height > 14) {
+            self.customView.height += remarkSize.height - 14;
+            self.meallistView.top += remarkSize.height - 14;
+        }
+    }else
+    {
+        self.remarkLabel.hidden = YES;
+        self.remarkLB.hidden = YES;
+    }
+    
+    if ([[self.dic objectForKey:@"OrderNum"] intValue] > 0) {
+        self.orderNumberLabel.text = [NSString stringWithFormat:@"#%@", [self.dic objectForKey:@"OrderNum"]];
+    }else
+    {
+        self.orderNumberLabel.text = @"";
+    }
+    
     int payState = [[dic objectForKey:@"PayState"] intValue];
     if (payState == 1) {
         self.payStateLB.text = @"已支付";
@@ -96,7 +125,6 @@
     {
         self.payStateLB.text = @"未支付";
     }
-    
     
     NSArray * mealsarray = [dic objectForKey:@"MealList"];
     
@@ -118,6 +146,7 @@
         [self.meallistView addSubview:mealDetailView];
         self.meallistView.height = mealDetailView.bottom + 10;
     }
+    
     self.meallistView.height = 47 + mealarray.count * 30;
     self.backView.frame = CGRectMake(self.backView.left, self.backView.top, self.backView.width, self.meallistView.bottom);
     self.myscroll.backgroundColor = self.backView.backgroundColor;

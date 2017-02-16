@@ -34,17 +34,21 @@ static int shopHeight = 0;
 @property (nonatomic, strong)UILabel * distanceOfcustomTostore;
 @property (nonatomic, strong)UILabel * sendTimeLabel;
 
+@property (nonatomic, strong)UIImageView * remarkImageView;
+@property (nonatomic, strong)UILabel * remarkLabel;
+
+
 @end
 
 @implementation NewOrderCell
 
 
-- (void)createSubView:(CGRect)frame mealCoutn:(int)mealCount
+- (void)createSubView:(CGRect)frame mealCoutn:(NewOrderModel *)mealModel
 {
     self.selectionStyle = UITableViewCellSelectionStyleNone;
     [self removeAllSubviews];
     self.backgroundColor = [UIColor colorWithWhite:0.9 alpha:1.0];
-    self.backView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, [NewOrderCell cellHeightWithMealCount:mealCount] - TOP_SPACE )];
+    self.backView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, [NewOrderCell cellHeightWithMealCount:mealModel] - TOP_SPACE )];
     _backView.backgroundColor = [UIColor whiteColor];
     [self addSubview:_backView];
     
@@ -60,16 +64,17 @@ static int shopHeight = 0;
     self.ordertimeLabel.textAlignment = NSTextAlignmentCenter;
     [self addSubview:self.ordertimeLabel];
     
-    UIView * line2View = [[UIView alloc]initWithFrame:CGRectMake(self.ordertimeLabel.left - 11, 10, 1, 25)];
+    UIView * line2View = [[UIView alloc]initWithFrame:CGRectMake(self.ordertimeLabel.left - 6, 10, 1, 25)];
     line2View.backgroundColor = [UIColor colorWithWhite:.9 alpha:1];
     [self addSubview:line2View];
     
-    self.payTypeLabel = [[UILabel alloc]initWithFrame:CGRectMake(line2View.left - 70, 15, 60, 15)];
+    self.payTypeLabel = [[UILabel alloc]initWithFrame:CGRectMake(line2View.left - 75, 15, 70, 15)];
     self.payTypeLabel.font = [UIFont systemFontOfSize:15];
     self.payTypeLabel.textColor = [UIColor colorWithWhite:.2 alpha:1];
+    self.payTypeLabel.textAlignment = 1;
     [self addSubview:self.payTypeLabel];
     
-    UIView * lineView3view = [[UIView alloc]initWithFrame:CGRectMake(self.payTypeLabel.left - 11, 10, 1, 25)];
+    UIView * lineView3view = [[UIView alloc]initWithFrame:CGRectMake(self.payTypeLabel.left - 6, 10, 1, 25)];
     lineView3view.backgroundColor = [UIColor colorWithWhite:.9 alpha:1];
     [self addSubview:lineView3view];
     
@@ -106,10 +111,23 @@ static int shopHeight = 0;
     sendTimeimageview.image = [UIImage imageNamed:@"colect_s.png"];
     
     self.sendTimeLabel = [[UILabel alloc]initWithFrame:CGRectMake(sendTimeimageview.right + 10, self.linePrice.bottom + 62, 95, 13)];
-    self.sendTimeLabel.text = @"送达时间 0.5km";
+    self.sendTimeLabel.text = @"送达时间 0.5";
     self.sendTimeLabel.font = [UIFont systemFontOfSize:13];
     self.sendTimeLabel.textColor = [UIColor colorWithWhite:.4 alpha:1];
     [self addSubview:self.sendTimeLabel];
+    
+    
+    self.remarkImageView = [[UIImageView alloc]initWithFrame:CGRectMake(15, 87 + self.linePrice.bottom, 7, 7)];
+    _remarkImageView.backgroundColor = [UIColor whiteColor];
+    [self addSubview:_remarkImageView];
+    _remarkImageView.image = [UIImage imageNamed:@"colect_s.png"];
+    
+    self.remarkLabel = [[UILabel alloc]initWithFrame:CGRectMake(self.remarkImageView.right + 10, self.linePrice.bottom + 84, [UIScreen mainScreen].bounds.size.width - 40, 13)];
+    self.remarkLabel.text = @"订单备注: ";
+    self.remarkLabel.numberOfLines = 0;
+    self.remarkLabel.font = [UIFont systemFontOfSize:13];
+    self.remarkLabel.textColor = [UIColor colorWithWhite:.4 alpha:1];
+    [self addSubview:self.remarkLabel];
     
     
     self.shopView = [[ShopView alloc]initWithFrame:CGRectMake(0, 0, self.width, SHOPVIEW_HEIGHT)];
@@ -136,15 +154,32 @@ static int shopHeight = 0;
 }
 
 
-+ (CGFloat)cellHeightWithMealCount:(int)mealCount
++ (CGFloat)cellHeightWithMealCount:(NewOrderModel *)mealModel
 {
+    int mealCount = mealModel.mealArray.count;
      int num = mealCount / 2 + mealCount % 2;
-//
+    
+    CGFloat height ;
+    
+    if (mealModel.remark.length > 0) {
+        NSString * remark = mealModel.remark;
+        CGSize remarkSize = [remark boundingRectWithSize:CGSizeMake([UIScreen mainScreen].bounds.size.width - 40, MAXFLOAT) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14]} context:nil].size;
+        if (remarkSize.height > 22) {
+            height = remarkSize.height;
+        }else
+        {
+            height = 22;
+        }
+    }else
+    {
+        height = 0;
+    }
+    
 //    _mealsView.frame = CGRectMake(0, _addressLabel.bottom, self.width - 3 * LEFT_SPACE - IMAGE_WEIDTH, num * 30 + 10 * (num - 1) + 30);
     
 //    return SHOPVIEW_HEIGHT  + MENUVIEW_HEIGHT * ((mealCount - 1)/ 2 + 1 ) + (mealCount - 1) / 2 * 10  + 30  + CUSTOMERVIEW_HEIGHT + TOTLEPRICEVIEW_HEIGHT + TOP_SPACE + height + shopHeight;
 //    return SHOPVIEW_HEIGHT  + num * 30 + 10 * (num - 1) + 30  + CUSTOMERVIEW_HEIGHT + TOTLEPRICEVIEW_HEIGHT + TOP_SPACE ;
-    return 175 + 20;
+    return 175 + 20 + height;
 }
 
 - (void)setOrderModel:(NewOrderModel *)orderModel
@@ -265,13 +300,35 @@ static int shopHeight = 0;
     self.sendTimeLabel.width = sendRect.size.width;
     
     
-    self.totlePriceView.top = self.sendTimeLabel.bottom + 16;
+    if (orderModel.remark.length == 0) {
+        self.remarkImageView.hidden = YES;
+        self.remarkLabel.hidden = YES;
+        self.totlePriceView.top = self.sendTimeLabel.bottom + 16;
+    }else
+    {
+        NSString * remark = orderModel.remark;
+        CGSize remarkSize = [remark boundingRectWithSize:CGSizeMake([UIScreen mainScreen].bounds.size.width - 40, MAXFLOAT) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14]} context:nil].size;
+        self.remarkImageView.hidden = NO;
+        self.remarkLabel.hidden = NO;
+        self.remarkLabel.height = remarkSize.height;
+        self.remarkLabel.text = [NSString stringWithFormat:@"订单备注: %@", remark];
+        
+        if (remarkSize.height > 22) {
+            self.totlePriceView.top = self.sendTimeLabel.bottom + 16 + remarkSize.height;
+        }else
+        {
+            self.totlePriceView.top = self.sendTimeLabel.bottom + 16 + 22;
+        }
+        
+    }
+    
+    
 //    self.totlePriceView.detailsButton.frame = CGRectMake(self.totlePriceView.detailsButton.left, 0, self.totlePriceView.detailsButton.width, s elf.totlePriceView.detailsButton.height);
     self.totlePriceView.totalPrice = [NSString stringWithFormat:@"%@", orderModel.allMoney];
 //    self.totlePriceView.totlePriceLabel.text = [NSString stringWithFormat:@"%@", orderModel.allMoney];
     [self.totlePriceView.nullityButton setTitle:@"拒绝订单" forState:UIControlStateNormal];
     [self.totlePriceView.startDeliveryBT setTitle:@"接受订单" forState:UIControlStateNormal];
-    self.backView.frame = CGRectMake(0, 0, self.frame.size.width, [NewOrderCell cellHeightWithMealCount:orderModel.mealArray.count] - TOP_SPACE );
+    self.backView.frame = CGRectMake(0, 0, self.frame.size.width, [NewOrderCell cellHeightWithMealCount:orderModel] - TOP_SPACE );
 //    self.totlePriceView.totlePriceLabel.frame = self.totlePriceView.detailsButton.frame;
 //    self.totlePriceView.detailsButton.hidden = YES;
 }
